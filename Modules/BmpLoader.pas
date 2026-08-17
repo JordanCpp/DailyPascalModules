@@ -27,7 +27,7 @@ type
     XPelsPerMeter: LongInt;
     YPelsPerMeter: LongInt;
     ClrUsed: Cardinal;
-    ClrImportant: LongInt;
+    ClrImportant: Cardinal;
   end;
 
   TBmpError = (
@@ -119,6 +119,12 @@ begin
     if InfoHeader.Width < 0 then AbsWidth := Cardinal(-InfoHeader.Width) else AbsWidth := Cardinal(InfoHeader.Width);
     if InfoHeader.Height < 0 then AbsHeight := Cardinal(-InfoHeader.Height) else AbsHeight := Cardinal(InfoHeader.Height);
 
+    if (AbsWidth = 0) or (AbsHeight = 0) then
+    begin
+      AError := errCorruptedHeader;
+      Exit;
+    end;
+
     IsTopDown := InfoHeader.Height < 0;
 
     AImage.Bpp := 4;
@@ -126,6 +132,12 @@ begin
     AImage.Height := AbsHeight;
     SetLength(AImage.Pixels, AbsWidth * AbsHeight * 4);
 
+    if FileHeader.DataOffset >= FileStream.Size then
+    begin
+      AError := errCorruptedHeader;
+      AImage.Free;
+      Exit;
+    end;
     FileStream.Position := FileHeader.DataOffset;
 
     BytesPerPixel := InfoHeader.BitCount div 8;
@@ -134,7 +146,7 @@ begin
 
     for Y := 0 to AbsHeight - 1 do
     begin
-      if FileStream.Read(RowBuffer, RowStride) <> RowStride then
+      if FileStream.Read(RowBuffer[0], RowStride) < Integer(RowStride) then
       begin
         AError := errReadError;
         AImage.Free;
@@ -167,4 +179,3 @@ begin
 end;
 
 end.
-
