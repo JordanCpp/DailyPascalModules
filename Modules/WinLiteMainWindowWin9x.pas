@@ -66,6 +66,117 @@ end;
 procedure TMainWindow.InitKeyMapper;
 begin
   FKeyMapper.Init;
+
+FKeyMapper.Add(VK_LWIN, TKey.keyLSystem);
+FKeyMapper.Add(VK_RWIN, TKey.keyRSystem);
+FKeyMapper.Add(VK_APPS, TKey.keyMenu);
+
+FKeyMapper.Add(VK_OEM_1, TKey.keySemicolon);
+FKeyMapper.Add(VK_OEM_2, TKey.keySlash);
+FKeyMapper.Add(VK_OEM_PLUS, TKey.keyEqual);
+FKeyMapper.Add(VK_OEM_MINUS, TKey.keyHyphen);
+FKeyMapper.Add(VK_OEM_4, TKey.keyLBracket);
+FKeyMapper.Add(VK_OEM_6, TKey.keyRBracket);
+FKeyMapper.Add(VK_OEM_COMMA, TKey.keyComma);
+FKeyMapper.Add(VK_OEM_PERIOD, TKey.keyPeriod);
+FKeyMapper.Add(VK_OEM_7, TKey.keyQuote);
+FKeyMapper.Add(VK_OEM_5, TKey.keyBackslash);
+FKeyMapper.Add(VK_OEM_3, TKey.keyTilde);
+
+FKeyMapper.Add(VK_ESCAPE, TKey.keyEscape);
+FKeyMapper.Add(VK_SPACE, TKey.keySpace);
+FKeyMapper.Add(VK_RETURN, TKey.keyEnter);
+FKeyMapper.Add(VK_BACK, TKey.keyBackspace);
+FKeyMapper.Add(VK_TAB, TKey.keyTab);
+
+FKeyMapper.Add(VK_PRIOR, TKey.keyPageUp);
+FKeyMapper.Add(VK_NEXT, TKey.keyPageDown);
+FKeyMapper.Add(VK_END, TKey.keyEnd);
+FKeyMapper.Add(VK_HOME, TKey.keyHome);
+FKeyMapper.Add(VK_INSERT, TKey.keyInsert);
+FKeyMapper.Add(VK_DELETE, TKey.keyDelete);
+
+FKeyMapper.Add(VK_ADD, TKey.keyAdd);
+FKeyMapper.Add(VK_SUBTRACT, TKey.keySubtract);
+FKeyMapper.Add(VK_MULTIPLY, TKey.keyMultiply);
+FKeyMapper.Add(VK_DIVIDE, TKey.keyDivide);
+FKeyMapper.Add(VK_PAUSE, TKey.keyPause);
+
+FKeyMapper.Add(VK_F1, TKey.keyF1);
+FKeyMapper.Add(VK_F2, TKey.keyF2);
+FKeyMapper.Add(VK_F3, TKey.keyF3);
+FKeyMapper.Add(VK_F4, TKey.keyF4);
+FKeyMapper.Add(VK_F5, TKey.keyF5);
+FKeyMapper.Add(VK_F6, TKey.keyF6);
+FKeyMapper.Add(VK_F7, TKey.keyF7);
+FKeyMapper.Add(VK_F8, TKey.keyF8);
+FKeyMapper.Add(VK_F9, TKey.keyF9);
+FKeyMapper.Add(VK_F10, TKey.keyF10);
+FKeyMapper.Add(VK_F11, TKey.keyF11);
+FKeyMapper.Add(VK_F12, TKey.keyF12);
+FKeyMapper.Add(VK_F13, TKey.keyF13);
+FKeyMapper.Add(VK_F14, TKey.keyF14);
+FKeyMapper.Add(VK_F15, TKey.keyF15);
+
+FKeyMapper.Add(VK_LEFT, TKey.keyLeft);
+FKeyMapper.Add(VK_RIGHT, TKey.keyRight);
+FKeyMapper.Add(VK_UP, TKey.keyUp);
+FKeyMapper.Add(VK_DOWN, TKey.keyDown);
+
+FKeyMapper.Add(VK_NUMPAD0, TKey.keyNumpad0);
+FKeyMapper.Add(VK_NUMPAD1, TKey.keyNumpad1);
+FKeyMapper.Add(VK_NUMPAD2, TKey.keyNumpad2);
+FKeyMapper.Add(VK_NUMPAD3, TKey.keyNumpad3);
+FKeyMapper.Add(VK_NUMPAD4, TKey.keyNumpad4);
+FKeyMapper.Add(VK_NUMPAD5, TKey.keyNumpad5);
+FKeyMapper.Add(VK_NUMPAD6, TKey.keyNumpad6);
+FKeyMapper.Add(VK_NUMPAD7, TKey.keyNumpad7);
+FKeyMapper.Add(VK_NUMPAD8, TKey.keyNumpad8);
+FKeyMapper.Add(VK_NUMPAD9, TKey.keyNumpad9);
+
+FKeyMapper.Add(Ord('A'), TKey.keyA);
+FKeyMapper.Add(Ord('B'), TKey.keyB);
+FKeyMapper.Add(Ord('C'), TKey.keyC);
+FKeyMapper.Add(Ord('D'), TKey.keyD);
+FKeyMapper.Add(Ord('E'), TKey.keyE);
+FKeyMapper.Add(Ord('F'), TKey.keyF);
+FKeyMapper.Add(Ord('G'), TKey.keyG);
+FKeyMapper.Add(Ord('H'), TKey.keyH);
+FKeyMapper.Add(Ord('I'), TKey.keyI);
+FKeyMapper.Add(Ord('J'), TKey.keyJ);
+FKeyMapper.Add(Ord('K'), TKey.keyK);
+FKeyMapper.Add(Ord('L'), TKey.keyL);
+FKeyMapper.Add(Ord('M'), TKey.keyM);
+FKeyMapper.Add(Ord('N'), TKey.keyN);
+FKeyMapper.Add(Ord('O'), TKey.keyO);
+FKeyMapper.Add(Ord('P'), TKey.keyP);
+FKeyMapper.Add(Ord('Q'), TKey.keyQ);
+FKeyMapper.Add(Ord('R'), TKey.keyR);
+FKeyMapper.Add(Ord('S'), TKey.keyS);
+FKeyMapper.Add(Ord('T'), TKey.keyT);
+FKeyMapper.Add(Ord('Y'), TKey.keyY);
+FKeyMapper.Add(Ord('U'), TKey.keyU);
+FKeyMapper.Add(Ord('V'), TKey.keyV);
+FKeyMapper.Add(Ord('W'), TKey.keyW);
+FKeyMapper.Add(Ord('X'), TKey.keyX);
+FKeyMapper.Add(Ord('Z'), TKey.keyZ);
+
+FKeyMapper.Add(Ord('0'), TKey.keyNum0);
+FKeyMapper.Add(Ord('1'), TKey.keyNum1);
+FKeyMapper.Add(Ord('2'), TKey.keyNum2);
+FKeyMapper.Add(Ord('3'), TKey.keyNum3);
+FKeyMapper.Add(Ord('4'), TKey.keyNum4);
+FKeyMapper.Add(Ord('5'), TKey.keyNum5);
+FKeyMapper.Add(Ord('6'), TKey.keyNum6);
+FKeyMapper.Add(Ord('7'), TKey.keyNum7);
+FKeyMapper.Add(Ord('8'), TKey.keyNum8);
+FKeyMapper.Add(Ord('9'), TKey.keyNum9);
+
+FKeyMapper.Add(VK_LSHIFT, TKey.keyLeftShift);
+FKeyMapper.Add(VK_RSHIFT, TKey.keyRightShift);
+FKeyMapper.Add(VK_LCONTROL, TKey.keyLeftControl);
+FKeyMapper.Add(VK_RCONTROL, TKey.keyRightControl);
+
 end;
 
 function TMainWindow.Handler(AMessage: UINT; AWParam: WPARAM; ALParam: LPARAM): LRESULT;
