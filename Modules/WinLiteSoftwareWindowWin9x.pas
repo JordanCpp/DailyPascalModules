@@ -17,7 +17,7 @@ type
     procedure Init(W, H: Integer; BytesPerPixel: Byte);
     procedure Done;
     
-    function CreateWindow(W, H: NativeUInt; const ATitle: string; out AError: string): Boolean;
+    function CreateWindow(W, H: Integer; const ATitle: string; out AError: string): Boolean;
     function IsRunning: Boolean;
     procedure StopEvent;
     function GetEvent(out AnEvent: TEvent): Boolean;
@@ -52,13 +52,13 @@ begin
   FImpl.Done;
 end;
 
-function TSoftwareWindowWin9x.CreateWindow(W, H: NativeUInt; const ATitle: string; out AError: string): Boolean;
+function TSoftwareWindowWin9x.CreateWindow(W, H: Integer; const ATitle: string; out AError: string): Boolean;
 begin
   Result := False;
   if not FImpl.Create(W, H, ATitle, AError) then
     Exit;
 
-  Self.SetupBitmapInfo(Integer(W), Integer(H), 4);
+  Self.SetupBitmapInfo(W, H, 4);
   Result := True;
 end;
 

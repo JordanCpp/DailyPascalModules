@@ -25,7 +25,7 @@ type
   public
     procedure Done;
 
-    function Create(W, H: NativeUInt; const ATitle: string; out AError: string): Boolean;
+    function Create(W, H: Integer; const ATitle: string; out AError: string): Boolean;
     procedure PollEvents;
     function GetEvent(out AnEvent: TEvent): Boolean;
     procedure StopEvent;
@@ -316,7 +316,7 @@ begin
   FEvents.Done;
 end;
 
-function TMainWindow.Create(W, H: NativeUInt; const ATitle: string; out AError: string): Boolean;
+function TMainWindow.Create(W, H: Integer; const ATitle: string; out AError: string): Boolean;
 var
   Instance: HINST;
   WC: TWndClassExA;
