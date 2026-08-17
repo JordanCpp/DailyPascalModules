@@ -6,7 +6,9 @@ uses
   Painter,
   WinLiteEnums,
   WinLiteEvents,
-  WinLiteSoftwareWindow;
+  WinLiteSoftwareWindow,
+  BmpLoader,
+  TgaLoader;
 
 const
   WinWidth = 800;
