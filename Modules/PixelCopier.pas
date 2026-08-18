@@ -1,60 +1,78 @@
 unit PixelCopier;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ELSE}
+  {$LONGSTRINGS ON}
+{$ENDIF}
 
 interface
 
 uses
+  Support,
   SysUtils, Math;
+
+type
+  PBytesArray = ^TBytes;
+  TMaxByteArray = array[0..$7FFFFF00] of Byte;
+  PMaxByteArray = ^TMaxByteArray;
 
 const
   AlphaByte: Byte = 255;
 
-{$if defined(windows) or defined(win32) or defined(win64)}
+{$IFDEF WIN32}
   idxR = 2;
   idxG = 1;
   idxB = 0;
-{$else}
-  idxR = 0;
-  idxG = 1;
-  idxB = 2;
-{$ifend}
+{$ELSE}
+  {$IFDEF MSWINDOWS}
+    idxR = 2;
+    idxG = 1;
+    idxB = 0;
+  {$ELSE}
+    idxR = 0;
+    idxG = 1;
+    idxB = 2;
+  {$ENDIF}
+{$ENDIF}
   idxA = 3;
 
 type
   TPixelCopier = object
   private
-    FWidth: NativeUInt;
-    FHeight: NativeUInt;
+    FWidth: Integer;
+    FHeight: Integer;
     FBytesPerPixel: Byte;
-    FPixelsRef: ^TBytes; 
+    FPixelsRef: Pointer; 
     
-    function GetPixelsSize: NativeInt; inline;
-    function IsBufferValid: Boolean; inline;
+    function GetPixelsSize: Integer;
+    function IsBufferValid: Boolean;
   public
-    procedure Init(W, H: NativeUInt; ABytesPerPixel: Byte; var APixels: TBytes);
-    function GetWidth: NativeUInt;
-    function GetHeight: NativeUInt;
+    procedure Init(W, H: Integer; ABytesPerPixel: Byte; var APixels: TBytes);
+    function GetWidth: Integer;
+    function GetHeight: Integer;
     function GetBytesPerPixel: Byte;
-    function Copy(X, Y: Integer; W, H: NativeUInt; ABytesPerPixel: Byte; const SrcPixels: TBytes): Boolean;
+    function Copy(X, Y: Integer; W, H: Integer; ABytesPerPixel: Byte; const SrcPixels: TBytes): Boolean;
   end;
 
 implementation
 
 { TPixelCopier }
 
-function TPixelCopier.GetPixelsSize: NativeInt;
+function TPixelCopier.GetPixelsSize: Integer;
 begin
-  if FPixelsRef = nil then Exit(0);
-  Result := Length(FPixelsRef^);
+  if FPixelsRef = nil then 
+    Result := 0
+  else
+    Result := Length(PBytesArray(FPixelsRef)^);
 end;
 
 function TPixelCopier.IsBufferValid: Boolean;
 begin
-  Result := (FPixelsRef <> nil) and (Length(FPixelsRef^) > 0);
+  Result := (FPixelsRef <> nil) and (Length(PBytesArray(FPixelsRef)^) > 0);
 end;
 
-procedure TPixelCopier.Init(W, H: NativeUInt; ABytesPerPixel: Byte; var APixels: TBytes);
+procedure TPixelCopier.Init(W, H: Integer; ABytesPerPixel: Byte; var APixels: TBytes);
 begin
   if (ABytesPerPixel <> 3) and (ABytesPerPixel <> 4) then
     raise Exception.Create('Only 3 or 4 bytes per pixel are supported.');
@@ -65,12 +83,12 @@ begin
   FPixelsRef := @APixels;
 end;
 
-function TPixelCopier.GetWidth: NativeUInt;
+function TPixelCopier.GetWidth: Integer;
 begin
   Result := FWidth;
 end;
 
-function TPixelCopier.GetHeight: NativeUInt;
+function TPixelCopier.GetHeight: Integer;
 begin
   Result := FHeight;
 end;
@@ -80,18 +98,20 @@ begin
   Result := FBytesPerPixel;
 end;
 
-function TPixelCopier.Copy(X, Y: Integer; W, H: NativeUInt; ABytesPerPixel: Byte; const SrcPixels: TBytes): Boolean;
+function TPixelCopier.Copy(X, Y: Integer; W, H: Integer; ABytesPerPixel: Byte; const SrcPixels: TBytes): Boolean;
 var
-  SrcX0, SrcY0: NativeUInt;
-  DstX0, DstY0: NativeUInt;
-  CopyW, CopyH: NativeUInt;
-  RowIdx, ColIdx: NativeUInt;
-  SrcRowStart, DstRowStart: NativeInt;
-  SrcPixelIdx, DstPixelIdx: NativeInt;
-  SrcPixelsSize: NativeInt;
-  PixelsSize: NativeInt;
+  SrcX0, SrcY0: Integer;
+  DstX0, DstY0: Integer;
+  CopyW, CopyH: Integer;
+  RowIdx, ColIdx: Integer;
+  SrcRowStart, DstRowStart: Integer;
+  SrcPixelIdx, DstPixelIdx: Integer;
+  SrcPixelsSize: Integer;
+  PixelsSize: Integer;
   
   R, G, B, A: Byte;
+  PBuffer: PMaxByteArray;
+  PSrcBuffer: PMaxByteArray;
 begin
   Result := False;
 
@@ -100,31 +120,33 @@ begin
     Exit;
 
   PixelsSize := GetPixelsSize;
+  PBuffer := PMaxByteArray(PBytesArray(FPixelsRef)^);
+  PSrcBuffer := PMaxByteArray(@SrcPixels[0]);
 
   if X < 0 then
   begin
-    if NativeUInt(-X) >= W then Exit;
-    SrcX0 := NativeUInt(-X);
+    if -X >= W then Exit;
+    SrcX0 := -X;
     DstX0 := 0;
   end
   else
   begin
-    if NativeUInt(X) >= FWidth then Exit;
+    if X >= FWidth then Exit;
     SrcX0 := 0;
-    DstX0 := NativeUInt(X);
+    DstX0 := X;
   end;
 
   if Y < 0 then
   begin
-    if NativeUInt(-Y) >= H then Exit;
-    SrcY0 := NativeUInt(-Y);
+    if -Y >= H then Exit;
+    SrcY0 := -Y;
     DstY0 := 0;
   end
   else
   begin
-    if NativeUInt(Y) >= FHeight then Exit;
+    if Y >= FHeight then Exit;
     SrcY0 := 0;
-    DstY0 := NativeUInt(Y);
+    DstY0 := Y;
   end;
 
   CopyW := Min(W - SrcX0, FWidth - DstX0);
@@ -134,30 +156,30 @@ begin
 
   for RowIdx := 0 to CopyH - 1 do
   begin
-    SrcRowStart := (NativeInt(SrcY0 + RowIdx) * NativeInt(W) + NativeInt(SrcX0)) * NativeInt(FBytesPerPixel);
-    DstRowStart := (NativeInt(DstY0 + RowIdx) * NativeInt(FWidth) + NativeInt(DstX0)) * NativeInt(FBytesPerPixel);
+    SrcRowStart := ((SrcY0 + RowIdx) * W + SrcX0) * FBytesPerPixel;
+    DstRowStart := ((DstY0 + RowIdx) * FWidth + DstX0) * FBytesPerPixel;
 
     for ColIdx := 0 to CopyW - 1 do
     begin
-      SrcPixelIdx := SrcRowStart + NativeInt(ColIdx) * NativeInt(FBytesPerPixel);
-      DstPixelIdx := DstRowStart + NativeInt(ColIdx) * NativeInt(FBytesPerPixel);
+      SrcPixelIdx := SrcRowStart + ColIdx * FBytesPerPixel;
+      DstPixelIdx := DstRowStart + ColIdx * FBytesPerPixel;
 
-      if (SrcPixelIdx + NativeInt(FBytesPerPixel) <= SrcPixelsSize) and 
-         (DstPixelIdx + NativeInt(FBytesPerPixel) <= PixelsSize) then
+      if (SrcPixelIdx + FBytesPerPixel <= SrcPixelsSize) and 
+         (DstPixelIdx + FBytesPerPixel <= PixelsSize) then
       begin
-        R := SrcPixels[SrcPixelIdx + 0];
-        G := SrcPixels[SrcPixelIdx + 1];
-        B := SrcPixels[SrcPixelIdx + 2];
+        R := PSrcBuffer^[SrcPixelIdx + 0];
+        G := PSrcBuffer^[SrcPixelIdx + 1];
+        B := PSrcBuffer^[SrcPixelIdx + 2];
         
         if FBytesPerPixel = 4 then
-          A := SrcPixels[SrcPixelIdx + 3];
+          A := PSrcBuffer^[SrcPixelIdx + 3];
 
-        FPixelsRef^[DstPixelIdx + idxR] := R;
-        FPixelsRef^[DstPixelIdx + idxG] := G;
-        FPixelsRef^[DstPixelIdx + idxB] := B;
+        PBuffer^[DstPixelIdx + idxR] := R;
+        PBuffer^[DstPixelIdx + idxG] := G;
+        PBuffer^[DstPixelIdx + idxB] := B;
 
         if FBytesPerPixel = 4 then
-          FPixelsRef^[DstPixelIdx + idxA] := A;
+          PBuffer^[DstPixelIdx + idxA] := A;
       end;
     end;
   end;

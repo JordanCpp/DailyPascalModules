@@ -1,6 +1,8 @@
 unit WinLiteEvents;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 

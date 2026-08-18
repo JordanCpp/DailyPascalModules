@@ -1,10 +1,15 @@
 unit BmpLoader;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ELSE}
+  {$LONGSTRINGS ON}
+{$ENDIF}
 
 interface
 
 uses
+  Support,
   SysUtils, Classes;
 
 type
@@ -43,7 +48,7 @@ type
     Bpp: Byte;
     Width: Cardinal;
     Height: Cardinal;
-    Pixels: array of Byte;
+    Pixels: TBytes;
 
     procedure Free;
   end;
@@ -74,7 +79,7 @@ var
   IsTopDown: Boolean;
   BytesPerPixel: Cardinal;
   RowStride: Cardinal;
-  RowBuffer: array of Byte;
+  RowBuffer: TBytes;
   X, Y, TargetY: Cardinal;
   SrcIdx, DstIdx: Cardinal;
   TargetRowOffset: Cardinal;

@@ -1,8 +1,13 @@
 program Test;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ELSE}
+  {$LONGSTRINGS ON}
+{$ENDIF}
 
 uses
+  Support,
   SysUtils,
   PixelPainter,
   PixelCopier,
@@ -21,7 +26,7 @@ var
   Event       : TEvent;
   Error       : string;
   PixelBuffer : TBytes;
-  BufferSize  : NativeInt;
+  BufferSize  : Integer;
   Render      : TPixelPainter;
   Copier      : TPixelCopier;
   FrameCounter: Integer;
@@ -53,14 +58,14 @@ begin
     while Window.GetEvent(Event) do
     begin
       case Event.FType of
-        TEventType.Quit:
+        Quit:
           begin
             Window.StopEvent;
           end;
 
-        TEventType.Keyboard:
+        Keyboard:
           begin
-            if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = TButtonState.Pressed) then
+            if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = Pressed) then
               Window.StopEvent;
           end;
       end;

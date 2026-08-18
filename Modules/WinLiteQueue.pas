@@ -1,11 +1,16 @@
 unit WinLiteQueue;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
 uses
   WinLiteEvents;
+
+type
+  TEventArray = array of TEvent;
 
 const
   DefaultCapacity = 256;
@@ -14,7 +19,7 @@ type
   TQueue = object
   private
     FRunning: Boolean;
-    FBuffer: array of TEvent;
+    FBuffer: TEventArray;
     FHead: Integer;           
     FTail: Integer;           
     FCount: Integer;      
@@ -72,7 +77,7 @@ end;
 procedure TQueue.Push(const AnEvent: TEvent);
 var
   Cap: Integer;
-  NewBuffer: array of TEvent;
+  NewBuffer: TEventArray;
   I: Integer;
 begin
   Cap := Length(FBuffer);

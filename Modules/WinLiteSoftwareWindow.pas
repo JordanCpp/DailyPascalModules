@@ -1,21 +1,31 @@
 unit WinLiteSoftwareWindow;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
+{$IFDEF WIN32}
+  {$DEFINE IS_WINDOWS}
+{$ELSE}
+  {$IFDEF MSWINDOWS}
+    {$DEFINE IS_WINDOWS}
+  {$ENDIF}
+{$ENDIF}
+
 uses
   WinLiteEvents
-  {$IFDEF WINDOWS}
-  ,WinLiteSoftwareWindowWin9x
+  {$IFDEF IS_WINDOWS}
+  , WinLiteSoftwareWindowWin9x
   {$ENDIF}
   {$IFDEF LINUX}
-  ,WinLiteSoftwareWindowLinux
+  , WinLiteSoftwareWindowLinux
   {$ENDIF}
   ;
 
 type
-  {$IFDEF WINDOWS}
+  {$IFDEF IS_WINDOWS}
   TSoftwareWindow = TSoftwareWindowWin9x;
   {$ENDIF}
   {$IFDEF LINUX}

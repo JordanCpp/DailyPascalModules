@@ -1,6 +1,8 @@
 unit WinLiteMainWindowWin9x;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
@@ -8,9 +10,94 @@ uses
   Windows, Messages, WinLiteEnums, WinLiteEvents, WinLiteQueue, WinLiteKeyMapper;
 
 const
+
+{$IFNDEF FPC}
+  VK_LWIN        = $5B;
+  VK_RWIN        = $5C;
+  VK_APPS        = $5D;
+
+  VK_OEM_1       = $BA; // ';:' (keySemicolon)
+  VK_OEM_2       = $BF; // '/?' (keySlash)
+  VK_OEM_PLUS    = $BB; // '=+' (keyEqual)
+  VK_OEM_MINUS   = $BD; // '-_' (keyHyphen)
+  VK_OEM_4       = $DB; // '[{' (keyLBracket)
+  VK_OEM_6       = $DD; // ']}' (keyRBracket)
+  VK_OEM_COMMA   = $BC; // ',<' (keyComma)
+  VK_OEM_PERIOD  = $BE; // '.>' (keyPeriod)
+  VK_OEM_7       = $DE; // '"'' (keyQuote)
+  VK_OEM_5       = $DC; // '\|' (keyBackslash)
+  VK_OEM_3       = $C0; // '`~' (keyTilde)
+
+  VK_ESCAPE      = $1B; // Escape (keyEscape)
+  VK_SPACE       = $20; // Пробел (keySpace)
+  VK_RETURN      = $0D; // Enter (keyEnter)
+  VK_BACK        = $08; // Backspace (keyBackspace)
+  VK_TAB         = $09; // Tab (keyTab)
+
+  VK_PRIOR       = $21; // Page Up (keyPageUp)
+  VK_NEXT        = $22; // Page Down (keyPageDown)
+  VK_END         = $23; // End (keyEnd)
+  VK_HOME        = $24; // Home (keyHome)
+  VK_INSERT      = $2D; // Insert (keyInsert)
+  VK_DELETE      = $2E; // Delete (keyDelete)
+
+  VK_ADD         = $6B; // Numpad + (keyAdd)
+  VK_SUBTRACT    = $6D; // Numpad - (keySubtract)
+  VK_MULTIPLY    = $6A; // Numpad * (keyMultiply)
+  VK_DIVIDE      = $6F; // Numpad / (keyDivide)
+  VK_PAUSE       = $13; // Pause / Break (keyPause)
+
+  VK_F1          = $70;
+  VK_F2          = $71;
+  VK_F3          = $72;
+  VK_F4          = $73;
+  VK_F5          = $74;
+  VK_F6          = $75;
+  VK_F7          = $76;
+  VK_F8          = $77;
+  VK_F9          = $78;
+  VK_F10         = $79;
+  VK_F11         = $7A;
+  VK_F12         = $7B;
+  VK_F13         = $7C;
+  VK_F14         = $7D;
+  VK_F15         = $7E;
+
+  VK_LEFT        = $25;
+  VK_RIGHT       = $26;
+  VK_UP          = $26;
+  VK_DOWN        = $28;
+
+  VK_NUMPAD0     = $60;
+  VK_NUMPAD1     = $61;
+  VK_NUMPAD2     = $62;
+  VK_NUMPAD3     = $63;
+  VK_NUMPAD4     = $64;
+  VK_NUMPAD5     = $65;
+  VK_NUMPAD6     = $66;
+  VK_NUMPAD7     = $67;
+  VK_NUMPAD8     = $68;
+  VK_NUMPAD9     = $69;
+
+  VK_LSHIFT      = $A0; // Левый Shift (keyLeftShift)
+  VK_RSHIFT      = $A1; // Правый Shift (keyRightShift)
+  VK_LCONTROL    = $A2; // Левый Ctrl (keyLeftControl)
+  VK_RCONTROL    = $A3; // Правый Ctrl (keyRightControl)
+{$ENDIF}
+
+  {$IFNDEF FPC}
+  GWLP_USERDATA = -21;
+  WM_MOUSEHWHEEL = $020E;
+  {$ENDIF}
+
   WindowClassName: PChar = 'MainWindow';
 
 type
+  {$IFNDEF FPC}
+  LONG_PTR = Longint;
+  LONG = Longint;
+  {$ENDIF}
+
   PMainWindow = ^TMainWindow;
 
   TMainWindow = object
@@ -37,6 +124,18 @@ type
   end;
 
 implementation
+
+{$IFNDEF FPC}
+function SetWindowLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
+begin
+  Result := SetWindowLong(hWnd, nIndex, dwNewLong);
+end;
+
+function GetWindowLongPtr(hWnd: HWND; nIndex: Integer): LONG_PTR;
+begin
+  Result := GetWindowLong(hWnd, nIndex);
+end;
+{$ENDIF}
 
 function WndProc(HHwnd: HWND; UMessage: UINT; AWParam: WPARAM; ALParam: LPARAM): LRESULT; stdcall;
 var
@@ -67,115 +166,115 @@ procedure TMainWindow.InitKeyMapper;
 begin
   FKeyMapper.Init;
 
-FKeyMapper.Add(VK_LWIN, TKey.keyLSystem);
-FKeyMapper.Add(VK_RWIN, TKey.keyRSystem);
-FKeyMapper.Add(VK_APPS, TKey.keyMenu);
+FKeyMapper.Add(VK_LWIN, keyLSystem);
+FKeyMapper.Add(VK_RWIN, keyRSystem);
+FKeyMapper.Add(VK_APPS, keyMenu);
 
-FKeyMapper.Add(VK_OEM_1, TKey.keySemicolon);
-FKeyMapper.Add(VK_OEM_2, TKey.keySlash);
-FKeyMapper.Add(VK_OEM_PLUS, TKey.keyEqual);
-FKeyMapper.Add(VK_OEM_MINUS, TKey.keyHyphen);
-FKeyMapper.Add(VK_OEM_4, TKey.keyLBracket);
-FKeyMapper.Add(VK_OEM_6, TKey.keyRBracket);
-FKeyMapper.Add(VK_OEM_COMMA, TKey.keyComma);
-FKeyMapper.Add(VK_OEM_PERIOD, TKey.keyPeriod);
-FKeyMapper.Add(VK_OEM_7, TKey.keyQuote);
-FKeyMapper.Add(VK_OEM_5, TKey.keyBackslash);
-FKeyMapper.Add(VK_OEM_3, TKey.keyTilde);
+FKeyMapper.Add(VK_OEM_1, keySemicolon);
+FKeyMapper.Add(VK_OEM_2, keySlash);
+FKeyMapper.Add(VK_OEM_PLUS, keyEqual);
+FKeyMapper.Add(VK_OEM_MINUS, keyHyphen);
+FKeyMapper.Add(VK_OEM_4, keyLBracket);
+FKeyMapper.Add(VK_OEM_6, keyRBracket);
+FKeyMapper.Add(VK_OEM_COMMA, keyComma);
+FKeyMapper.Add(VK_OEM_PERIOD, keyPeriod);
+FKeyMapper.Add(VK_OEM_7, keyQuote);
+FKeyMapper.Add(VK_OEM_5, keyBackslash);
+FKeyMapper.Add(VK_OEM_3, keyTilde);
 
-FKeyMapper.Add(VK_ESCAPE, TKey.keyEscape);
-FKeyMapper.Add(VK_SPACE, TKey.keySpace);
-FKeyMapper.Add(VK_RETURN, TKey.keyEnter);
-FKeyMapper.Add(VK_BACK, TKey.keyBackspace);
-FKeyMapper.Add(VK_TAB, TKey.keyTab);
+FKeyMapper.Add(VK_ESCAPE, keyEscape);
+FKeyMapper.Add(VK_SPACE, keySpace);
+FKeyMapper.Add(VK_RETURN, keyEnter);
+FKeyMapper.Add(VK_BACK, keyBackspace);
+FKeyMapper.Add(VK_TAB, keyTab);
 
-FKeyMapper.Add(VK_PRIOR, TKey.keyPageUp);
-FKeyMapper.Add(VK_NEXT, TKey.keyPageDown);
-FKeyMapper.Add(VK_END, TKey.keyEnd);
-FKeyMapper.Add(VK_HOME, TKey.keyHome);
-FKeyMapper.Add(VK_INSERT, TKey.keyInsert);
-FKeyMapper.Add(VK_DELETE, TKey.keyDelete);
+FKeyMapper.Add(VK_PRIOR, keyPageUp);
+FKeyMapper.Add(VK_NEXT, keyPageDown);
+FKeyMapper.Add(VK_END, keyEnd);
+FKeyMapper.Add(VK_HOME, keyHome);
+FKeyMapper.Add(VK_INSERT, keyInsert);
+FKeyMapper.Add(VK_DELETE, keyDelete);
 
-FKeyMapper.Add(VK_ADD, TKey.keyAdd);
-FKeyMapper.Add(VK_SUBTRACT, TKey.keySubtract);
-FKeyMapper.Add(VK_MULTIPLY, TKey.keyMultiply);
-FKeyMapper.Add(VK_DIVIDE, TKey.keyDivide);
-FKeyMapper.Add(VK_PAUSE, TKey.keyPause);
+FKeyMapper.Add(VK_ADD, keyAdd);
+FKeyMapper.Add(VK_SUBTRACT, keySubtract);
+FKeyMapper.Add(VK_MULTIPLY, keyMultiply);
+FKeyMapper.Add(VK_DIVIDE, keyDivide);
+FKeyMapper.Add(VK_PAUSE, keyPause);
 
-FKeyMapper.Add(VK_F1, TKey.keyF1);
-FKeyMapper.Add(VK_F2, TKey.keyF2);
-FKeyMapper.Add(VK_F3, TKey.keyF3);
-FKeyMapper.Add(VK_F4, TKey.keyF4);
-FKeyMapper.Add(VK_F5, TKey.keyF5);
-FKeyMapper.Add(VK_F6, TKey.keyF6);
-FKeyMapper.Add(VK_F7, TKey.keyF7);
-FKeyMapper.Add(VK_F8, TKey.keyF8);
-FKeyMapper.Add(VK_F9, TKey.keyF9);
-FKeyMapper.Add(VK_F10, TKey.keyF10);
-FKeyMapper.Add(VK_F11, TKey.keyF11);
-FKeyMapper.Add(VK_F12, TKey.keyF12);
-FKeyMapper.Add(VK_F13, TKey.keyF13);
-FKeyMapper.Add(VK_F14, TKey.keyF14);
-FKeyMapper.Add(VK_F15, TKey.keyF15);
+FKeyMapper.Add(VK_F1, keyF1);
+FKeyMapper.Add(VK_F2, keyF2);
+FKeyMapper.Add(VK_F3, keyF3);
+FKeyMapper.Add(VK_F4, keyF4);
+FKeyMapper.Add(VK_F5, keyF5);
+FKeyMapper.Add(VK_F6, keyF6);
+FKeyMapper.Add(VK_F7, keyF7);
+FKeyMapper.Add(VK_F8, keyF8);
+FKeyMapper.Add(VK_F9, keyF9);
+FKeyMapper.Add(VK_F10, keyF10);
+FKeyMapper.Add(VK_F11, keyF11);
+FKeyMapper.Add(VK_F12, keyF12);
+FKeyMapper.Add(VK_F13, keyF13);
+FKeyMapper.Add(VK_F14, keyF14);
+FKeyMapper.Add(VK_F15, keyF15);
 
-FKeyMapper.Add(VK_LEFT, TKey.keyLeft);
-FKeyMapper.Add(VK_RIGHT, TKey.keyRight);
-FKeyMapper.Add(VK_UP, TKey.keyUp);
-FKeyMapper.Add(VK_DOWN, TKey.keyDown);
+FKeyMapper.Add(VK_LEFT, keyLeft);
+FKeyMapper.Add(VK_RIGHT, keyRight);
+FKeyMapper.Add(VK_UP, keyUp);
+FKeyMapper.Add(VK_DOWN, keyDown);
 
-FKeyMapper.Add(VK_NUMPAD0, TKey.keyNumpad0);
-FKeyMapper.Add(VK_NUMPAD1, TKey.keyNumpad1);
-FKeyMapper.Add(VK_NUMPAD2, TKey.keyNumpad2);
-FKeyMapper.Add(VK_NUMPAD3, TKey.keyNumpad3);
-FKeyMapper.Add(VK_NUMPAD4, TKey.keyNumpad4);
-FKeyMapper.Add(VK_NUMPAD5, TKey.keyNumpad5);
-FKeyMapper.Add(VK_NUMPAD6, TKey.keyNumpad6);
-FKeyMapper.Add(VK_NUMPAD7, TKey.keyNumpad7);
-FKeyMapper.Add(VK_NUMPAD8, TKey.keyNumpad8);
-FKeyMapper.Add(VK_NUMPAD9, TKey.keyNumpad9);
+FKeyMapper.Add(VK_NUMPAD0, keyNumpad0);
+FKeyMapper.Add(VK_NUMPAD1, keyNumpad1);
+FKeyMapper.Add(VK_NUMPAD2, keyNumpad2);
+FKeyMapper.Add(VK_NUMPAD3, keyNumpad3);
+FKeyMapper.Add(VK_NUMPAD4, keyNumpad4);
+FKeyMapper.Add(VK_NUMPAD5, keyNumpad5);
+FKeyMapper.Add(VK_NUMPAD6, keyNumpad6);
+FKeyMapper.Add(VK_NUMPAD7, keyNumpad7);
+FKeyMapper.Add(VK_NUMPAD8, keyNumpad8);
+FKeyMapper.Add(VK_NUMPAD9, keyNumpad9);
 
-FKeyMapper.Add(Ord('A'), TKey.keyA);
-FKeyMapper.Add(Ord('B'), TKey.keyB);
-FKeyMapper.Add(Ord('C'), TKey.keyC);
-FKeyMapper.Add(Ord('D'), TKey.keyD);
-FKeyMapper.Add(Ord('E'), TKey.keyE);
-FKeyMapper.Add(Ord('F'), TKey.keyF);
-FKeyMapper.Add(Ord('G'), TKey.keyG);
-FKeyMapper.Add(Ord('H'), TKey.keyH);
-FKeyMapper.Add(Ord('I'), TKey.keyI);
-FKeyMapper.Add(Ord('J'), TKey.keyJ);
-FKeyMapper.Add(Ord('K'), TKey.keyK);
-FKeyMapper.Add(Ord('L'), TKey.keyL);
-FKeyMapper.Add(Ord('M'), TKey.keyM);
-FKeyMapper.Add(Ord('N'), TKey.keyN);
-FKeyMapper.Add(Ord('O'), TKey.keyO);
-FKeyMapper.Add(Ord('P'), TKey.keyP);
-FKeyMapper.Add(Ord('Q'), TKey.keyQ);
-FKeyMapper.Add(Ord('R'), TKey.keyR);
-FKeyMapper.Add(Ord('S'), TKey.keyS);
-FKeyMapper.Add(Ord('T'), TKey.keyT);
-FKeyMapper.Add(Ord('Y'), TKey.keyY);
-FKeyMapper.Add(Ord('U'), TKey.keyU);
-FKeyMapper.Add(Ord('V'), TKey.keyV);
-FKeyMapper.Add(Ord('W'), TKey.keyW);
-FKeyMapper.Add(Ord('X'), TKey.keyX);
-FKeyMapper.Add(Ord('Z'), TKey.keyZ);
+FKeyMapper.Add(Ord('A'), keyA);
+FKeyMapper.Add(Ord('B'), keyB);
+FKeyMapper.Add(Ord('C'), keyC);
+FKeyMapper.Add(Ord('D'), keyD);
+FKeyMapper.Add(Ord('E'), keyE);
+FKeyMapper.Add(Ord('F'), keyF);
+FKeyMapper.Add(Ord('G'), keyG);
+FKeyMapper.Add(Ord('H'), keyH);
+FKeyMapper.Add(Ord('I'), keyI);
+FKeyMapper.Add(Ord('J'), keyJ);
+FKeyMapper.Add(Ord('K'), keyK);
+FKeyMapper.Add(Ord('L'), keyL);
+FKeyMapper.Add(Ord('M'), keyM);
+FKeyMapper.Add(Ord('N'), keyN);
+FKeyMapper.Add(Ord('O'), keyO);
+FKeyMapper.Add(Ord('P'), keyP);
+FKeyMapper.Add(Ord('Q'), keyQ);
+FKeyMapper.Add(Ord('R'), keyR);
+FKeyMapper.Add(Ord('S'), keyS);
+FKeyMapper.Add(Ord('T'), keyT);
+FKeyMapper.Add(Ord('Y'), keyY);
+FKeyMapper.Add(Ord('U'), keyU);
+FKeyMapper.Add(Ord('V'), keyV);
+FKeyMapper.Add(Ord('W'), keyW);
+FKeyMapper.Add(Ord('X'), keyX);
+FKeyMapper.Add(Ord('Z'), keyZ);
 
-FKeyMapper.Add(Ord('0'), TKey.keyNum0);
-FKeyMapper.Add(Ord('1'), TKey.keyNum1);
-FKeyMapper.Add(Ord('2'), TKey.keyNum2);
-FKeyMapper.Add(Ord('3'), TKey.keyNum3);
-FKeyMapper.Add(Ord('4'), TKey.keyNum4);
-FKeyMapper.Add(Ord('5'), TKey.keyNum5);
-FKeyMapper.Add(Ord('6'), TKey.keyNum6);
-FKeyMapper.Add(Ord('7'), TKey.keyNum7);
-FKeyMapper.Add(Ord('8'), TKey.keyNum8);
-FKeyMapper.Add(Ord('9'), TKey.keyNum9);
+FKeyMapper.Add(Ord('0'), keyNum0);
+FKeyMapper.Add(Ord('1'), keyNum1);
+FKeyMapper.Add(Ord('2'), keyNum2);
+FKeyMapper.Add(Ord('3'), keyNum3);
+FKeyMapper.Add(Ord('4'), keyNum4);
+FKeyMapper.Add(Ord('5'), keyNum5);
+FKeyMapper.Add(Ord('6'), keyNum6);
+FKeyMapper.Add(Ord('7'), keyNum7);
+FKeyMapper.Add(Ord('8'), keyNum8);
+FKeyMapper.Add(Ord('9'), keyNum9);
 
-FKeyMapper.Add(VK_LSHIFT, TKey.keyLeftShift);
-FKeyMapper.Add(VK_RSHIFT, TKey.keyRightShift);
-FKeyMapper.Add(VK_LCONTROL, TKey.keyLeftControl);
-FKeyMapper.Add(VK_RCONTROL, TKey.keyRightControl);
+FKeyMapper.Add(VK_LSHIFT, keyLeftShift);
+FKeyMapper.Add(VK_RSHIFT, keyRightShift);
+FKeyMapper.Add(VK_LCONTROL, keyLeftControl);
+FKeyMapper.Add(VK_RCONTROL, keyRightControl);
 
 end;
 
@@ -184,127 +283,129 @@ var
   AnEvent: TEvent;
   Pt: TPoint;
 begin
+  // Исправление: Инициализируем Result нулем по умолчанию для всех веток case
+  Result := 0; 
   FillChar(AnEvent, SizeOf(AnEvent), 0);
 
   case AMessage of
     WM_PAINT:
       begin
         ValidateRect(FHwnd, nil);
-        Exit(0);
+        Exit;
       end;
 
     WM_MOUSEMOVE:
       begin
-        AnEvent.FType := TEventType.MouseMove;
+        AnEvent.FType := MouseMove;
         AnEvent.Mouse.PosX := SmallInt(LoWord(ALParam));
         AnEvent.Mouse.PosY := SmallInt(HiWord(ALParam));
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_LBUTTONDOWN, WM_LBUTTONUP,
     WM_RBUTTONDOWN, WM_RBUTTONUP,
     WM_MBUTTONDOWN, WM_MBUTTONUP:
       begin
-        AnEvent.FType := TEventType.MouseClick;
+        AnEvent.FType := MouseClick;
         AnEvent.Mouse.PosX := SmallInt(LoWord(ALParam));
         AnEvent.Mouse.PosY := SmallInt(HiWord(ALParam));
         
         if (AMessage = WM_LBUTTONDOWN) or (AMessage = WM_RBUTTONDOWN) or (AMessage = WM_MBUTTONDOWN) then
-          AnEvent.Mouse.State := TButtonState.Pressed
+          AnEvent.Mouse.State := Pressed
         else
-          AnEvent.Mouse.State := TButtonState.Released;
+          AnEvent.Mouse.State := Released;
 
         if (AMessage = WM_LBUTTONDOWN) or (AMessage = WM_LBUTTONUP) then
-          AnEvent.Mouse.Button := TMouseButton.Left
+          AnEvent.Mouse.Button := Left
         else if (AMessage = WM_RBUTTONDOWN) or (AMessage = WM_RBUTTONUP) then
-          AnEvent.Mouse.Button := TMouseButton.Right
+          AnEvent.Mouse.Button := Right
         else
-          AnEvent.Mouse.Button := TMouseButton.Middle;
+          AnEvent.Mouse.Button := Middle;
 
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_SIZE:
       begin
-        AnEvent.FType := TEventType.Resize;
+        AnEvent.FType := Resize;
         AnEvent.Resize.Width := LoWord(ALParam);
         AnEvent.Resize.Height := HiWord(ALParam);
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_CLOSE:
       begin
-        AnEvent.FType := TEventType.Quit;
+        AnEvent.FType := Quit;
         FEvents.Push(AnEvent);
         DestroyWindow(FHwnd);
-        Exit(0);
+        Exit;
       end;
 
     WM_DESTROY:
       begin
         PostQuitMessage(0);
-        Exit(0);
+        Exit;
       end;
 
     WM_KEYDOWN, WM_SYSKEYDOWN:
       begin
-        AnEvent.FType := TEventType.Keyboard;
-        AnEvent.Keyboard.State := TButtonState.Pressed;
+        AnEvent.FType := Keyboard;
+        AnEvent.Keyboard.State := Pressed;
         AnEvent.Keyboard.Key := FKeyMapper.FindKey(AWParam);
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_KEYUP, WM_SYSKEYUP:
       begin
-        AnEvent.FType := TEventType.Keyboard;
-        AnEvent.Keyboard.State := TButtonState.Released;
+        AnEvent.FType := Keyboard;
+        AnEvent.Keyboard.State := Released;
         AnEvent.Keyboard.Key := FKeyMapper.FindKey(AWParam);
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_SETFOCUS:
       begin
-        AnEvent.FType := TEventType.GainedFocus;
+        AnEvent.FType := GainedFocus;
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_KILLFOCUS:
       begin
-        AnEvent.FType := TEventType.LostFocus;
+        AnEvent.FType := LostFocus;
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
 
     WM_MOUSEWHEEL, WM_MOUSEHWHEEL:
       begin
-        AnEvent.FType := TEventType.MouseScroll;
+        AnEvent.FType := MouseScroll;
         AnEvent.Mouse.Delta := SmallInt(HiWord(AWParam));
         
         if AMessage = WM_MOUSEWHEEL then
-          AnEvent.Mouse.Scroll := TMouseScroll.Vertical
+          AnEvent.Mouse.Scroll := Vertical
         else
-          AnEvent.Mouse.Scroll := TMouseScroll.Horizontal;
+          AnEvent.Mouse.Scroll := Horizontal;
 
         Pt.X := SmallInt(LoWord(ALParam));
         Pt.Y := SmallInt(HiWord(ALParam));
-        ScreenToClient(FHwnd, @Pt);
+        ScreenToClient(FHwnd, Pt);
 
         AnEvent.Mouse.PosX := Pt.X;
         AnEvent.Mouse.PosY := Pt.Y;
 
         FEvents.Push(AnEvent);
-        Exit(0);
+        Exit;
       end;
   else
+    // Если сообщение не обработано в case, отдаем его операционной системе
+    Result := DefWindowProcA(FHwnd, AMessage, AWParam, ALParam);
   end;
-
-  Result := DefWindowProcA(FHwnd, AMessage, AWParam, ALParam);
 end;
 
 { TMainWindow public methods }
@@ -343,21 +444,32 @@ begin
   WC.hIcon := LoadIconA(0, PChar(IDI_APPLICATION));
   WC.hCursor := LoadCursorA(0, PChar(IDC_ARROW));
 
-  if not GetClassInfoExA(Instance, WindowClassName, @WC) then
-  begin
-    if RegisterClassExA(@WC) = 0 then
+  {$IFDEF FPC}
+    if not GetClassInfoExA(Instance, WindowClassName, @WC) then
     begin
-      AError := 'RegisterClassExA failed';
-      Exit;
+      if RegisterClassExA(@WC) = 0 then
+      begin
+        AError := 'RegisterClassExA failed';
+        Exit;
+      end;
     end;
-  end;
+  {$ELSE}
+    if not GetClassInfoExA(Instance, WindowClassName, WC) then
+    begin
+      if RegisterClassExA(WC) = 0 then
+      begin
+        AError := 'RegisterClassExA failed';
+        Exit;
+      end;
+    end;
+  {$ENDIF}
 
   Style := WS_OVERLAPPED or WS_SYSMENU or WS_CAPTION or WS_MINIMIZEBOX;
   Rect.Left := 0;
   Rect.Top := 0;
   Rect.Right := LONG(W);
   Rect.Bottom := LONG(H);
-  AdjustWindowRect(@Rect, Style, False);
+  AdjustWindowRect(Rect, Style, False);
 
   Width := Rect.Right - Rect.Left;
   Height := Rect.Bottom - Rect.Top;
@@ -398,22 +510,28 @@ procedure TMainWindow.PollEvents;
 var
   Msg: TMsg;
 begin
-  while PeekMessageA(@Msg, 0, 0, 0, PM_REMOVE) do
+  while PeekMessageA(Msg, 0, 0, 0, PM_REMOVE) do
   begin
-    TranslateMessage(@Msg);
-    DispatchMessageA(@Msg);
+    TranslateMessage(Msg);
+    DispatchMessageA(Msg);
   end;
 end;
 
 function TMainWindow.GetEvent(out AnEvent: TEvent): Boolean;
 begin
   if not FEvents.Empty then
-    Exit(FEvents.Pop(AnEvent));
+  begin
+    Result := FEvents.Pop(AnEvent);
+    Exit;
+  end;
 
   PollEvents;
 
   if not FEvents.Empty then
-    Exit(FEvents.Pop(AnEvent));
+  begin
+    Result := FEvents.Pop(AnEvent);
+    Exit;
+  end;
 
   Result := False;
 end;

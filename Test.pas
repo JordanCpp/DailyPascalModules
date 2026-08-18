@@ -1,6 +1,10 @@
 program Test;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ELSE}
+  {$LONGSTRINGS ON}
+{$ENDIF}
 
 uses
   PixelPainter,
@@ -29,7 +33,7 @@ begin
     while Window.GetEvent(Event) do
     begin
 
-      if Event.FType = TEventType.Quit then
+      if Event.FType = Quit then
       begin
             Window.StopEvent;
       end;

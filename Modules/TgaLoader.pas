@@ -1,6 +1,10 @@
 unit TgaLoader;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ELSE}
+  {$LONGSTRINGS ON}
+{$ENDIF}
 
 interface
 
