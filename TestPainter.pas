@@ -3,6 +3,7 @@ program Test;
 {$mode objfpc}{$H+}
 
 uses
+  SysUtils,
   Painter,
   WinLiteEnums,
   WinLiteEvents,
@@ -18,7 +19,7 @@ var
   Win: TSoftwareWindow;
   Ev: TEvent;
   Err: string;
-  PixelBuffer: array of Byte;
+  PixelBuffer: TBytes;
   BufferSize: NativeInt;
   Render: TPainter;
   FrameCounter: Integer;
@@ -38,7 +39,8 @@ begin
 
   BufferSize := WinWidth * WinHeight * BytesPerPixel;
   SetLength(PixelBuffer, BufferSize);
-  Render.Init(WinWidth, WinHeight, BytesPerPixel, @PixelBuffer[0], BufferSize);
+
+  Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
 
   FrameCounter := 0;
 
@@ -74,11 +76,10 @@ begin
     Render.SetColor(MakeColor(255, 64, 64));
     Render.Fill(WinWidth div 2 - 50, WinHeight div 2 - 50, 100, 100);
 
-    Render.Copy(0, 0, BmpImage.Width, BmpImage.Height, BmpImage.Bpp, @BmpImage.Pixels[0], BufferSize);
+    Render.Copy(0, 0, BmpImage.Width, BmpImage.Height, BmpImage.Bpp, BmpImage.Pixels);
 
-    Win.Present(@PixelBuffer[0], BytesPerPixel, WinWidth, WinHeight);
+    Win.Present(PixelBuffer, WinWidth, WinHeight);
   end;
 
   Win.Done;
 end.
-

@@ -5,7 +5,7 @@ unit WinLiteSoftwareWindowWin9x;
 interface
 
 uses
-  Windows, WinLiteEvents, WinLiteMainWindowWin9x;
+  Windows, SysUtils, WinLiteEvents, WinLiteMainWindowWin9x;
 
 type
   TSoftwareWindowWin9x = object
@@ -22,7 +22,7 @@ type
     procedure StopEvent;
     function GetEvent(out AnEvent: TEvent): Boolean;
     procedure SetTitle(const ATitle: string);
-    procedure Present(const Pixels: PByte; ABytes: Byte; W, H: Integer);
+    procedure Present(const Pixels: TBytes; W, H: Integer);
     
     function GetImpl: PMainWindow;
   end;
@@ -82,11 +82,23 @@ begin
   FImpl.SetTitle(ATitle);
 end;
 
-procedure TSoftwareWindowWin9x.Present(const Pixels: PByte; ABytes: Byte; W, H: Integer);
+procedure TSoftwareWindowWin9x.Present(const Pixels: TBytes; W, H: Integer);
+var
+  BytesPerPixel: Integer;
+  RequiredSize: Integer;
 begin
+  BytesPerPixel := FBitmapInfo.bmiHeader.biBitCount div 8;
+  if BytesPerPixel = 0 then 
+    BytesPerPixel := 4;
+
+  RequiredSize := W * H * BytesPerPixel;
+
+  if (Length(Pixels) < RequiredSize) or (RequiredSize <= 0) then
+    Exit;
+
   FBitmapInfo.bmiHeader.biWidth := W;
   FBitmapInfo.bmiHeader.biHeight := -H;
-  FBitmapInfo.bmiHeader.biBitCount := ABytes * 8;
+  FBitmapInfo.bmiHeader.biBitCount := BytesPerPixel * 8;
 
   SetDIBitsToDevice(
     FImpl.GetHdc, 
@@ -94,7 +106,7 @@ begin
     DWORD(W), DWORD(H), 
     0, 0, 
     0, UINT(H), 
-    Pixels, 
+    @Pixels[0],
     FBitmapInfo, 
     DIB_RGB_COLORS
   );
