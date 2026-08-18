@@ -3,7 +3,8 @@ program Test;
 {$mode objfpc}{$H+}
 
 uses
-  Painter,
+  PixelPainter,
+  PixelCopier,
   WinLiteEnums,
   WinLiteEvents,
   WinLiteSoftwareWindow;

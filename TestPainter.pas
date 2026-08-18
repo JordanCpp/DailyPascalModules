@@ -4,62 +4,64 @@ program Test;
 
 uses
   SysUtils,
-  Painter,
+  PixelPainter,
+  PixelCopier,
   WinLiteEnums,
   WinLiteEvents,
   WinLiteSoftwareWindow,
   BmpLoader;
 
 const
-  WinWidth = 800;
-  WinHeight = 600;
+  WinWidth      = 800;
+  WinHeight     = 600;
   BytesPerPixel = 4;
 
 var
-  Win: TSoftwareWindow;
-  Ev: TEvent;
-  Err: string;
-  PixelBuffer: TBytes;
-  BufferSize: NativeInt;
-  Render: TPainter;
+  Window      : TSoftwareWindow;
+  Event       : TEvent;
+  Error       : string;
+  PixelBuffer : TBytes;
+  BufferSize  : NativeInt;
+  Render      : TPixelPainter;
+  Copier      : TPixelCopier;
   FrameCounter: Integer;
-
-  BmpLoad  : TBmpLoader;
-  BmpImage : TImage;
-  BmpError : TBmpError;
+  BmpLoad     : TBmpLoader;
+  BmpImage    : TImage;
+  BmpError    : TBmpError;
 
 begin
-  if not Win.CreateWindow(WinWidth, WinHeight, 'WinLite Hello World (Object Pascal)', Err) then
+  if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Hello World (Object Pascal)', Error) then
   begin
-    WriteLn('Error: ', Err);
+    WriteLn('Error: ', Error);
     Halt(1);
   end;
 
-  Win.SetTitle('WinLite Software Render - Press ESC to exit');
+  Window.SetTitle('WinLite Software Render - Press ESC to exit');
 
   BufferSize := WinWidth * WinHeight * BytesPerPixel;
   SetLength(PixelBuffer, BufferSize);
 
   Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
+  Copier.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
 
   FrameCounter := 0;
 
   BmpLoad.Load('LDL_24_256.bmp', BmpImage, BmpError);
 
-  while Win.IsRunning do
+  while Window.IsRunning do
   begin
-    while Win.GetEvent(Ev) do
+    while Window.GetEvent(Event) do
     begin
-      case Ev.FType of
+      case Event.FType of
         TEventType.Quit:
           begin
-            Win.StopEvent;
+            Window.StopEvent;
           end;
 
         TEventType.Keyboard:
           begin
-            if (Ev.Keyboard.Key = keyEscape) and (Ev.Keyboard.State = TButtonState.Pressed) then
-              Win.StopEvent;
+            if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = TButtonState.Pressed) then
+              Window.StopEvent;
           end;
       end;
     end;
@@ -76,10 +78,10 @@ begin
     Render.SetColor(MakeColor(255, 64, 64));
     Render.Fill(WinWidth div 2 - 50, WinHeight div 2 - 50, 100, 100);
 
-    Render.Copy(0, 0, BmpImage.Width, BmpImage.Height, BmpImage.Bpp, BmpImage.Pixels);
+    Copier.Copy(0, 0, BmpImage.Width, BmpImage.Height, BmpImage.Bpp, BmpImage.Pixels);
 
-    Win.Present(PixelBuffer, WinWidth, WinHeight);
+    Window.Present(PixelBuffer, WinWidth, WinHeight);
   end;
 
-  Win.Done;
+  Window.Done;
 end.

@@ -1,4 +1,4 @@
-unit Painter;
+unit PixelPainter;
 
 {$mode objfpc}{$H+}
 
@@ -32,7 +32,7 @@ type
 function MakeColor(ARed, AGreen, ABlue: Byte; AAlpha: Byte = 255): TColor;
 
 type
-  TPainter = object
+  TPixelPainter = object
   private
     FColor: TColor;
     FWidth: NativeUInt;
@@ -55,7 +55,6 @@ type
     procedure Pixel(X, Y: NativeUInt);
     procedure Line(X0, Y0, X1, Y1: Integer);
     procedure Fill(X, Y, AWidth, AHeight: Integer);
-    function Copy(X, Y: Integer; W, H: NativeUInt; ABytesPerPixel: Byte; const SrcPixels: TBytes): Boolean;
   end;
 
 implementation
@@ -68,20 +67,20 @@ begin
   Result.A := AAlpha;
 end;
 
-{ TPainter }
+{ TPixelPainter }
 
-function TPainter.GetPixelsSize: NativeInt;
+function TPixelPainter.GetPixelsSize: NativeInt;
 begin
   if FPixelsRef = nil then Exit(0);
   Result := Length(FPixelsRef^);
 end;
 
-function TPainter.IsBufferValid: Boolean;
+function TPixelPainter.IsBufferValid: Boolean;
 begin
   Result := (FPixelsRef <> nil) and (Length(FPixelsRef^) > 0);
 end;
 
-procedure TPainter.Init(W, H: NativeUInt; ABytesPerPixel: Byte; var APixels: TBytes);
+procedure TPixelPainter.Init(W, H: NativeUInt; ABytesPerPixel: Byte; var APixels: TBytes);
 begin
   if (ABytesPerPixel <> 3) and (ABytesPerPixel <> 4) then
     raise Exception.Create('Only 3 or 4 bytes per pixel are supported.');
@@ -93,32 +92,32 @@ begin
   FColor := MakeColor(0, 0, 0, AlphaByte);
 end;
 
-function TPainter.GetColor: TColor;
+function TPixelPainter.GetColor: TColor;
 begin
   Result := FColor;
 end;
 
-function TPainter.GetWidth: NativeUInt;
+function TPixelPainter.GetWidth: NativeUInt;
 begin
   Result := FWidth;
 end;
 
-function TPainter.GetHeight: NativeUInt;
+function TPixelPainter.GetHeight: NativeUInt;
 begin
   Result := FHeight;
 end;
 
-function TPainter.GetBytesPerPixel: Byte;
+function TPixelPainter.GetBytesPerPixel: Byte;
 begin
   Result := FBytesPerPixel;
 end;
 
-procedure TPainter.SetColor(const AColor: TColor);
+procedure TPixelPainter.SetColor(const AColor: TColor);
 begin
   FColor := AColor;
 end;
 
-procedure TPainter.Clear;
+procedure TPixelPainter.Clear;
 var
   I: NativeInt;
   PackedColor: Cardinal;
@@ -165,7 +164,7 @@ begin
   end;
 end;
 
-procedure TPainter.Pixel(X, Y: NativeUInt);
+procedure TPixelPainter.Pixel(X, Y: NativeUInt);
 var
   Idx: NativeInt;
 begin
@@ -183,7 +182,7 @@ begin
     FPixelsRef^[Idx + idxA] := FColor.A;
 end;
 
-procedure TPainter.Line(X0, Y0, X1, Y1: Integer);
+procedure TPixelPainter.Line(X0, Y0, X1, Y1: Integer);
 var
   Dx, Dy, Sx, Sy, Err, E2: Integer;
   Idx: NativeInt;
@@ -232,7 +231,7 @@ begin
   end;
 end;
 
-procedure TPainter.Fill(X, Y, AWidth, AHeight: Integer);
+procedure TPixelPainter.Fill(X, Y, AWidth, AHeight: Integer);
 var
   X0, Y0, X1, Y1, CurrY, CurrX: NativeUInt;
   PackedColor: Cardinal;
@@ -283,91 +282,6 @@ begin
         end;
       end;
   end;
-end;
-
-function TPainter.Copy(X, Y: Integer; W, H: NativeUInt; ABytesPerPixel: Byte; const SrcPixels: TBytes): Boolean;
-var
-  SrcX0, SrcY0: NativeUInt;
-  DstX0, DstY0: NativeUInt;
-  CopyW, CopyH: NativeUInt;
-  RowIdx, ColIdx: NativeUInt;
-  SrcRowStart, DstRowStart: NativeInt;
-  SrcPixelIdx, DstPixelIdx: NativeInt;
-  SrcPixelsSize: NativeInt;
-  PixelsSize: NativeInt;
-  
-  R, G, B, A: Byte;
-begin
-  Result := False;
-
-  SrcPixelsSize := Length(SrcPixels);
-  if (not IsBufferValid) or (SrcPixelsSize = 0) or (W = 0) or (H = 0) or (ABytesPerPixel <> FBytesPerPixel) then 
-    Exit;
-
-  PixelsSize := GetPixelsSize;
-
-  if X < 0 then
-  begin
-    if NativeUInt(-X) >= W then Exit;
-    SrcX0 := NativeUInt(-X);
-    DstX0 := 0;
-  end
-  else
-  begin
-    if NativeUInt(X) >= FWidth then Exit;
-    SrcX0 := 0;
-    DstX0 := NativeUInt(X);
-  end;
-
-  if Y < 0 then
-  begin
-    if NativeUInt(-Y) >= H then Exit;
-    SrcY0 := NativeUInt(-Y);
-    DstY0 := 0;
-  end
-  else
-  begin
-    if NativeUInt(Y) >= FHeight then Exit;
-    SrcY0 := 0;
-    DstY0 := NativeUInt(Y);
-  end;
-
-  CopyW := Min(W - SrcX0, FWidth - DstX0);
-  CopyH := Min(H - SrcY0, FHeight - DstY0);
-
-  if (CopyW = 0) or (CopyH = 0) then Exit;
-
-  for RowIdx := 0 to CopyH - 1 do
-  begin
-    SrcRowStart := (NativeInt(SrcY0 + RowIdx) * NativeInt(W) + NativeInt(SrcX0)) * NativeInt(FBytesPerPixel);
-    DstRowStart := (NativeInt(DstY0 + RowIdx) * NativeInt(FWidth) + NativeInt(DstX0)) * NativeInt(FBytesPerPixel);
-
-    for ColIdx := 0 to CopyW - 1 do
-    begin
-      SrcPixelIdx := SrcRowStart + NativeInt(ColIdx) * NativeInt(FBytesPerPixel);
-      DstPixelIdx := DstRowStart + NativeInt(ColIdx) * NativeInt(FBytesPerPixel);
-
-      if (SrcPixelIdx + NativeInt(FBytesPerPixel) <= SrcPixelsSize) and 
-         (DstPixelIdx + NativeInt(FBytesPerPixel) <= PixelsSize) then
-      begin
-        R := SrcPixels[SrcPixelIdx + 0];
-        G := SrcPixels[SrcPixelIdx + 1];
-        B := SrcPixels[SrcPixelIdx + 2];
-        
-        if FBytesPerPixel = 4 then
-          A := SrcPixels[SrcPixelIdx + 3];
-
-        FPixelsRef^[DstPixelIdx + idxR] := R;
-        FPixelsRef^[DstPixelIdx + idxG] := G;
-        FPixelsRef^[DstPixelIdx + idxB] := B;
-
-        if FBytesPerPixel = 4 then
-          FPixelsRef^[DstPixelIdx + idxA] := A;
-      end;
-    end;
-  end;
-
-  Result := True;
 end;
 
 end.
