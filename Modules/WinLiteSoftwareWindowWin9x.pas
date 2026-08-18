@@ -1,10 +1,15 @@
 unit WinLiteSoftwareWindowWin9x;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ELSE}
+  {$LONGSTRINGS ON}
+{$ENDIF}
 
 interface
 
 uses
+  Support,
   Windows, SysUtils, WinLiteEvents, WinLiteMainWindowWin9x;
 
 type

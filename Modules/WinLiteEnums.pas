@@ -1,29 +1,33 @@
 unit WinLiteEnums;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
 type
   TButtonState = (
-    Released = 0,
-    Pressed  = 1
+    Released,
+    Pressed
   );
 
   TMouseButton = (
-    Left   = 1,
-    Right  = 2,
-    Middle = 3
+    mb_DummyZero, 
+    Left,
+    Right,
+    Middle
   );
 
   TMouseScroll = (
-    Vertical   = 1,
-    Horizontal = 2
+    ms_DummyZero,
+    Vertical,
+    Horizontal
   );
 
   TEventType = (
-    None = 0,
-    Quit = 1,
+    None,
+    Quit,
     MouseMove,
     MouseClick,
     Resize,
@@ -33,8 +37,9 @@ type
     MouseScroll
   );
 
- TKey = (
-    keyUnknown = 1,
+  TKey = (
+    key_DummyZero,
+    keyUnknown,
     keyLSystem,
     keyRSystem,
     keyMenu,

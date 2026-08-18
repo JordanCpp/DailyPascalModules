@@ -1,6 +1,8 @@
 unit WinLiteKeyMapper;
 
-{$mode objfpc}{$H+}
+{$IFDEF FPC}
+  {$mode objfpc}{$H+}
+{$ENDIF}
 
 interface
 
@@ -19,7 +21,7 @@ type
   TKeyMapArray = array[0..MaxKeyTableSize - 1] of TKeyMap;
 
   TKeyMapper = object
-    Current: NativeUInt;
+    Current: Cardinal;
     Table: TKeyMapArray;
 
     procedure Init;
@@ -50,16 +52,17 @@ end;
 
 function TKeyMapper.FindKey(AScanCode: Cardinal): TKey;
 var
-  I: NativeUInt;
+  I: Cardinal;
 begin
   for I := 0 to Current - 1 do
   begin
     if Table[I].Code = AScanCode then
     begin
-      Exit(Table[I].Key);
+      Result := Table[I].Key;
+      Exit;
     end;
   end;
-  Result := TKey.keyUnknown;
+  Result := keyUnknown;
 end;
 
 procedure TKeyMapper.Clear;
@@ -68,4 +71,3 @@ begin
 end;
 
 end.
-
