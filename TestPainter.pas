@@ -7,8 +7,7 @@ uses
   WinLiteEnums,
   WinLiteEvents,
   WinLiteSoftwareWindow,
-  BmpLoader,
-  TgaLoader;
+  BmpLoader;
 
 const
   WinWidth = 800;
@@ -24,6 +23,10 @@ var
   Render: TPainter;
   FrameCounter: Integer;
 
+  BmpLoad  : TBmpLoader;
+  BmpImage : TImage;
+  BmpError : TBmpError;
+
 begin
   if not Win.CreateWindow(WinWidth, WinHeight, 'WinLite Hello World (Object Pascal)', Err) then
   begin
@@ -38,6 +41,8 @@ begin
   Render.Init(WinWidth, WinHeight, BytesPerPixel, @PixelBuffer[0], BufferSize);
 
   FrameCounter := 0;
+
+  BmpLoad.Load('LDL_24_256.bmp', BmpImage, BmpError);
 
   while Win.IsRunning do
   begin
@@ -68,6 +73,8 @@ begin
 
     Render.SetColor(MakeColor(255, 64, 64));
     Render.Fill(WinWidth div 2 - 50, WinHeight div 2 - 50, 100, 100);
+
+    Render.Copy(0, 0, BmpImage.Width, BmpImage.Height, BmpImage.Bpp, @BmpImage.Pixels[0], BufferSize);
 
     Win.Present(@PixelBuffer[0], BytesPerPixel, WinWidth, WinHeight);
   end;
