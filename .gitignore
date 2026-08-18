@@ -366,3 +366,5 @@ FodyWeavers.xsd
 *.ppu
 *.o
 *.exe
+Build/
+D4/
