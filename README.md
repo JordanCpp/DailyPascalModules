@@ -167,8 +167,8 @@ Here is the full breakdown of the software rendering examples running live on th
 
 <p align="center">
   <!-- Row 1: Water Ripple & CPU Fire -->
-  <img src="./screenshots/WaterRipple.webp" alt="Water Ripple Distortion" width="48%" />
-  <img src="./screenshots/CPUFireEffect.webp" alt="Texture Burning Fire" width="48%" />
+  <img src="./screenshots/WaterRipple.gif" alt="Water Ripple Distortion" width="48%" />
+  <img src="./screenshots/CPUFireEffect.gif" alt="Texture Burning Fire" width="48%" />
 </p>
 <p align="center">
   <em>Left: Water Ripple Screen Distortion (Sample 1). Right: Texture Burning Fire Engine (Sample 5).</em>
@@ -178,8 +178,8 @@ Here is the full breakdown of the software rendering examples running live on th
 
 <p align="center">
   <!-- Row 2: Dynamic Light & CPU Mosaic -->
-  <img src="./screenshots/DynamicLight.webp" alt="Dynamic Raycasting Light" width="48%" />
-  <img src="./screenshots/DynamicCPUMosaic.webp" alt="Interactive Pixel Art Converter" width="48%" />
+  <img src="./screenshots/DynamicLight.gif" alt="Dynamic Raycasting Light" width="48%" />
+  <img src="./screenshots/DynamicCPUMosaic.gif" alt="Interactive Pixel Art Converter" width="48%" />
 </p>
 <p align="center">
   <em>Left: Dynamic Fog & Raycasting Flashlight (Sample 6). Right: Interactive Pixel Art Converter (Sample 4).</em>
@@ -189,8 +189,8 @@ Here is the full breakdown of the software rendering examples running live on th
 
 <p align="center">
   <!-- Row 3: Ghosting Trails & CRT Glitch -->
-  <img src="./screenshots/GhostingTrailsEffect.webp" alt="Motion Blur Trails" width="48%" />
-  <img src="./screenshots/CRTMonitorGlitch.webp" alt="Retro CRT Scanline Glitch" width="48%" />
+  <img src="./screenshots/GhostingTrailsEffect.gif" alt="Motion Blur Trails" width="48%" />
+  <img src="./screenshots/CRTMonitorGlitch.gif" alt="Retro CRT Scanline Glitch" width="48%" />
 </p>
 <p align="center">
   <em>Left: Motion Blur & Ghosting Trails (Sample 8). Right: Retro CRT Scanline & Line Jitter Glitch (Sample 3).</em>
