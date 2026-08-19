@@ -163,19 +163,92 @@ This project is open-source software licensed under the **Boost Software License
 
 ## 🖼️ Demos Showcase
 
-Here are the software rendering examples running live using the **WinLite** window context and **PixelPainter** algorithms calculated directly on the CPU:
+Here is the full breakdown of the software rendering examples running live on the CPU. Micro-modules calculate every single pixel inside a native frame buffer memory block with zero external GPU hardware acceleration.
 
 <p align="center">
-  <img src="./screenshots/RetroPlasma.png"             alt="Retro Plasma Effect"           width="75%" />
-  <img src="./screenshots/MatrixDigitalRain.png"       alt="Matrix Digital Rain Streams"   width="75%" />
-  <img src="./screenshots/KineticSpirograph.png"       alt="Kinetic Spirograph Lace"       width="75%" />
-  <img src="./screenshots/MandelbrotFractal.png"       alt="Mandelbrot Fractal Zoom"       width="75%" />
-  <img src="./screenshots/StarfieldWarp.png"           alt="3D Starfield Warp Simulation"  width="75%" />
-  <img src="./screenshots/CyberTunnel.png"             alt="Infinite Cyber Tunnel"         width="75%" />
-  <img src="./screenshots/MoirePattern.png"            alt="Colorful Moire Interference"   width="75%" />
-  <img src="./screenshots/Synthwave3DGridDepth.png"    alt="Synthwave 3D Grid Depth"       width="75%" />
-  <img src="./screenshots/FractalCanopy.png"           alt="Fractal Canopy Pythagoras Tree" width="75%" />
-  <img src="./screenshots/DigitalSilkFabric.png"       alt="Sine Wave Digital Silk Fabric" width="75%" />
+  <!-- Row 1: Water Ripple & CPU Fire -->
+  <img src="./screenshots/WaterRipple.webp" alt="Water Ripple Distortion" width="48%" />
+  <img src="./screenshots/CPUFireEffect.webp" alt="Texture Burning Fire" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Water Ripple Screen Distortion (Sample 1). Right: Texture Burning Fire Engine (Sample 5).</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 2: Dynamic Light & CPU Mosaic -->
+  <img src="./screenshots/DynamicLight.webp" alt="Dynamic Raycasting Light" width="48%" />
+  <img src="./screenshots/DynamicCPUMosaic.webp" alt="Interactive Pixel Art Converter" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Dynamic Fog & Raycasting Flashlight (Sample 6). Right: Interactive Pixel Art Converter (Sample 4).</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 3: Ghosting Trails & CRT Glitch -->
+  <img src="./screenshots/GhostingTrailsEffect.webp" alt="Motion Blur Trails" width="48%" />
+  <img src="./screenshots/CRTMonitorGlitch.webp" alt="Retro CRT Scanline Glitch" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Motion Blur & Ghosting Trails (Sample 8). Right: Retro CRT Scanline & Line Jitter Glitch (Sample 3).</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 4: Retro Plasma & Mandelbrot Fractal -->
+  <img src="./screenshots/RetroPlasma.png" alt="Retro Software Plasma" width="48%" />
+  <img src="./screenshots/MandelbrotFractal.png" alt="Mandelbrot Fractal Zoom" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Classic Retro Software Plasma. Right: Mandelbrot Fractal Zoom Loop.</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 5: Moire Pattern & Digital Silk Fabric -->
+  <img src="./screenshots/MoirePattern.png" alt="Moire Interference Lines" width="48%" />
+  <img src="./screenshots/DigitalSilkFabric.png" alt="Sine Wave Digital Silk" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Colorful Moire Interference Lines. Right: Sine Wave Digital Silk Fabric.</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 6: Fractal Canopy & Synthwave 3D Grid -->
+  <img src="./screenshots/FractalCanopy.png" alt="Fractal Canopy Tree" width="48%" />
+  <img src="./screenshots/Synthwave3DGridDepth.png" alt="Synthwave 3D Grid" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Fractal Canopy Pythagoras Tree. Right: Synthwave 3D Grid Depth Engine.</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 7: Matrix Digital Rain & 3D Starfield Warp -->
+  <img src="./screenshots/MatrixDigitalRain.png" alt="Matrix Digital Rain" width="48%" />
+  <img src="./screenshots/StarfieldWarp.png" alt="3D Starfield Warp" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Matrix Digital Rain Streams. Right: 3D Starfield Warp Simulation.</em>
+</p>
+
+<br/>
+
+<p align="center">
+  <!-- Row 8: Cyber Tunnel & Kinetic Spirograph -->
+  <img src="./screenshots/CyberTunnel.png" alt="Infinite 3D Cyber Tunnel" width="48%" />
+  <img src="./screenshots/KineticSpirograph.png" alt="Kinetic Spirograph Lace" width="48%" />
+</p>
+<p align="center">
+  <em>Left: Infinite 3D Cyber Tunnel (Sample 9). Right: Kinetic Spirograph Lace Curves.</em>
 </p>
 
 ---
