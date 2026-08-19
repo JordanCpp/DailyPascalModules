@@ -144,7 +144,7 @@ begin
     AImage.Height := AbsHeight;
     SetLength(AImage.Pixels, AbsWidth * AbsHeight * 4);
 
-    if FileHeader.DataOffset >= FileStream.Size then
+    if FileHeader.DataOffset >= Cardinal(FileStream.Size) then
     begin
       AError := errCorruptedHeader;
       AImage.Free;

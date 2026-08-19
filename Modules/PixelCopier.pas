@@ -115,8 +115,7 @@ var
   SrcPixelIdx, DstPixelIdx: Integer;
   SrcPixelsSize: Integer;
   PixelsSize: Integer;
-  
-  R, G, B, A: Byte;
+  A: Byte;
   PBuffer: PMaxByteArray;
   PSrcBuffer: PMaxByteArray;
 begin
@@ -174,19 +173,15 @@ begin
       if (SrcPixelIdx + FBytesPerPixel <= SrcPixelsSize) and 
          (DstPixelIdx + FBytesPerPixel <= PixelsSize) then
       begin
-        R := PSrcBuffer^[SrcPixelIdx + 0];
-        G := PSrcBuffer^[SrcPixelIdx + 1];
-        B := PSrcBuffer^[SrcPixelIdx + 2];
+        PBuffer^[DstPixelIdx + idxR] := PSrcBuffer^[SrcPixelIdx + 0];
+        PBuffer^[DstPixelIdx + idxG] := PSrcBuffer^[SrcPixelIdx + 1];
+        PBuffer^[DstPixelIdx + idxB] := PSrcBuffer^[SrcPixelIdx + 2];
         
         if FBytesPerPixel = 4 then
+        begin
           A := PSrcBuffer^[SrcPixelIdx + 3];
-
-        PBuffer^[DstPixelIdx + idxR] := R;
-        PBuffer^[DstPixelIdx + idxG] := G;
-        PBuffer^[DstPixelIdx + idxB] := B;
-
-        if FBytesPerPixel = 4 then
           PBuffer^[DstPixelIdx + idxA] := A;
+        end;
       end;
     end;
   end;

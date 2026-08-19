@@ -43,7 +43,7 @@ var
 ==============================================================================}
 procedure RenderSynthwaveGrid(var Painter: TPixelPainter; Frame: Integer);
 var
-  I, Horizon, X, Y, W, H, CX: Integer;
+  I, Horizon, Y, W, H, CX: Integer;
   Offset: Double;
 begin
   // Clear the screen with a deep neon-purple background
