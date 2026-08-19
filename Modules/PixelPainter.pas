@@ -19,12 +19,6 @@ uses
   Support,
   SysUtils, Math;
 
-type
-  
-  PBytesArray = ^TBytes;
-  TMaxByteArray = array[0..$7FFFFF00] of Byte;
-  PMaxByteArray = ^TMaxByteArray;
-
 const
   AlphaByte: Byte = 255;
 
@@ -62,12 +56,12 @@ type
     FWidth: Integer;
     FHeight: Integer;
     FBytesPerPixel: Byte;
-    FPixelsRef: Pointer;
+    FScreenPixels: TBytes;
     
     function GetPixelsSize: Integer;
     function IsBufferValid: Boolean;
   public
-    procedure Init(W, H: Integer; ABytesPerPixel: Byte; var APixels: TBytes);
+    procedure Init(W, H: Integer; ABytesPerPixel: Byte; const APixels: TBytes);
 
     function GetColor: TColor;
     function GetWidth: Integer;
@@ -95,18 +89,15 @@ end;
 
 function TPixelPainter.GetPixelsSize: Integer;
 begin
-  if FPixelsRef = nil then 
-    Result := 0
-  else
-    Result := Length(PBytesArray(FPixelsRef)^);
+  Result := Length(FScreenPixels);
 end;
 
 function TPixelPainter.IsBufferValid: Boolean;
 begin
-  Result := (FPixelsRef <> nil) and (Length(PBytesArray(FPixelsRef)^) > 0);
+  Result := Length(FScreenPixels) > 0;
 end;
 
-procedure TPixelPainter.Init(W, H: Integer; ABytesPerPixel: Byte; var APixels: TBytes);
+procedure TPixelPainter.Init(W, H: Integer; ABytesPerPixel: Byte; const APixels: TBytes);
 begin
   if (ABytesPerPixel <> 3) and (ABytesPerPixel <> 4) then
     raise Exception.Create('Only 3 or 4 bytes per pixel are supported.');
@@ -114,7 +105,7 @@ begin
   FWidth := W;
   FHeight := H;
   FBytesPerPixel := ABytesPerPixel;
-  FPixelsRef := @APixels;
+  FScreenPixels := APixels;
   FColor := MakeColor(0, 0, 0, AlphaByte);
 end;
 
@@ -146,72 +137,56 @@ end;
 procedure TPixelPainter.Clear;
 var
   I: Integer;
-  PackedColor: Cardinal;
-  Dest32: PCardinal;
-  PBytesPtr: PMaxByteArray;
   PixelsSize: Integer;
-  PBuffer: PMaxByteArray;
+  BlockSize: Integer;
 begin
   if not IsBufferValid then Exit;
   PixelsSize := GetPixelsSize;
-  
-  PBuffer := PMaxByteArray(PBytesArray(FPixelsRef)^);
 
   if (FColor.R = FColor.G) and (FColor.G = FColor.B) and
      ((FBytesPerPixel = 3) or (FColor.B = FColor.A)) then
   begin
-    FillChar(PBuffer^, PixelsSize, FColor.R);
+    FillChar(FScreenPixels[0], PixelsSize, FColor.R);
     Exit;
   end;
 
-  if FBytesPerPixel = 4 then
+  I := 0;
+  while I < FBytesPerPixel do
   begin
-    PackedColor := 0;
-    PBytesPtr := PMaxByteArray(@PackedColor);
-    PBytesPtr^[idxR] := FColor.R;
-    PBytesPtr^[idxG] := FColor.G;
-    PBytesPtr^[idxB] := FColor.B;
-    PBytesPtr^[idxA] := FColor.A;
+    if I = idxR then FScreenPixels[I] := FColor.R
+    else if I = idxG then FScreenPixels[I] := FColor.G
+    else if I = idxB then FScreenPixels[I] := FColor.B
+    else if I = idxA then FScreenPixels[I] := FColor.A;
+    Inc(I);
+  end;
 
-    Dest32 := PCardinal(PBuffer);
-    for I := 0 to (PixelsSize div 4) - 1 do
-    begin
-      Dest32^ := PackedColor;
-      Inc(Dest32);
-    end;
-  end
-  else
+  BlockSize := FBytesPerPixel;
+  while BlockSize < PixelsSize do
   begin
-    I := 0;
-    while I < PixelsSize - 2 do
-    begin
-      PBuffer^[I + idxR] := FColor.R;
-      PBuffer^[I + idxG] := FColor.G;
-      PBuffer^[I + idxB] := FColor.B;
-      Inc(I, 3);
-    end;
+    I := Min(BlockSize, PixelsSize - BlockSize);
+    Move(FScreenPixels[0], FScreenPixels[BlockSize], I);
+    Inc(BlockSize, I);
   end;
 end;
 
 procedure TPixelPainter.Pixel(X, Y: Integer);
 var
   Idx: Integer;
-  PBuffer: PMaxByteArray;
+  PixelsSize: Integer;
 begin
   if (X < 0) or (X >= FWidth) or (Y < 0) or (Y >= FHeight) or (not IsBufferValid) then Exit;
 
   Idx := (Y * FWidth + X) * FBytesPerPixel;
+  PixelsSize := GetPixelsSize;
   
-  if Idx + idxB >= GetPixelsSize then Exit;
+  if Idx + idxB >= PixelsSize then Exit;
 
-  PBuffer := PMaxByteArray(PBytesArray(FPixelsRef)^);
-
-  PBuffer^[Idx + idxR] := FColor.R;
-  PBuffer^[Idx + idxG] := FColor.G;
-  PBuffer^[Idx + idxB] := FColor.B;
+  FScreenPixels[Idx + idxR] := FColor.R;
+  FScreenPixels[Idx + idxG] := FColor.G;
+  FScreenPixels[Idx + idxB] := FColor.B;
 
   if FBytesPerPixel = 4 then
-    PBuffer^[Idx + idxA] := FColor.A;
+    FScreenPixels[Idx + idxA] := FColor.A;
 end;
 
 procedure TPixelPainter.Line(X0, Y0, X1, Y1: Integer);
@@ -219,11 +194,9 @@ var
   Dx, Dy, Sx, Sy, Err, E2: Integer;
   Idx: Integer;
   PixelsSize: Integer;
-  PBuffer: PMaxByteArray;
 begin
   if not IsBufferValid then Exit;
   PixelsSize := GetPixelsSize;
-  PBuffer := PMaxByteArray(PBytesArray(FPixelsRef)^);
 
   Dx := Abs(X1 - X0);
   Dy := Abs(Y1 - Y0);
@@ -241,12 +214,12 @@ begin
       
       if Idx + idxB < PixelsSize then
       begin
-        PBuffer^[Idx + idxR] := FColor.R;
-        PBuffer^[Idx + idxG] := FColor.G;
-        PBuffer^[Idx + idxB] := FColor.B;
+        FScreenPixels[Idx + idxR] := FColor.R;
+        FScreenPixels[Idx + idxG] := FColor.G;
+        FScreenPixels[Idx + idxB] := FColor.B;
 
         if FBytesPerPixel = 4 then
-          PBuffer^[Idx + idxA] := FColor.A;
+          FScreenPixels[Idx + idxA] := FColor.A;
       end;
     end;
 
@@ -269,15 +242,9 @@ end;
 procedure TPixelPainter.Fill(X, Y, AWidth, AHeight: Integer);
 var
   X0, Y0, X1, Y1, CurrY, CurrX: Integer;
-  PackedColor: Cardinal;
-  RowPtr32: PCardinal;
-  RowStart: Integer;
-  PBytesPtr: PMaxByteArray;
-  Idx: Integer;
-  PBuffer: PMaxByteArray;
+  RowStart, Idx: Integer;
   PixelsSize: Integer;
-  Count32: Integer;
-  I: Integer;
+  LineBlockSize: Integer;
 begin
   if (AWidth <= 0) or (AHeight <= 0) or (not IsBufferValid) then Exit;
 
@@ -289,46 +256,29 @@ begin
   if (X0 >= X1) or (Y0 >= Y1) then Exit;
 
   PixelsSize := GetPixelsSize;
-  PBuffer := PMaxByteArray(PBytesArray(FPixelsRef)^);
 
-  if FBytesPerPixel = 4 then
+  RowStart := (Y0 * FWidth + X0) * FBytesPerPixel;
+  for CurrX := X0 to X1 - 1 do
   begin
-    PackedColor := 0;
-    PBytesPtr := PMaxByteArray(@PackedColor);
-    PBytesPtr^[idxR] := FColor.R;
-    PBytesPtr^[idxG] := FColor.G;
-    PBytesPtr^[idxB] := FColor.B;
-    PBytesPtr^[idxA] := FColor.A;
-
-    for CurrY := Y0 to Y1 - 1 do
+    Idx := RowStart + (CurrX - X0) * FBytesPerPixel;
+    if Idx + idxB < PixelsSize then
     begin
-      RowStart := (CurrY * FWidth + X0) * 4;
-      if RowStart < PixelsSize then
-      begin
-        RowPtr32 := PCardinal(@PBuffer^[RowStart]);
-        Count32 := X1 - X0;
-        
-        for I := 0 to Count32 - 1 do
-        begin
-          RowPtr32^ := PackedColor;
-          Inc(RowPtr32);
-        end;
-      end;
+      FScreenPixels[Idx + idxR] := FColor.R;
+      FScreenPixels[Idx + idxG] := FColor.G;
+      FScreenPixels[Idx + idxB] := FColor.B;
+      if FBytesPerPixel = 4 then
+        FScreenPixels[Idx + idxA] := FColor.A;
     end;
-  end
-  else
+  end;
+
+  LineBlockSize := (X1 - X0) * FBytesPerPixel;
+  for CurrY := Y0 + 1 to Y1 - 1 do
   begin
-    for CurrY := Y0 to Y1 - 1 do
-      for CurrX := X0 to X1 - 1 do
-      begin
-        Idx := (CurrY * FWidth + CurrX) * 3;
-        if Idx + 2 < GetPixelsSize then
-        begin
-          PBuffer^[Idx + idxR] := FColor.R;
-          PBuffer^[Idx + idxG] := FColor.G;
-          PBuffer^[Idx + idxB] := FColor.B;
-        end;
-      end;
+    Idx := (CurrY * FWidth + X0) * FBytesPerPixel;
+    if Idx + LineBlockSize <= PixelsSize then
+    begin
+      Move(FScreenPixels[RowStart], FScreenPixels[Idx], LineBlockSize);
+    end;
   end;
 end;
 

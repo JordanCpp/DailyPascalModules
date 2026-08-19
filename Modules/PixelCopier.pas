@@ -19,11 +19,6 @@ uses
   Support,
   SysUtils, Math;
 
-type
-  PBytesArray = ^TBytes;
-  TMaxByteArray = array[0..$7FFFFF00] of Byte;
-  PMaxByteArray = ^TMaxByteArray;
-
 const
   AlphaByte: Byte = 255;
 
@@ -50,12 +45,12 @@ type
     FWidth: Integer;
     FHeight: Integer;
     FBytesPerPixel: Byte;
-    FPixelsRef: Pointer; 
+    FScreenPixels: TBytes; // Safe managed reference instead of unsafe raw pointer
     
     function GetPixelsSize: Integer;
     function IsBufferValid: Boolean;
   public
-    procedure Init(W, H: Integer; ABytesPerPixel: Byte; var APixels: TBytes);
+    procedure Init(W, H: Integer; ABytesPerPixel: Byte; const APixels: TBytes);
     function GetWidth: Integer;
     function GetHeight: Integer;
     function GetBytesPerPixel: Byte;
@@ -70,18 +65,15 @@ implementation
 
 function TPixelCopier.GetPixelsSize: Integer;
 begin
-  if FPixelsRef = nil then 
-    Result := 0
-  else
-    Result := Length(PBytesArray(FPixelsRef)^);
+  Result := Length(FScreenPixels);
 end;
 
 function TPixelCopier.IsBufferValid: Boolean;
 begin
-  Result := (FPixelsRef <> nil) and (Length(PBytesArray(FPixelsRef)^) > 0);
+  Result := Length(FScreenPixels) > 0;
 end;
 
-procedure TPixelCopier.Init(W, H: Integer; ABytesPerPixel: Byte; var APixels: TBytes);
+procedure TPixelCopier.Init(W, H: Integer; ABytesPerPixel: Byte; const APixels: TBytes);
 begin
   if (ABytesPerPixel <> 3) and (ABytesPerPixel <> 4) then
     raise Exception.Create('Only 3 or 4 bytes per pixel are supported.');
@@ -89,7 +81,7 @@ begin
   FWidth := W;
   FHeight := H;
   FBytesPerPixel := ABytesPerPixel;
-  FPixelsRef := @APixels;
+  FScreenPixels := APixels; 
 end;
 
 function TPixelCopier.GetWidth: Integer;
@@ -120,7 +112,6 @@ var
   ClipDstX1, ClipDstY1 : Integer;
   SrcPixelIdx, DstPixelIdx : Integer;
   SrcPixelsSize, PixelsSize : Integer;
-  PBuffer, PSrcBuffer : PMaxByteArray;
   XRatio, YRatio : Single;
 begin
   Result := False;
@@ -130,9 +121,6 @@ begin
   if (DstW <= 0) or (DstH <= 0) or (SrcW <= 0) or (SrcH <= 0) or (SrcW_Full <= 0) then Exit;
 
   PixelsSize := GetPixelsSize;
-  PBuffer := PMaxByteArray(PBytesArray(FPixelsRef)^);
-  PSrcBuffer := PMaxByteArray(@SrcPixels[0]);
-
   XRatio := SrcW / DstW;
   YRatio := SrcH / DstH;
 
@@ -161,16 +149,16 @@ begin
 
       if (SrcPixelIdx + 3 <= SrcPixelsSize) and (DstPixelIdx + FBytesPerPixel <= PixelsSize) then
       begin
-        PBuffer^[DstPixelIdx + idxR] := PSrcBuffer^[SrcPixelIdx + 2];
-        PBuffer^[DstPixelIdx + idxG] := PSrcBuffer^[SrcPixelIdx + 1];
-        PBuffer^[DstPixelIdx + idxB] := PSrcBuffer^[SrcPixelIdx + 0];
+        FScreenPixels[DstPixelIdx + idxR] := SrcPixels[SrcPixelIdx + 0];
+        FScreenPixels[DstPixelIdx + idxG] := SrcPixels[SrcPixelIdx + 1];
+        FScreenPixels[DstPixelIdx + idxB] := SrcPixels[SrcPixelIdx + 2];
         
         if (FBytesPerPixel = 4) then
         begin
           if (SrcBpp = 4) then
-            PBuffer^[DstPixelIdx + idxA] := PSrcBuffer^[SrcPixelIdx + 3]
+            FScreenPixels[DstPixelIdx + idxA] := SrcPixels[SrcPixelIdx + 3]
           else
-            PBuffer^[DstPixelIdx + idxA] := AlphaByte;
+            FScreenPixels[DstPixelIdx + idxA] := AlphaByte;
         end;
       end;
 
