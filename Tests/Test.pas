@@ -16,6 +16,7 @@ program Test;
 uses
   PixelPainter,
   PixelCopier,
+  FpsCounter,
   WinLiteEnums,
   WinLiteEvents,
   WinLiteSoftwareWindow;
