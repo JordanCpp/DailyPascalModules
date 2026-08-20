@@ -21,7 +21,7 @@ uses
   FpsCounter,
   WinLiteEnums,
   WinLiteEvents,
-  WinLiteSoftwareWindow,
+  WinLiteWindow,
   BmpLoader;
 
 const

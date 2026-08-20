@@ -21,7 +21,7 @@ uses
   PixelCopier,
   WinLiteEnums,
   WinLiteEvents,
-  WinLiteSoftwareWindow,
+  WinLiteWindow,
   BmpLoader;
 
 const

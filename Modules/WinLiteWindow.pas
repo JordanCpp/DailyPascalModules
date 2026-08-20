@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-unit WinLiteSoftwareWindow;
+unit WinLiteWindow;
 
 {$IFDEF FPC}
   {$mode objfpc}{$H+}
@@ -25,6 +25,7 @@ uses
   WinLiteEvents
   {$IFDEF IS_WINDOWS}
   , WinLiteSoftwareWindowWin9x
+  , WinLiteOpenGL1WindowWin9x
   {$ENDIF}
   {$IFDEF LINUX}
   , WinLiteSoftwareWindowLinux
@@ -34,6 +35,7 @@ uses
 type
   {$IFDEF IS_WINDOWS}
   TSoftwareWindow = TSoftwareWindowWin9x;
+  TOpenGL1Window  = TOpenGL1Window9x;
   {$ENDIF}
   {$IFDEF LINUX}
   TSoftwareWindow = TSoftwareWindowLinux;

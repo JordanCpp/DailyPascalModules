@@ -14,7 +14,7 @@ program WinLiteMotionBlurDemo;
 {$ENDIF}
 
 uses
-  Support, SysUtils, Math, PixelPainter, PixelCopier, WinLiteEnums, WinLiteEvents, WinLiteSoftwareWindow, BmpLoader;
+  Support, SysUtils, Math, PixelPainter, PixelCopier, WinLiteEnums, WinLiteEvents, WinLiteWindow, BmpLoader;
 
 const
   WinWidth      = 800;

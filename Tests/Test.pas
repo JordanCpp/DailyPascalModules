@@ -19,7 +19,7 @@ uses
   FpsCounter,
   WinLiteEnums,
   WinLiteEvents,
-  WinLiteSoftwareWindow,
+  WinLiteWindow,
   OpenGLTypes,
   OpenGLConsts,
   OpenGLFuncs,
