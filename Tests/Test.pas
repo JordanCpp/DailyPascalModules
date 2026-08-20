@@ -19,7 +19,11 @@ uses
   FpsCounter,
   WinLiteEnums,
   WinLiteEvents,
-  WinLiteSoftwareWindow;
+  WinLiteSoftwareWindow,
+  OpenGLTypes,
+  OpenGLConsts,
+  OpenGLFuncs,
+  OpenGLLoader;
 
 var
   Window: TSoftwareWindow;
