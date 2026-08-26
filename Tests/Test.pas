@@ -23,7 +23,8 @@ uses
   OpenGLTypes,
   OpenGLConsts,
   OpenGLFuncs,
-  OpenGLLoader;
+  OpenGLLoader,
+  BmpSaver;
 
 var
   Window: TSoftwareWindow;
