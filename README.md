@@ -52,7 +52,7 @@ Here is the complete breakdown of the available units, organized by their respec
   A high-speed blitting and memory copy tool. Efficiently transfers raw arrays of texturing elements or parts of memory blocks onto the main window frame buffer with zero overhead.
 * **`Support.pas`**
   A minimal collection of low-level helper definitions, core mathematical constants, type structures, and color generation utilities (`MakeColor`) shared across graphics operations.
-  * **`OpenGLConsts.pas`**
+* **`OpenGLConsts.pas`**
   A centralized, exhaustive registry of all system constants, flags, and tokens ever introduced into the OpenGL specification from v1.0 up to v4.6 (including major ARB/EXT extensions).
 * **`OpenGLFuncs.pas`**
   Declares procedural types and raw pointers for OpenGL functions across all eras. Written with strict platform calling conventions (`stdcall` / `cdecl`) for perfect x86 and x64 cross-compiler compatibility.
