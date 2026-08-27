@@ -7,11 +7,7 @@
 
 unit PixelPainter;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 
@@ -27,15 +23,9 @@ const
   idxG = 1;
   idxB = 0;
 {$ELSE}
-  {$IFDEF MSWINDOWS}
-    idxR = 2;
-    idxG = 1;
-    idxB = 0;
-  {$ELSE}
-    idxR = 0;
-    idxG = 1;
-    idxB = 2;
-  {$ENDIF}
+  idxR = 0;
+  idxG = 1;
+  idxB = 2;
 {$ENDIF}
   idxA = 3;
 
@@ -70,7 +60,7 @@ type
 
     procedure SetColor(const AColor: TColor);
     procedure Clear;
-    procedure Pixel(X, Y: Integer);
+    procedure Pixel(X, Y: Integer); inline;
     procedure Line(X0, Y0, X1, Y1: Integer);
     procedure Fill(X, Y, AWidth, AHeight: Integer);
   end;
@@ -169,7 +159,7 @@ begin
   end;
 end;
 
-procedure TPixelPainter.Pixel(X, Y: Integer);
+procedure TPixelPainter.Pixel(X, Y: Integer); inline;
 var
   Idx: Integer;
   PixelsSize: Integer;

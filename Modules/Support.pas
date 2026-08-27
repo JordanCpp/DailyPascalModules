@@ -7,11 +7,7 @@
 
 unit Support;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 
@@ -19,13 +15,11 @@ uses
   SysUtils;
 
 type
-  {$IFDEF FPC}
-  TBytes = SysUtils.TBytes;
-  {$ELSE}
-  TBytes = array of Byte;
-  PByte = ^Byte;
-  PCardinal = ^Cardinal;
-  {$ENDIF}
+    {$IF FPC_VERSION < 3}
+      TBytes = array of Byte;
+    {$ELSE}
+      TBytes = SysUtils.TBytes;
+    {$IFEND}
 
 implementation
 

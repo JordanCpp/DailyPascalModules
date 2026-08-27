@@ -7,11 +7,7 @@
 
 program WinLiteMotionBlurDemo;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 uses
   Support, SysUtils, Math, PixelPainter, PixelCopier, WinLiteEnums, WinLiteEvents, WinLiteWindow, BmpLoader;

@@ -7,11 +7,7 @@
 
 unit OpenGLLoader;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 
@@ -215,7 +211,6 @@ end;
 
 procedure LoadVersion1_0;
 begin
-{$IFDEF FPC}
   Pointer(glCullFace) := GetProcAddress('glCullFace');
   Pointer(glFrontFace) := GetProcAddress('glFrontFace');
   Pointer(glHint) := GetProcAddress('glHint');
@@ -522,314 +517,6 @@ begin
   Pointer(glScalef) := GetProcAddress('glScalef');
   Pointer(glTranslated) := GetProcAddress('glTranslated');
   Pointer(glTranslatef) := GetProcAddress('glTranslatef');
-{$ELSE}
-  @glCullFace := GetProcAddress('glCullFace');
-  @glFrontFace := GetProcAddress('glFrontFace');
-  @glHint := GetProcAddress('glHint');
-  @glLineWidth := GetProcAddress('glLineWidth');
-  @glPointSize := GetProcAddress('glPointSize');
-  @glPolygonMode := GetProcAddress('glPolygonMode');
-  @glScissor := GetProcAddress('glScissor');
-  @glTexParameterf := GetProcAddress('glTexParameterf');
-  @glTexParameterfv := GetProcAddress('glTexParameterfv');
-  @glTexParameteri := GetProcAddress('glTexParameteri');
-  @glTexParameteriv := GetProcAddress('glTexParameteriv');
-  @glTexImage1D := GetProcAddress('glTexImage1D');
-  @glTexImage2D := GetProcAddress('glTexImage2D');
-  @glDrawBuffer := GetProcAddress('glDrawBuffer');
-  @glClear := GetProcAddress('glClear');
-  @glClearColor := GetProcAddress('glClearColor');
-  @glClearStencil := GetProcAddress('glClearStencil');
-  @glClearDepth := GetProcAddress('glClearDepth');
-  @glStencilMask := GetProcAddress('glStencilMask');
-  @glColorMask := GetProcAddress('glColorMask');
-  @glDepthMask := GetProcAddress('glDepthMask');
-  @glDisable := GetProcAddress('glDisable');
-  @glEnable := GetProcAddress('glEnable');
-  @glFinish := GetProcAddress('glFinish');
-  @glFlush := GetProcAddress('glFlush');
-  @glBlendFunc := GetProcAddress('glBlendFunc');
-  @glLogicOp := GetProcAddress('glLogicOp');
-  @glStencilFunc := GetProcAddress('glStencilFunc');
-  @glStencilOp := GetProcAddress('glStencilOp');
-  @glDepthFunc := GetProcAddress('glDepthFunc');
-  @glPixelStoref := GetProcAddress('glPixelStoref');
-  @glPixelStorei := GetProcAddress('glPixelStorei');
-  @glReadBuffer := GetProcAddress('glReadBuffer');
-  @glReadPixels := GetProcAddress('glReadPixels');
-  @glGetBooleanv := GetProcAddress('glGetBooleanv');
-  @glGetDoublev := GetProcAddress('glGetDoublev');
-  @glGetError := GetProcAddress('glGetError');
-  @glGetFloatv := GetProcAddress('glGetFloatv');
-  @glGetIntegerv := GetProcAddress('glGetIntegerv');
-  @glGetString := GetProcAddress('glGetString');
-  @glGetTexImage := GetProcAddress('glGetTexImage');
-  @glGetTexParameterfv := GetProcAddress('glGetTexParameterfv');
-  @glGetTexParameteriv := GetProcAddress('glGetTexParameteriv');
-  @glGetTexLevelParameterfv := GetProcAddress('glGetTexLevelParameterfv');
-  @glGetTexLevelParameteriv := GetProcAddress('glGetTexLevelParameteriv');
-  @glIsEnabled := GetProcAddress('glIsEnabled');
-  @glDepthRange := GetProcAddress('glDepthRange');
-  @glViewport := GetProcAddress('glViewport');
-  @glNewList := GetProcAddress('glNewList');
-  @glEndList := GetProcAddress('glEndList');
-  @glCallList := GetProcAddress('glCallList');
-  @glCallLists := GetProcAddress('glCallLists');
-  @glDeleteLists := GetProcAddress('glDeleteLists');
-  @glGenLists := GetProcAddress('glGenLists');
-  @glListBase := GetProcAddress('glListBase');
-  @glBegin := GetProcAddress('glBegin');
-  @glBitmap := GetProcAddress('glBitmap');
-  @glColor3b := GetProcAddress('glColor3b');
-  @glColor3bv := GetProcAddress('glColor3bv');
-  @glColor3d := GetProcAddress('glColor3d');
-  @glColor3dv := GetProcAddress('glColor3dv');
-  @glColor3f := GetProcAddress('glColor3f');
-  @glColor3fv := GetProcAddress('glColor3fv');
-  @glColor3i := GetProcAddress('glColor3i');
-  @glColor3iv := GetProcAddress('glColor3iv');
-  @glColor3s := GetProcAddress('glColor3s');
-  @glColor3sv := GetProcAddress('glColor3sv');
-  @glColor3ub := GetProcAddress('glColor3ub');
-  @glColor3ubv := GetProcAddress('glColor3ubv');
-  @glColor3ui := GetProcAddress('glColor3ui');
-  @glColor3uiv := GetProcAddress('glColor3uiv');
-  @glColor3us := GetProcAddress('glColor3us');
-  @glColor3usv := GetProcAddress('glColor3usv');
-  @glColor4b := GetProcAddress('glColor4b');
-  @glColor4bv := GetProcAddress('glColor4bv');
-  @glColor4d := GetProcAddress('glColor4d');
-  @glColor4dv := GetProcAddress('glColor4dv');
-  @glColor4f := GetProcAddress('glColor4f');
-  @glColor4fv := GetProcAddress('glColor4fv');
-  @glColor4i := GetProcAddress('glColor4i');
-  @glColor4iv := GetProcAddress('glColor4iv');
-  @glColor4s := GetProcAddress('glColor4s');
-  @glColor4sv := GetProcAddress('glColor4sv');
-  @glColor4ub := GetProcAddress('glColor4ub');
-  @glColor4ubv := GetProcAddress('glColor4ubv');
-  @glColor4ui := GetProcAddress('glColor4ui');
-  @glColor4uiv := GetProcAddress('glColor4uiv');
-  @glColor4us := GetProcAddress('glColor4us');
-  @glColor4usv := GetProcAddress('glColor4usv');
-  @glEdgeFlag := GetProcAddress('glEdgeFlag');
-  @glEdgeFlagv := GetProcAddress('glEdgeFlagv');
-  @glEnd := GetProcAddress('glEnd');
-  @glIndexd := GetProcAddress('glIndexd');
-  @glIndexdv := GetProcAddress('glIndexdv');
-  @glIndexf := GetProcAddress('glIndexf');
-  @glIndexfv := GetProcAddress('glIndexfv');
-  @glIndexi := GetProcAddress('glIndexi');
-  @glIndexiv := GetProcAddress('glIndexiv');
-  @glIndexs := GetProcAddress('glIndexs');
-  @glIndexsv := GetProcAddress('glIndexsv');
-  @glNormal3b := GetProcAddress('glNormal3b');
-  @glNormal3bv := GetProcAddress('glNormal3bv');
-  @glNormal3d := GetProcAddress('glNormal3d');
-  @glNormal3dv := GetProcAddress('glNormal3dv');
-  @glNormal3f := GetProcAddress('glNormal3f');
-  @glNormal3fv := GetProcAddress('glNormal3fv');
-  @glNormal3i := GetProcAddress('glNormal3i');
-  @glNormal3iv := GetProcAddress('glNormal3iv');
-  @glNormal3s := GetProcAddress('glNormal3s');
-  @glNormal3sv := GetProcAddress('glNormal3sv');
-  @glRasterPos2d := GetProcAddress('glRasterPos2d');
-  @glRasterPos2dv := GetProcAddress('glRasterPos2dv');
-  @glRasterPos2f := GetProcAddress('glRasterPos2f');
-  @glRasterPos2fv := GetProcAddress('glRasterPos2fv');
-  @glRasterPos2i := GetProcAddress('glRasterPos2i');
-  @glRasterPos2iv := GetProcAddress('glRasterPos2iv');
-  @glRasterPos2s := GetProcAddress('glRasterPos2s');
-  @glRasterPos2sv := GetProcAddress('glRasterPos2sv');
-  @glRasterPos3d := GetProcAddress('glRasterPos3d');
-  @glRasterPos3dv := GetProcAddress('glRasterPos3dv');
-  @glRasterPos3f := GetProcAddress('glRasterPos3f');
-  @glRasterPos3fv := GetProcAddress('glRasterPos3fv');
-  @glRasterPos3i := GetProcAddress('glRasterPos3i');
-  @glRasterPos3iv := GetProcAddress('glRasterPos3iv');
-  @glRasterPos3s := GetProcAddress('glRasterPos3s');
-  @glRasterPos3sv := GetProcAddress('glRasterPos3sv');
-  @glRasterPos4d := GetProcAddress('glRasterPos4d');
-  @glRasterPos4dv := GetProcAddress('glRasterPos4dv');
-  @glRasterPos4f := GetProcAddress('glRasterPos4f');
-  @glRasterPos4fv := GetProcAddress('glRasterPos4fv');
-  @glRasterPos4i := GetProcAddress('glRasterPos4i');
-  @glRasterPos4iv := GetProcAddress('glRasterPos4iv');
-  @glRasterPos4s := GetProcAddress('glRasterPos4s');
-  @glRasterPos4sv := GetProcAddress('glRasterPos4sv');
-  @glRectd := GetProcAddress('glRectd');
-  @glRectdv := GetProcAddress('glRectdv');
-  @glRectf := GetProcAddress('glRectf');
-  @glRectfv := GetProcAddress('glRectfv');
-  @glRecti := GetProcAddress('glRecti');
-  @glRectiv := GetProcAddress('glRectiv');
-  @glRects := GetProcAddress('glRects');
-  @glRectsv := GetProcAddress('glRectsv');
-  @glTexCoord1d := GetProcAddress('glTexCoord1d');
-  @glTexCoord1dv := GetProcAddress('glTexCoord1dv');
-  @glTexCoord1f := GetProcAddress('glTexCoord1f');
-  @glTexCoord1fv := GetProcAddress('glTexCoord1fv');
-  @glTexCoord1i := GetProcAddress('glTexCoord1i');
-  @glTexCoord1iv := GetProcAddress('glTexCoord1iv');
-  @glTexCoord1s := GetProcAddress('glTexCoord1s');
-  @glTexCoord1sv := GetProcAddress('glTexCoord1sv');
-  @glTexCoord2d := GetProcAddress('glTexCoord2d');
-  @glTexCoord2dv := GetProcAddress('glTexCoord2dv');
-  @glTexCoord2f := GetProcAddress('glTexCoord2f');
-  @glTexCoord2fv := GetProcAddress('glTexCoord2fv');
-  @glTexCoord2i := GetProcAddress('glTexCoord2i');
-  @glTexCoord2iv := GetProcAddress('glTexCoord2iv');
-  @glTexCoord2s := GetProcAddress('glTexCoord2s');
-  @glTexCoord2sv := GetProcAddress('glTexCoord2sv');
-  @glTexCoord3d := GetProcAddress('glTexCoord3d');
-  @glTexCoord3dv := GetProcAddress('glTexCoord3dv');
-  @glTexCoord3f := GetProcAddress('glTexCoord3f');
-  @glTexCoord3fv := GetProcAddress('glTexCoord3fv');
-  @glTexCoord3i := GetProcAddress('glTexCoord3i');
-  @glTexCoord3iv := GetProcAddress('glTexCoord3iv');
-  @glTexCoord3s := GetProcAddress('glTexCoord3s');
-  @glTexCoord3sv := GetProcAddress('glTexCoord3sv');
-  @glTexCoord4d := GetProcAddress('glTexCoord4d');
-  @glTexCoord4dv := GetProcAddress('glTexCoord4dv');
-  @glTexCoord4f := GetProcAddress('glTexCoord4f');
-  @glTexCoord4fv := GetProcAddress('glTexCoord4fv');
-  @glTexCoord4i := GetProcAddress('glTexCoord4i');
-  @glTexCoord4iv := GetProcAddress('glTexCoord4iv');
-  @glTexCoord4s := GetProcAddress('glTexCoord4s');
-  @glTexCoord4sv := GetProcAddress('glTexCoord4sv');
-  @glVertex2d := GetProcAddress('glVertex2d');
-  @glVertex2dv := GetProcAddress('glVertex2dv');
-  @glVertex2f := GetProcAddress('glVertex2f');
-  @glVertex2fv := GetProcAddress('glVertex2fv');
-  @glVertex2i := GetProcAddress('glVertex2i');
-  @glVertex2iv := GetProcAddress('glVertex2iv');
-  @glVertex2s := GetProcAddress('glVertex2s');
-  @glVertex2sv := GetProcAddress('glVertex2sv');
-  @glVertex3d := GetProcAddress('glVertex3d');
-  @glVertex3dv := GetProcAddress('glVertex3dv');
-  @glVertex3f := GetProcAddress('glVertex3f');
-  @glVertex3fv := GetProcAddress('glVertex3fv');
-  @glVertex3i := GetProcAddress('glVertex3i');
-  @glVertex3iv := GetProcAddress('glVertex3iv');
-  @glVertex3s := GetProcAddress('glVertex3s');
-  @glVertex3sv := GetProcAddress('glVertex3sv');
-  @glVertex4d := GetProcAddress('glVertex4d');
-  @glVertex4dv := GetProcAddress('glVertex4dv');
-  @glVertex4f := GetProcAddress('glVertex4f');
-  @glVertex4fv := GetProcAddress('glVertex4fv');
-  @glVertex4i := GetProcAddress('glVertex4i');
-  @glVertex4iv := GetProcAddress('glVertex4iv');
-  @glVertex4s := GetProcAddress('glVertex4s');
-  @glVertex4sv := GetProcAddress('glVertex4sv');
-  @glClipPlane := GetProcAddress('glClipPlane');
-  @glColorMaterial := GetProcAddress('glColorMaterial');
-  @glFogf := GetProcAddress('glFogf');
-  @glFogfv := GetProcAddress('glFogfv');
-  @glFogi := GetProcAddress('glFogi');
-  @glFogiv := GetProcAddress('glFogiv');
-  @glLightf := GetProcAddress('glLightf');
-  @glLightfv := GetProcAddress('glLightfv');
-  @glLighti := GetProcAddress('glLighti');
-  @glLightiv := GetProcAddress('glLightiv');
-  @glLightModelf := GetProcAddress('glLightModelf');
-  @glLightModelfv := GetProcAddress('glLightModelfv');
-  @glLightModeli := GetProcAddress('glLightModeli');
-  @glLightModeliv := GetProcAddress('glLightModeliv');
-  @glLineStipple := GetProcAddress('glLineStipple');
-  @glMaterialf := GetProcAddress('glMaterialf');
-  @glMaterialfv := GetProcAddress('glMaterialfv');
-  @glMateriali := GetProcAddress('glMateriali');
-  @glMaterialiv := GetProcAddress('glMaterialiv');
-  @glPolygonStipple := GetProcAddress('glPolygonStipple');
-  @glShadeModel := GetProcAddress('glShadeModel');
-  @glTexEnvf := GetProcAddress('glTexEnvf');
-  @glTexEnvfv := GetProcAddress('glTexEnvfv');
-  @glTexEnvi := GetProcAddress('glTexEnvi');
-  @glTexEnviv := GetProcAddress('glTexEnviv');
-  @glTexGend := GetProcAddress('glTexGend');
-  @glTexGendv := GetProcAddress('glTexGendv');
-  @glTexGenf := GetProcAddress('glTexGenf');
-  @glTexGenfv := GetProcAddress('glTexGenfv');
-  @glTexGeni := GetProcAddress('glTexGeni');
-  @glTexGeniv := GetProcAddress('glTexGeniv');
-  @glFeedbackBuffer := GetProcAddress('glFeedbackBuffer');
-  @glSelectBuffer := GetProcAddress('glSelectBuffer');
-  @glRenderMode := GetProcAddress('glRenderMode');
-  @glInitNames := GetProcAddress('glInitNames');
-  @glLoadName := GetProcAddress('glLoadName');
-  @glPassThrough := GetProcAddress('glPassThrough');
-  @glPopName := GetProcAddress('glPopName');
-  @glPushName := GetProcAddress('glPushName');
-  @glClearAccum := GetProcAddress('glClearAccum');
-  @glClearIndex := GetProcAddress('glClearIndex');
-  @glIndexMask := GetProcAddress('glIndexMask');
-  @glAccum := GetProcAddress('glAccum');
-  @glPopAttrib := GetProcAddress('glPopAttrib');
-  @glPushAttrib := GetProcAddress('glPushAttrib');
-  @glMap1d := GetProcAddress('glMap1d');
-  @glMap1f := GetProcAddress('glMap1f');
-  @glMap2d := GetProcAddress('glMap2d');
-  @glMap2f := GetProcAddress('glMap2f');
-  @glMapGrid1d := GetProcAddress('glMapGrid1d');
-  @glMapGrid1f := GetProcAddress('glMapGrid1f');
-  @glMapGrid2d := GetProcAddress('glMapGrid2d');
-  @glMapGrid2f := GetProcAddress('glMapGrid2f');
-  @glEvalCoord1d := GetProcAddress('glEvalCoord1d');
-  @glEvalCoord1dv := GetProcAddress('glEvalCoord1dv');
-  @glEvalCoord1f := GetProcAddress('glEvalCoord1f');
-  @glEvalCoord1fv := GetProcAddress('glEvalCoord1fv');
-  @glEvalCoord2d := GetProcAddress('glEvalCoord2d');
-  @glEvalCoord2dv := GetProcAddress('glEvalCoord2dv');
-  @glEvalCoord2f := GetProcAddress('glEvalCoord2f');
-  @glEvalCoord2fv := GetProcAddress('glEvalCoord2fv');
-  @glEvalMesh1 := GetProcAddress('glEvalMesh1');
-  @glEvalPoint1 := GetProcAddress('glEvalPoint1');
-  @glEvalMesh2 := GetProcAddress('glEvalMesh2');
-  @glEvalPoint2 := GetProcAddress('glEvalPoint2');
-  @glAlphaFunc := GetProcAddress('glAlphaFunc');
-  @glPixelZoom := GetProcAddress('glPixelZoom');
-  @glPixelTransferf := GetProcAddress('glPixelTransferf');
-  @glPixelTransferi := GetProcAddress('glPixelTransferi');
-  @glPixelMapfv := GetProcAddress('glPixelMapfv');
-  @glPixelMapuiv := GetProcAddress('glPixelMapuiv');
-  @glPixelMapusv := GetProcAddress('glPixelMapusv');
-  @glCopyPixels := GetProcAddress('glCopyPixels');
-  @glDrawPixels := GetProcAddress('glDrawPixels');
-  @glGetClipPlane := GetProcAddress('glGetClipPlane');
-  @glGetLightfv := GetProcAddress('glGetLightfv');
-  @glGetLightiv := GetProcAddress('glGetLightiv');
-  @glGetMapdv := GetProcAddress('glGetMapdv');
-  @glGetMapfv := GetProcAddress('glGetMapfv');
-  @glGetMapiv := GetProcAddress('glGetMapiv');
-  @glGetMaterialfv := GetProcAddress('glGetMaterialfv');
-  @glGetMaterialiv := GetProcAddress('glGetMaterialiv');
-  @glGetPixelMapfv := GetProcAddress('glGetPixelMapfv');
-  @glGetPixelMapuiv := GetProcAddress('glGetPixelMapuiv');
-  @glGetPixelMapusv := GetProcAddress('glGetPixelMapusv');
-  @glGetPolygonStipple := GetProcAddress('glGetPolygonStipple');
-  @glGetTexEnvfv := GetProcAddress('glGetTexEnvfv');
-  @glGetTexEnviv := GetProcAddress('glGetTexEnviv');
-  @glGetTexGendv := GetProcAddress('glGetTexGendv');
-  @glGetTexGenfv := GetProcAddress('glGetTexGenfv');
-  @glGetTexGeniv := GetProcAddress('glGetTexGeniv');
-  @glIsList := GetProcAddress('glIsList');
-  @glFrustum := GetProcAddress('glFrustum');
-  @glLoadIdentity := GetProcAddress('glLoadIdentity');
-  @glLoadMatrixf := GetProcAddress('glLoadMatrixf');
-  @glLoadMatrixd := GetProcAddress('glLoadMatrixd');
-  @glMatrixMode := GetProcAddress('glMatrixMode');
-  @glMultMatrixf := GetProcAddress('glMultMatrixf');
-  @glMultMatrixd := GetProcAddress('glMultMatrixd');
-  @glOrtho := GetProcAddress('glOrtho');
-  @glPopMatrix := GetProcAddress('glPopMatrix');
-  @glPushMatrix := GetProcAddress('glPushMatrix');
-  @glRotated := GetProcAddress('glRotated');
-  @glRotatef := GetProcAddress('glRotatef');
-  @glScaled := GetProcAddress('glScaled');
-  @glScalef := GetProcAddress('glScalef');
-  @glTranslated := GetProcAddress('glTranslated');
-  @glTranslatef := GetProcAddress('glTranslatef');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -838,7 +525,6 @@ end;
 
 procedure LoadVersion1_1;
 begin
-{$IFDEF FPC}
   Pointer(glDrawArrays) := GetProcAddress('glDrawArrays');
   Pointer(glDrawElements) := GetProcAddress('glDrawElements');
   Pointer(glGetPointerv) := GetProcAddress('glGetPointerv');
@@ -869,38 +555,6 @@ begin
   Pointer(glIndexubv) := GetProcAddress('glIndexubv');
   Pointer(glPopClientAttrib) := GetProcAddress('glPopClientAttrib');
   Pointer(glPushClientAttrib) := GetProcAddress('glPushClientAttrib');
-{$ELSE}
-  @glDrawArrays := GetProcAddress('glDrawArrays');
-  @glDrawElements := GetProcAddress('glDrawElements');
-  @glGetPointerv := GetProcAddress('glGetPointerv');
-  @glPolygonOffset := GetProcAddress('glPolygonOffset');
-  @glCopyTexImage1D := GetProcAddress('glCopyTexImage1D');
-  @glCopyTexImage2D := GetProcAddress('glCopyTexImage2D');
-  @glCopyTexSubImage1D := GetProcAddress('glCopyTexSubImage1D');
-  @glCopyTexSubImage2D := GetProcAddress('glCopyTexSubImage2D');
-  @glTexSubImage1D := GetProcAddress('glTexSubImage1D');
-  @glTexSubImage2D := GetProcAddress('glTexSubImage2D');
-  @glBindTexture := GetProcAddress('glBindTexture');
-  @glDeleteTextures := GetProcAddress('glDeleteTextures');
-  @glGenTextures := GetProcAddress('glGenTextures');
-  @glIsTexture := GetProcAddress('glIsTexture');
-  @glArrayElement := GetProcAddress('glArrayElement');
-  @glColorPointer := GetProcAddress('glColorPointer');
-  @glDisableClientState := GetProcAddress('glDisableClientState');
-  @glEdgeFlagPointer := GetProcAddress('glEdgeFlagPointer');
-  @glEnableClientState := GetProcAddress('glEnableClientState');
-  @glIndexPointer := GetProcAddress('glIndexPointer');
-  @glInterleavedArrays := GetProcAddress('glInterleavedArrays');
-  @glNormalPointer := GetProcAddress('glNormalPointer');
-  @glTexCoordPointer := GetProcAddress('glTexCoordPointer');
-  @glVertexPointer := GetProcAddress('glVertexPointer');
-  @glAreTexturesResident := GetProcAddress('glAreTexturesResident');
-  @glPrioritizeTextures := GetProcAddress('glPrioritizeTextures');
-  @glIndexub := GetProcAddress('glIndexub');
-  @glIndexubv := GetProcAddress('glIndexubv');
-  @glPopClientAttrib := GetProcAddress('glPopClientAttrib');
-  @glPushClientAttrib := GetProcAddress('glPushClientAttrib');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -909,17 +563,10 @@ end;
 
 procedure LoadVersion1_2;
 begin
-{$IFDEF FPC}
   Pointer(glDrawRangeElements) := GetProcAddress('glDrawRangeElements');
   Pointer(glTexImage3D) := GetProcAddress('glTexImage3D');
   Pointer(glTexSubImage3D) := GetProcAddress('glTexSubImage3D');
   Pointer(glCopyTexSubImage3D) := GetProcAddress('glCopyTexSubImage3D');
-{$ELSE}
-  @glDrawRangeElements := GetProcAddress('glDrawRangeElements');
-  @glTexImage3D := GetProcAddress('glTexImage3D');
-  @glTexSubImage3D := GetProcAddress('glTexSubImage3D');
-  @glCopyTexSubImage3D := GetProcAddress('glCopyTexSubImage3D');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -928,7 +575,6 @@ end;
 
 procedure LoadVersion1_3;
 begin
-{$IFDEF FPC}
   Pointer(glActiveTexture) := GetProcAddress('glActiveTexture');
   Pointer(glSampleCoverage) := GetProcAddress('glSampleCoverage');
   Pointer(glCompressedTexImage3D) := GetProcAddress('glCompressedTexImage3D');
@@ -975,54 +621,6 @@ begin
   Pointer(glLoadTransposeMatrixd) := GetProcAddress('glLoadTransposeMatrixd');
   Pointer(glMultTransposeMatrixf) := GetProcAddress('glMultTransposeMatrixf');
   Pointer(glMultTransposeMatrixd) := GetProcAddress('glMultTransposeMatrixd');
-{$ELSE}
-  @glActiveTexture := GetProcAddress('glActiveTexture');
-  @glSampleCoverage := GetProcAddress('glSampleCoverage');
-  @glCompressedTexImage3D := GetProcAddress('glCompressedTexImage3D');
-  @glCompressedTexImage2D := GetProcAddress('glCompressedTexImage2D');
-  @glCompressedTexImage1D := GetProcAddress('glCompressedTexImage1D');
-  @glCompressedTexSubImage3D := GetProcAddress('glCompressedTexSubImage3D');
-  @glCompressedTexSubImage2D := GetProcAddress('glCompressedTexSubImage2D');
-  @glCompressedTexSubImage1D := GetProcAddress('glCompressedTexSubImage1D');
-  @glGetCompressedTexImage := GetProcAddress('glGetCompressedTexImage');
-  @glClientActiveTexture := GetProcAddress('glClientActiveTexture');
-  @glMultiTexCoord1d := GetProcAddress('glMultiTexCoord1d');
-  @glMultiTexCoord1dv := GetProcAddress('glMultiTexCoord1dv');
-  @glMultiTexCoord1f := GetProcAddress('glMultiTexCoord1f');
-  @glMultiTexCoord1fv := GetProcAddress('glMultiTexCoord1fv');
-  @glMultiTexCoord1i := GetProcAddress('glMultiTexCoord1i');
-  @glMultiTexCoord1iv := GetProcAddress('glMultiTexCoord1iv');
-  @glMultiTexCoord1s := GetProcAddress('glMultiTexCoord1s');
-  @glMultiTexCoord1sv := GetProcAddress('glMultiTexCoord1sv');
-  @glMultiTexCoord2d := GetProcAddress('glMultiTexCoord2d');
-  @glMultiTexCoord2dv := GetProcAddress('glMultiTexCoord2dv');
-  @glMultiTexCoord2f := GetProcAddress('glMultiTexCoord2f');
-  @glMultiTexCoord2fv := GetProcAddress('glMultiTexCoord2fv');
-  @glMultiTexCoord2i := GetProcAddress('glMultiTexCoord2i');
-  @glMultiTexCoord2iv := GetProcAddress('glMultiTexCoord2iv');
-  @glMultiTexCoord2s := GetProcAddress('glMultiTexCoord2s');
-  @glMultiTexCoord2sv := GetProcAddress('glMultiTexCoord2sv');
-  @glMultiTexCoord3d := GetProcAddress('glMultiTexCoord3d');
-  @glMultiTexCoord3dv := GetProcAddress('glMultiTexCoord3dv');
-  @glMultiTexCoord3f := GetProcAddress('glMultiTexCoord3f');
-  @glMultiTexCoord3fv := GetProcAddress('glMultiTexCoord3fv');
-  @glMultiTexCoord3i := GetProcAddress('glMultiTexCoord3i');
-  @glMultiTexCoord3iv := GetProcAddress('glMultiTexCoord3iv');
-  @glMultiTexCoord3s := GetProcAddress('glMultiTexCoord3s');
-  @glMultiTexCoord3sv := GetProcAddress('glMultiTexCoord3sv');
-  @glMultiTexCoord4d := GetProcAddress('glMultiTexCoord4d');
-  @glMultiTexCoord4dv := GetProcAddress('glMultiTexCoord4dv');
-  @glMultiTexCoord4f := GetProcAddress('glMultiTexCoord4f');
-  @glMultiTexCoord4fv := GetProcAddress('glMultiTexCoord4fv');
-  @glMultiTexCoord4i := GetProcAddress('glMultiTexCoord4i');
-  @glMultiTexCoord4iv := GetProcAddress('glMultiTexCoord4iv');
-  @glMultiTexCoord4s := GetProcAddress('glMultiTexCoord4s');
-  @glMultiTexCoord4sv := GetProcAddress('glMultiTexCoord4sv');
-  @glLoadTransposeMatrixf := GetProcAddress('glLoadTransposeMatrixf');
-  @glLoadTransposeMatrixd := GetProcAddress('glLoadTransposeMatrixd');
-  @glMultTransposeMatrixf := GetProcAddress('glMultTransposeMatrixf');
-  @glMultTransposeMatrixd := GetProcAddress('glMultTransposeMatrixd');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1031,7 +629,6 @@ end;
 
 procedure LoadVersion1_4;
 begin
-{$IFDEF FPC}
   Pointer(glBlendFuncSeparate) := GetProcAddress('glBlendFuncSeparate');
   Pointer(glMultiDrawArrays) := GetProcAddress('glMultiDrawArrays');
   Pointer(glMultiDrawElements) := GetProcAddress('glMultiDrawElements');
@@ -1079,55 +676,6 @@ begin
   Pointer(glWindowPos3sv) := GetProcAddress('glWindowPos3sv');
   Pointer(glBlendColor) := GetProcAddress('glBlendColor');
   Pointer(glBlendEquation) := GetProcAddress('glBlendEquation');
-{$ELSE}
-  @glBlendFuncSeparate := GetProcAddress('glBlendFuncSeparate');
-  @glMultiDrawArrays := GetProcAddress('glMultiDrawArrays');
-  @glMultiDrawElements := GetProcAddress('glMultiDrawElements');
-  @glPointParameterf := GetProcAddress('glPointParameterf');
-  @glPointParameterfv := GetProcAddress('glPointParameterfv');
-  @glPointParameteri := GetProcAddress('glPointParameteri');
-  @glPointParameteriv := GetProcAddress('glPointParameteriv');
-  @glFogCoordf := GetProcAddress('glFogCoordf');
-  @glFogCoordfv := GetProcAddress('glFogCoordfv');
-  @glFogCoordd := GetProcAddress('glFogCoordd');
-  @glFogCoorddv := GetProcAddress('glFogCoorddv');
-  @glFogCoordPointer := GetProcAddress('glFogCoordPointer');
-  @glSecondaryColor3b := GetProcAddress('glSecondaryColor3b');
-  @glSecondaryColor3bv := GetProcAddress('glSecondaryColor3bv');
-  @glSecondaryColor3d := GetProcAddress('glSecondaryColor3d');
-  @glSecondaryColor3dv := GetProcAddress('glSecondaryColor3dv');
-  @glSecondaryColor3f := GetProcAddress('glSecondaryColor3f');
-  @glSecondaryColor3fv := GetProcAddress('glSecondaryColor3fv');
-  @glSecondaryColor3i := GetProcAddress('glSecondaryColor3i');
-  @glSecondaryColor3iv := GetProcAddress('glSecondaryColor3iv');
-  @glSecondaryColor3s := GetProcAddress('glSecondaryColor3s');
-  @glSecondaryColor3sv := GetProcAddress('glSecondaryColor3sv');
-  @glSecondaryColor3ub := GetProcAddress('glSecondaryColor3ub');
-  @glSecondaryColor3ubv := GetProcAddress('glSecondaryColor3ubv');
-  @glSecondaryColor3ui := GetProcAddress('glSecondaryColor3ui');
-  @glSecondaryColor3uiv := GetProcAddress('glSecondaryColor3uiv');
-  @glSecondaryColor3us := GetProcAddress('glSecondaryColor3us');
-  @glSecondaryColor3usv := GetProcAddress('glSecondaryColor3usv');
-  @glSecondaryColorPointer := GetProcAddress('glSecondaryColorPointer');
-  @glWindowPos2d := GetProcAddress('glWindowPos2d');
-  @glWindowPos2dv := GetProcAddress('glWindowPos2dv');
-  @glWindowPos2f := GetProcAddress('glWindowPos2f');
-  @glWindowPos2fv := GetProcAddress('glWindowPos2fv');
-  @glWindowPos2i := GetProcAddress('glWindowPos2i');
-  @glWindowPos2iv := GetProcAddress('glWindowPos2iv');
-  @glWindowPos2s := GetProcAddress('glWindowPos2s');
-  @glWindowPos2sv := GetProcAddress('glWindowPos2sv');
-  @glWindowPos3d := GetProcAddress('glWindowPos3d');
-  @glWindowPos3dv := GetProcAddress('glWindowPos3dv');
-  @glWindowPos3f := GetProcAddress('glWindowPos3f');
-  @glWindowPos3fv := GetProcAddress('glWindowPos3fv');
-  @glWindowPos3i := GetProcAddress('glWindowPos3i');
-  @glWindowPos3iv := GetProcAddress('glWindowPos3iv');
-  @glWindowPos3s := GetProcAddress('glWindowPos3s');
-  @glWindowPos3sv := GetProcAddress('glWindowPos3sv');
-  @glBlendColor := GetProcAddress('glBlendColor');
-  @glBlendEquation := GetProcAddress('glBlendEquation');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1136,7 +684,6 @@ end;
 
 procedure LoadVersion1_5;
 begin
-{$IFDEF FPC}
   Pointer(glGenQueries) := GetProcAddress('glGenQueries');
   Pointer(glDeleteQueries) := GetProcAddress('glDeleteQueries');
   Pointer(glIsQuery) := GetProcAddress('glIsQuery');
@@ -1156,27 +703,6 @@ begin
   Pointer(glUnmapBuffer) := GetProcAddress('glUnmapBuffer');
   Pointer(glGetBufferParameteriv) := GetProcAddress('glGetBufferParameteriv');
   Pointer(glGetBufferPointerv) := GetProcAddress('glGetBufferPointerv');
-{$ELSE}
-  @glGenQueries := GetProcAddress('glGenQueries');
-  @glDeleteQueries := GetProcAddress('glDeleteQueries');
-  @glIsQuery := GetProcAddress('glIsQuery');
-  @glBeginQuery := GetProcAddress('glBeginQuery');
-  @glEndQuery := GetProcAddress('glEndQuery');
-  @glGetQueryiv := GetProcAddress('glGetQueryiv');
-  @glGetQueryObjectiv := GetProcAddress('glGetQueryObjectiv');
-  @glGetQueryObjectuiv := GetProcAddress('glGetQueryObjectuiv');
-  @glBindBuffer := GetProcAddress('glBindBuffer');
-  @glDeleteBuffers := GetProcAddress('glDeleteBuffers');
-  @glGenBuffers := GetProcAddress('glGenBuffers');
-  @glIsBuffer := GetProcAddress('glIsBuffer');
-  @glBufferData := GetProcAddress('glBufferData');
-  @glBufferSubData := GetProcAddress('glBufferSubData');
-  @glGetBufferSubData := GetProcAddress('glGetBufferSubData');
-  @glMapBuffer := GetProcAddress('glMapBuffer');
-  @glUnmapBuffer := GetProcAddress('glUnmapBuffer');
-  @glGetBufferParameteriv := GetProcAddress('glGetBufferParameteriv');
-  @glGetBufferPointerv := GetProcAddress('glGetBufferPointerv');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1185,7 +711,6 @@ end;
 
 procedure LoadVersion2_0;
 begin
-{$IFDEF FPC}
   Pointer(glBlendEquationSeparate) := GetProcAddress('glBlendEquationSeparate');
   Pointer(glDrawBuffers) := GetProcAddress('glDrawBuffers');
   Pointer(glStencilOpSeparate) := GetProcAddress('glStencilOpSeparate');
@@ -1279,101 +804,6 @@ begin
   Pointer(glVertexAttrib4uiv) := GetProcAddress('glVertexAttrib4uiv');
   Pointer(glVertexAttrib4usv) := GetProcAddress('glVertexAttrib4usv');
   Pointer(glVertexAttribPointer) := GetProcAddress('glVertexAttribPointer');
-{$ELSE}
-  @glBlendEquationSeparate := GetProcAddress('glBlendEquationSeparate');
-  @glDrawBuffers := GetProcAddress('glDrawBuffers');
-  @glStencilOpSeparate := GetProcAddress('glStencilOpSeparate');
-  @glStencilFuncSeparate := GetProcAddress('glStencilFuncSeparate');
-  @glStencilMaskSeparate := GetProcAddress('glStencilMaskSeparate');
-  @glAttachShader := GetProcAddress('glAttachShader');
-  @glBindAttribLocation := GetProcAddress('glBindAttribLocation');
-  @glCompileShader := GetProcAddress('glCompileShader');
-  @glCreateProgram := GetProcAddress('glCreateProgram');
-  @glCreateShader := GetProcAddress('glCreateShader');
-  @glDeleteProgram := GetProcAddress('glDeleteProgram');
-  @glDeleteShader := GetProcAddress('glDeleteShader');
-  @glDetachShader := GetProcAddress('glDetachShader');
-  @glDisableVertexAttribArray := GetProcAddress('glDisableVertexAttribArray');
-  @glEnableVertexAttribArray := GetProcAddress('glEnableVertexAttribArray');
-  @glGetActiveAttrib := GetProcAddress('glGetActiveAttrib');
-  @glGetActiveUniform := GetProcAddress('glGetActiveUniform');
-  @glGetAttachedShaders := GetProcAddress('glGetAttachedShaders');
-  @glGetAttribLocation := GetProcAddress('glGetAttribLocation');
-  @glGetProgramiv := GetProcAddress('glGetProgramiv');
-  @glGetProgramInfoLog := GetProcAddress('glGetProgramInfoLog');
-  @glGetShaderiv := GetProcAddress('glGetShaderiv');
-  @glGetShaderInfoLog := GetProcAddress('glGetShaderInfoLog');
-  @glGetShaderSource := GetProcAddress('glGetShaderSource');
-  @glGetUniformLocation := GetProcAddress('glGetUniformLocation');
-  @glGetUniformfv := GetProcAddress('glGetUniformfv');
-  @glGetUniformiv := GetProcAddress('glGetUniformiv');
-  @glGetVertexAttribdv := GetProcAddress('glGetVertexAttribdv');
-  @glGetVertexAttribfv := GetProcAddress('glGetVertexAttribfv');
-  @glGetVertexAttribiv := GetProcAddress('glGetVertexAttribiv');
-  @glGetVertexAttribPointerv := GetProcAddress('glGetVertexAttribPointerv');
-  @glIsProgram := GetProcAddress('glIsProgram');
-  @glIsShader := GetProcAddress('glIsShader');
-  @glLinkProgram := GetProcAddress('glLinkProgram');
-  @glShaderSource := GetProcAddress('glShaderSource');
-  @glUseProgram := GetProcAddress('glUseProgram');
-  @glUniform1f := GetProcAddress('glUniform1f');
-  @glUniform2f := GetProcAddress('glUniform2f');
-  @glUniform3f := GetProcAddress('glUniform3f');
-  @glUniform4f := GetProcAddress('glUniform4f');
-  @glUniform1i := GetProcAddress('glUniform1i');
-  @glUniform2i := GetProcAddress('glUniform2i');
-  @glUniform3i := GetProcAddress('glUniform3i');
-  @glUniform4i := GetProcAddress('glUniform4i');
-  @glUniform1fv := GetProcAddress('glUniform1fv');
-  @glUniform2fv := GetProcAddress('glUniform2fv');
-  @glUniform3fv := GetProcAddress('glUniform3fv');
-  @glUniform4fv := GetProcAddress('glUniform4fv');
-  @glUniform1iv := GetProcAddress('glUniform1iv');
-  @glUniform2iv := GetProcAddress('glUniform2iv');
-  @glUniform3iv := GetProcAddress('glUniform3iv');
-  @glUniform4iv := GetProcAddress('glUniform4iv');
-  @glUniformMatrix2fv := GetProcAddress('glUniformMatrix2fv');
-  @glUniformMatrix3fv := GetProcAddress('glUniformMatrix3fv');
-  @glUniformMatrix4fv := GetProcAddress('glUniformMatrix4fv');
-  @glValidateProgram := GetProcAddress('glValidateProgram');
-  @glVertexAttrib1d := GetProcAddress('glVertexAttrib1d');
-  @glVertexAttrib1dv := GetProcAddress('glVertexAttrib1dv');
-  @glVertexAttrib1f := GetProcAddress('glVertexAttrib1f');
-  @glVertexAttrib1fv := GetProcAddress('glVertexAttrib1fv');
-  @glVertexAttrib1s := GetProcAddress('glVertexAttrib1s');
-  @glVertexAttrib1sv := GetProcAddress('glVertexAttrib1sv');
-  @glVertexAttrib2d := GetProcAddress('glVertexAttrib2d');
-  @glVertexAttrib2dv := GetProcAddress('glVertexAttrib2dv');
-  @glVertexAttrib2f := GetProcAddress('glVertexAttrib2f');
-  @glVertexAttrib2fv := GetProcAddress('glVertexAttrib2fv');
-  @glVertexAttrib2s := GetProcAddress('glVertexAttrib2s');
-  @glVertexAttrib2sv := GetProcAddress('glVertexAttrib2sv');
-  @glVertexAttrib3d := GetProcAddress('glVertexAttrib3d');
-  @glVertexAttrib3dv := GetProcAddress('glVertexAttrib3dv');
-  @glVertexAttrib3f := GetProcAddress('glVertexAttrib3f');
-  @glVertexAttrib3fv := GetProcAddress('glVertexAttrib3fv');
-  @glVertexAttrib3s := GetProcAddress('glVertexAttrib3s');
-  @glVertexAttrib3sv := GetProcAddress('glVertexAttrib3sv');
-  @glVertexAttrib4Nbv := GetProcAddress('glVertexAttrib4Nbv');
-  @glVertexAttrib4Niv := GetProcAddress('glVertexAttrib4Niv');
-  @glVertexAttrib4Nsv := GetProcAddress('glVertexAttrib4Nsv');
-  @glVertexAttrib4Nub := GetProcAddress('glVertexAttrib4Nub');
-  @glVertexAttrib4Nubv := GetProcAddress('glVertexAttrib4Nubv');
-  @glVertexAttrib4Nuiv := GetProcAddress('glVertexAttrib4Nuiv');
-  @glVertexAttrib4Nusv := GetProcAddress('glVertexAttrib4Nusv');
-  @glVertexAttrib4bv := GetProcAddress('glVertexAttrib4bv');
-  @glVertexAttrib4d := GetProcAddress('glVertexAttrib4d');
-  @glVertexAttrib4dv := GetProcAddress('glVertexAttrib4dv');
-  @glVertexAttrib4f := GetProcAddress('glVertexAttrib4f');
-  @glVertexAttrib4fv := GetProcAddress('glVertexAttrib4fv');
-  @glVertexAttrib4iv := GetProcAddress('glVertexAttrib4iv');
-  @glVertexAttrib4s := GetProcAddress('glVertexAttrib4s');
-  @glVertexAttrib4sv := GetProcAddress('glVertexAttrib4sv');
-  @glVertexAttrib4ubv := GetProcAddress('glVertexAttrib4ubv');
-  @glVertexAttrib4uiv := GetProcAddress('glVertexAttrib4uiv');
-  @glVertexAttrib4usv := GetProcAddress('glVertexAttrib4usv');
-  @glVertexAttribPointer := GetProcAddress('glVertexAttribPointer');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1382,21 +812,12 @@ end;
 
 procedure LoadVersion2_1;
 begin
-{$IFDEF FPC}
   Pointer(glUniformMatrix2x3fv) := GetProcAddress('glUniformMatrix2x3fv');
   Pointer(glUniformMatrix3x2fv) := GetProcAddress('glUniformMatrix3x2fv');
   Pointer(glUniformMatrix2x4fv) := GetProcAddress('glUniformMatrix2x4fv');
   Pointer(glUniformMatrix4x2fv) := GetProcAddress('glUniformMatrix4x2fv');
   Pointer(glUniformMatrix3x4fv) := GetProcAddress('glUniformMatrix3x4fv');
   Pointer(glUniformMatrix4x3fv) := GetProcAddress('glUniformMatrix4x3fv');
-{$ELSE}
-  @glUniformMatrix2x3fv := GetProcAddress('glUniformMatrix2x3fv');
-  @glUniformMatrix3x2fv := GetProcAddress('glUniformMatrix3x2fv');
-  @glUniformMatrix2x4fv := GetProcAddress('glUniformMatrix2x4fv');
-  @glUniformMatrix4x2fv := GetProcAddress('glUniformMatrix4x2fv');
-  @glUniformMatrix3x4fv := GetProcAddress('glUniformMatrix3x4fv');
-  @glUniformMatrix4x3fv := GetProcAddress('glUniformMatrix4x3fv');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1405,7 +826,6 @@ end;
 
 procedure LoadVersion3_0;
 begin
-{$IFDEF FPC}
   Pointer(glColorMaski) := GetProcAddress('glColorMaski');
   Pointer(glGetBooleani_v) := GetProcAddress('glGetBooleani_v');
   Pointer(glGetIntegeri_v) := GetProcAddress('glGetIntegeri_v');
@@ -1490,92 +910,6 @@ begin
   Pointer(glDeleteVertexArrays) := GetProcAddress('glDeleteVertexArrays');
   Pointer(glGenVertexArrays) := GetProcAddress('glGenVertexArrays');
   Pointer(glIsVertexArray) := GetProcAddress('glIsVertexArray');
-{$ELSE}
-  @glColorMaski := GetProcAddress('glColorMaski');
-  @glGetBooleani_v := GetProcAddress('glGetBooleani_v');
-  @glGetIntegeri_v := GetProcAddress('glGetIntegeri_v');
-  @glEnablei := GetProcAddress('glEnablei');
-  @glDisablei := GetProcAddress('glDisablei');
-  @glIsEnabledi := GetProcAddress('glIsEnabledi');
-  @glBeginTransformFeedback := GetProcAddress('glBeginTransformFeedback');
-  @glEndTransformFeedback := GetProcAddress('glEndTransformFeedback');
-  @glBindBufferRange := GetProcAddress('glBindBufferRange');
-  @glBindBufferBase := GetProcAddress('glBindBufferBase');
-  @glTransformFeedbackVaryings := GetProcAddress('glTransformFeedbackVaryings');
-  @glGetTransformFeedbackVarying := GetProcAddress('glGetTransformFeedbackVarying');
-  @glClampColor := GetProcAddress('glClampColor');
-  @glBeginConditionalRender := GetProcAddress('glBeginConditionalRender');
-  @glEndConditionalRender := GetProcAddress('glEndConditionalRender');
-  @glVertexAttribIPointer := GetProcAddress('glVertexAttribIPointer');
-  @glGetVertexAttribIiv := GetProcAddress('glGetVertexAttribIiv');
-  @glGetVertexAttribIuiv := GetProcAddress('glGetVertexAttribIuiv');
-  @glVertexAttribI1i := GetProcAddress('glVertexAttribI1i');
-  @glVertexAttribI2i := GetProcAddress('glVertexAttribI2i');
-  @glVertexAttribI3i := GetProcAddress('glVertexAttribI3i');
-  @glVertexAttribI4i := GetProcAddress('glVertexAttribI4i');
-  @glVertexAttribI1ui := GetProcAddress('glVertexAttribI1ui');
-  @glVertexAttribI2ui := GetProcAddress('glVertexAttribI2ui');
-  @glVertexAttribI3ui := GetProcAddress('glVertexAttribI3ui');
-  @glVertexAttribI4ui := GetProcAddress('glVertexAttribI4ui');
-  @glVertexAttribI1iv := GetProcAddress('glVertexAttribI1iv');
-  @glVertexAttribI2iv := GetProcAddress('glVertexAttribI2iv');
-  @glVertexAttribI3iv := GetProcAddress('glVertexAttribI3iv');
-  @glVertexAttribI4iv := GetProcAddress('glVertexAttribI4iv');
-  @glVertexAttribI1uiv := GetProcAddress('glVertexAttribI1uiv');
-  @glVertexAttribI2uiv := GetProcAddress('glVertexAttribI2uiv');
-  @glVertexAttribI3uiv := GetProcAddress('glVertexAttribI3uiv');
-  @glVertexAttribI4uiv := GetProcAddress('glVertexAttribI4uiv');
-  @glVertexAttribI4bv := GetProcAddress('glVertexAttribI4bv');
-  @glVertexAttribI4sv := GetProcAddress('glVertexAttribI4sv');
-  @glVertexAttribI4ubv := GetProcAddress('glVertexAttribI4ubv');
-  @glVertexAttribI4usv := GetProcAddress('glVertexAttribI4usv');
-  @glGetUniformuiv := GetProcAddress('glGetUniformuiv');
-  @glBindFragDataLocation := GetProcAddress('glBindFragDataLocation');
-  @glGetFragDataLocation := GetProcAddress('glGetFragDataLocation');
-  @glUniform1ui := GetProcAddress('glUniform1ui');
-  @glUniform2ui := GetProcAddress('glUniform2ui');
-  @glUniform3ui := GetProcAddress('glUniform3ui');
-  @glUniform4ui := GetProcAddress('glUniform4ui');
-  @glUniform1uiv := GetProcAddress('glUniform1uiv');
-  @glUniform2uiv := GetProcAddress('glUniform2uiv');
-  @glUniform3uiv := GetProcAddress('glUniform3uiv');
-  @glUniform4uiv := GetProcAddress('glUniform4uiv');
-  @glTexParameterIiv := GetProcAddress('glTexParameterIiv');
-  @glTexParameterIuiv := GetProcAddress('glTexParameterIuiv');
-  @glGetTexParameterIiv := GetProcAddress('glGetTexParameterIiv');
-  @glGetTexParameterIuiv := GetProcAddress('glGetTexParameterIuiv');
-  @glClearBufferiv := GetProcAddress('glClearBufferiv');
-  @glClearBufferuiv := GetProcAddress('glClearBufferuiv');
-  @glClearBufferfv := GetProcAddress('glClearBufferfv');
-  @glClearBufferfi := GetProcAddress('glClearBufferfi');
-  @glGetStringi := GetProcAddress('glGetStringi');
-  @glIsRenderbuffer := GetProcAddress('glIsRenderbuffer');
-  @glBindRenderbuffer := GetProcAddress('glBindRenderbuffer');
-  @glDeleteRenderbuffers := GetProcAddress('glDeleteRenderbuffers');
-  @glGenRenderbuffers := GetProcAddress('glGenRenderbuffers');
-  @glRenderbufferStorage := GetProcAddress('glRenderbufferStorage');
-  @glGetRenderbufferParameteriv := GetProcAddress('glGetRenderbufferParameteriv');
-  @glIsFramebuffer := GetProcAddress('glIsFramebuffer');
-  @glBindFramebuffer := GetProcAddress('glBindFramebuffer');
-  @glDeleteFramebuffers := GetProcAddress('glDeleteFramebuffers');
-  @glGenFramebuffers := GetProcAddress('glGenFramebuffers');
-  @glCheckFramebufferStatus := GetProcAddress('glCheckFramebufferStatus');
-  @glFramebufferTexture1D := GetProcAddress('glFramebufferTexture1D');
-  @glFramebufferTexture2D := GetProcAddress('glFramebufferTexture2D');
-  @glFramebufferTexture3D := GetProcAddress('glFramebufferTexture3D');
-  @glFramebufferRenderbuffer := GetProcAddress('glFramebufferRenderbuffer');
-  @glGetFramebufferAttachmentParameteriv := GetProcAddress('glGetFramebufferAttachmentParameteriv');
-  @glGenerateMipmap := GetProcAddress('glGenerateMipmap');
-  @glBlitFramebuffer := GetProcAddress('glBlitFramebuffer');
-  @glRenderbufferStorageMultisample := GetProcAddress('glRenderbufferStorageMultisample');
-  @glFramebufferTextureLayer := GetProcAddress('glFramebufferTextureLayer');
-  @glMapBufferRange := GetProcAddress('glMapBufferRange');
-  @glFlushMappedBufferRange := GetProcAddress('glFlushMappedBufferRange');
-  @glBindVertexArray := GetProcAddress('glBindVertexArray');
-  @glDeleteVertexArrays := GetProcAddress('glDeleteVertexArrays');
-  @glGenVertexArrays := GetProcAddress('glGenVertexArrays');
-  @glIsVertexArray := GetProcAddress('glIsVertexArray');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1584,7 +918,6 @@ end;
 
 procedure LoadVersion3_1;
 begin
-{$IFDEF FPC}
   Pointer(glDrawArraysInstanced) := GetProcAddress('glDrawArraysInstanced');
   Pointer(glDrawElementsInstanced) := GetProcAddress('glDrawElementsInstanced');
   Pointer(glTexBuffer) := GetProcAddress('glTexBuffer');
@@ -1597,20 +930,6 @@ begin
   Pointer(glGetActiveUniformBlockiv) := GetProcAddress('glGetActiveUniformBlockiv');
   Pointer(glGetActiveUniformBlockName) := GetProcAddress('glGetActiveUniformBlockName');
   Pointer(glUniformBlockBinding) := GetProcAddress('glUniformBlockBinding');
-{$ELSE}
-  @glDrawArraysInstanced := GetProcAddress('glDrawArraysInstanced');
-  @glDrawElementsInstanced := GetProcAddress('glDrawElementsInstanced');
-  @glTexBuffer := GetProcAddress('glTexBuffer');
-  @glPrimitiveRestartIndex := GetProcAddress('glPrimitiveRestartIndex');
-  @glCopyBufferSubData := GetProcAddress('glCopyBufferSubData');
-  @glGetUniformIndices := GetProcAddress('glGetUniformIndices');
-  @glGetActiveUniformsiv := GetProcAddress('glGetActiveUniformsiv');
-  @glGetActiveUniformName := GetProcAddress('glGetActiveUniformName');
-  @glGetUniformBlockIndex := GetProcAddress('glGetUniformBlockIndex');
-  @glGetActiveUniformBlockiv := GetProcAddress('glGetActiveUniformBlockiv');
-  @glGetActiveUniformBlockName := GetProcAddress('glGetActiveUniformBlockName');
-  @glUniformBlockBinding := GetProcAddress('glUniformBlockBinding');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1619,7 +938,6 @@ end;
 
 procedure LoadVersion3_2;
 begin
-{$IFDEF FPC}
   Pointer(glDrawElementsBaseVertex) := GetProcAddress('glDrawElementsBaseVertex');
   Pointer(glDrawRangeElementsBaseVertex) := GetProcAddress('glDrawRangeElementsBaseVertex');
   Pointer(glDrawElementsInstancedBaseVertex) := GetProcAddress('glDrawElementsInstancedBaseVertex');
@@ -1639,27 +957,6 @@ begin
   Pointer(glTexImage3DMultisample) := GetProcAddress('glTexImage3DMultisample');
   Pointer(glGetMultisamplefv) := GetProcAddress('glGetMultisamplefv');
   Pointer(glSampleMaski) := GetProcAddress('glSampleMaski');
-{$ELSE}
-  @glDrawElementsBaseVertex := GetProcAddress('glDrawElementsBaseVertex');
-  @glDrawRangeElementsBaseVertex := GetProcAddress('glDrawRangeElementsBaseVertex');
-  @glDrawElementsInstancedBaseVertex := GetProcAddress('glDrawElementsInstancedBaseVertex');
-  @glMultiDrawElementsBaseVertex := GetProcAddress('glMultiDrawElementsBaseVertex');
-  @glProvokingVertex := GetProcAddress('glProvokingVertex');
-  @glFenceSync := GetProcAddress('glFenceSync');
-  @glIsSync := GetProcAddress('glIsSync');
-  @glDeleteSync := GetProcAddress('glDeleteSync');
-  @glClientWaitSync := GetProcAddress('glClientWaitSync');
-  @glWaitSync := GetProcAddress('glWaitSync');
-  @glGetInteger64v := GetProcAddress('glGetInteger64v');
-  @glGetSynciv := GetProcAddress('glGetSynciv');
-  @glGetInteger64i_v := GetProcAddress('glGetInteger64i_v');
-  @glGetBufferParameteri64v := GetProcAddress('glGetBufferParameteri64v');
-  @glFramebufferTexture := GetProcAddress('glFramebufferTexture');
-  @glTexImage2DMultisample := GetProcAddress('glTexImage2DMultisample');
-  @glTexImage3DMultisample := GetProcAddress('glTexImage3DMultisample');
-  @glGetMultisamplefv := GetProcAddress('glGetMultisamplefv');
-  @glSampleMaski := GetProcAddress('glSampleMaski');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1668,7 +965,6 @@ end;
 
 procedure LoadVersion3_3;
 begin
-{$IFDEF FPC}
   Pointer(glBindFragDataLocationIndexed) := GetProcAddress('glBindFragDataLocationIndexed');
   Pointer(glGetFragDataIndex) := GetProcAddress('glGetFragDataIndex');
   Pointer(glGenSamplers) := GetProcAddress('glGenSamplers');
@@ -1727,66 +1023,6 @@ begin
   Pointer(glColorP4uiv) := GetProcAddress('glColorP4uiv');
   Pointer(glSecondaryColorP3ui) := GetProcAddress('glSecondaryColorP3ui');
   Pointer(glSecondaryColorP3uiv) := GetProcAddress('glSecondaryColorP3uiv');
-{$ELSE}
-  @glBindFragDataLocationIndexed := GetProcAddress('glBindFragDataLocationIndexed');
-  @glGetFragDataIndex := GetProcAddress('glGetFragDataIndex');
-  @glGenSamplers := GetProcAddress('glGenSamplers');
-  @glDeleteSamplers := GetProcAddress('glDeleteSamplers');
-  @glIsSampler := GetProcAddress('glIsSampler');
-  @glBindSampler := GetProcAddress('glBindSampler');
-  @glSamplerParameteri := GetProcAddress('glSamplerParameteri');
-  @glSamplerParameteriv := GetProcAddress('glSamplerParameteriv');
-  @glSamplerParameterf := GetProcAddress('glSamplerParameterf');
-  @glSamplerParameterfv := GetProcAddress('glSamplerParameterfv');
-  @glSamplerParameterIiv := GetProcAddress('glSamplerParameterIiv');
-  @glSamplerParameterIuiv := GetProcAddress('glSamplerParameterIuiv');
-  @glGetSamplerParameteriv := GetProcAddress('glGetSamplerParameteriv');
-  @glGetSamplerParameterIiv := GetProcAddress('glGetSamplerParameterIiv');
-  @glGetSamplerParameterfv := GetProcAddress('glGetSamplerParameterfv');
-  @glGetSamplerParameterIuiv := GetProcAddress('glGetSamplerParameterIuiv');
-  @glQueryCounter := GetProcAddress('glQueryCounter');
-  @glGetQueryObjecti64v := GetProcAddress('glGetQueryObjecti64v');
-  @glGetQueryObjectui64v := GetProcAddress('glGetQueryObjectui64v');
-  @glVertexAttribDivisor := GetProcAddress('glVertexAttribDivisor');
-  @glVertexAttribP1ui := GetProcAddress('glVertexAttribP1ui');
-  @glVertexAttribP1uiv := GetProcAddress('glVertexAttribP1uiv');
-  @glVertexAttribP2ui := GetProcAddress('glVertexAttribP2ui');
-  @glVertexAttribP2uiv := GetProcAddress('glVertexAttribP2uiv');
-  @glVertexAttribP3ui := GetProcAddress('glVertexAttribP3ui');
-  @glVertexAttribP3uiv := GetProcAddress('glVertexAttribP3uiv');
-  @glVertexAttribP4ui := GetProcAddress('glVertexAttribP4ui');
-  @glVertexAttribP4uiv := GetProcAddress('glVertexAttribP4uiv');
-  @glVertexP2ui := GetProcAddress('glVertexP2ui');
-  @glVertexP2uiv := GetProcAddress('glVertexP2uiv');
-  @glVertexP3ui := GetProcAddress('glVertexP3ui');
-  @glVertexP3uiv := GetProcAddress('glVertexP3uiv');
-  @glVertexP4ui := GetProcAddress('glVertexP4ui');
-  @glVertexP4uiv := GetProcAddress('glVertexP4uiv');
-  @glTexCoordP1ui := GetProcAddress('glTexCoordP1ui');
-  @glTexCoordP1uiv := GetProcAddress('glTexCoordP1uiv');
-  @glTexCoordP2ui := GetProcAddress('glTexCoordP2ui');
-  @glTexCoordP2uiv := GetProcAddress('glTexCoordP2uiv');
-  @glTexCoordP3ui := GetProcAddress('glTexCoordP3ui');
-  @glTexCoordP3uiv := GetProcAddress('glTexCoordP3uiv');
-  @glTexCoordP4ui := GetProcAddress('glTexCoordP4ui');
-  @glTexCoordP4uiv := GetProcAddress('glTexCoordP4uiv');
-  @glMultiTexCoordP1ui := GetProcAddress('glMultiTexCoordP1ui');
-  @glMultiTexCoordP1uiv := GetProcAddress('glMultiTexCoordP1uiv');
-  @glMultiTexCoordP2ui := GetProcAddress('glMultiTexCoordP2ui');
-  @glMultiTexCoordP2uiv := GetProcAddress('glMultiTexCoordP2uiv');
-  @glMultiTexCoordP3ui := GetProcAddress('glMultiTexCoordP3ui');
-  @glMultiTexCoordP3uiv := GetProcAddress('glMultiTexCoordP3uiv');
-  @glMultiTexCoordP4ui := GetProcAddress('glMultiTexCoordP4ui');
-  @glMultiTexCoordP4uiv := GetProcAddress('glMultiTexCoordP4uiv');
-  @glNormalP3ui := GetProcAddress('glNormalP3ui');
-  @glNormalP3uiv := GetProcAddress('glNormalP3uiv');
-  @glColorP3ui := GetProcAddress('glColorP3ui');
-  @glColorP3uiv := GetProcAddress('glColorP3uiv');
-  @glColorP4ui := GetProcAddress('glColorP4ui');
-  @glColorP4uiv := GetProcAddress('glColorP4uiv');
-  @glSecondaryColorP3ui := GetProcAddress('glSecondaryColorP3ui');
-  @glSecondaryColorP3uiv := GetProcAddress('glSecondaryColorP3uiv');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1795,7 +1031,6 @@ end;
 
 procedure LoadVersion4_0;
 begin
-{$IFDEF FPC}
   Pointer(glMinSampleShading) := GetProcAddress('glMinSampleShading');
   Pointer(glBlendEquationi) := GetProcAddress('glBlendEquationi');
   Pointer(glBlendEquationSeparatei) := GetProcAddress('glBlendEquationSeparatei');
@@ -1842,54 +1077,6 @@ begin
   Pointer(glBeginQueryIndexed) := GetProcAddress('glBeginQueryIndexed');
   Pointer(glEndQueryIndexed) := GetProcAddress('glEndQueryIndexed');
   Pointer(glGetQueryIndexediv) := GetProcAddress('glGetQueryIndexediv');
-{$ELSE}
-  @glMinSampleShading := GetProcAddress('glMinSampleShading');
-  @glBlendEquationi := GetProcAddress('glBlendEquationi');
-  @glBlendEquationSeparatei := GetProcAddress('glBlendEquationSeparatei');
-  @glBlendFunci := GetProcAddress('glBlendFunci');
-  @glBlendFuncSeparatei := GetProcAddress('glBlendFuncSeparatei');
-  @glDrawArraysIndirect := GetProcAddress('glDrawArraysIndirect');
-  @glDrawElementsIndirect := GetProcAddress('glDrawElementsIndirect');
-  @glUniform1d := GetProcAddress('glUniform1d');
-  @glUniform2d := GetProcAddress('glUniform2d');
-  @glUniform3d := GetProcAddress('glUniform3d');
-  @glUniform4d := GetProcAddress('glUniform4d');
-  @glUniform1dv := GetProcAddress('glUniform1dv');
-  @glUniform2dv := GetProcAddress('glUniform2dv');
-  @glUniform3dv := GetProcAddress('glUniform3dv');
-  @glUniform4dv := GetProcAddress('glUniform4dv');
-  @glUniformMatrix2dv := GetProcAddress('glUniformMatrix2dv');
-  @glUniformMatrix3dv := GetProcAddress('glUniformMatrix3dv');
-  @glUniformMatrix4dv := GetProcAddress('glUniformMatrix4dv');
-  @glUniformMatrix2x3dv := GetProcAddress('glUniformMatrix2x3dv');
-  @glUniformMatrix2x4dv := GetProcAddress('glUniformMatrix2x4dv');
-  @glUniformMatrix3x2dv := GetProcAddress('glUniformMatrix3x2dv');
-  @glUniformMatrix3x4dv := GetProcAddress('glUniformMatrix3x4dv');
-  @glUniformMatrix4x2dv := GetProcAddress('glUniformMatrix4x2dv');
-  @glUniformMatrix4x3dv := GetProcAddress('glUniformMatrix4x3dv');
-  @glGetUniformdv := GetProcAddress('glGetUniformdv');
-  @glGetSubroutineUniformLocation := GetProcAddress('glGetSubroutineUniformLocation');
-  @glGetSubroutineIndex := GetProcAddress('glGetSubroutineIndex');
-  @glGetActiveSubroutineUniformiv := GetProcAddress('glGetActiveSubroutineUniformiv');
-  @glGetActiveSubroutineUniformName := GetProcAddress('glGetActiveSubroutineUniformName');
-  @glGetActiveSubroutineName := GetProcAddress('glGetActiveSubroutineName');
-  @glUniformSubroutinesuiv := GetProcAddress('glUniformSubroutinesuiv');
-  @glGetUniformSubroutineuiv := GetProcAddress('glGetUniformSubroutineuiv');
-  @glGetProgramStageiv := GetProcAddress('glGetProgramStageiv');
-  @glPatchParameteri := GetProcAddress('glPatchParameteri');
-  @glPatchParameterfv := GetProcAddress('glPatchParameterfv');
-  @glBindTransformFeedback := GetProcAddress('glBindTransformFeedback');
-  @glDeleteTransformFeedbacks := GetProcAddress('glDeleteTransformFeedbacks');
-  @glGenTransformFeedbacks := GetProcAddress('glGenTransformFeedbacks');
-  @glIsTransformFeedback := GetProcAddress('glIsTransformFeedback');
-  @glPauseTransformFeedback := GetProcAddress('glPauseTransformFeedback');
-  @glResumeTransformFeedback := GetProcAddress('glResumeTransformFeedback');
-  @glDrawTransformFeedback := GetProcAddress('glDrawTransformFeedback');
-  @glDrawTransformFeedbackStream := GetProcAddress('glDrawTransformFeedbackStream');
-  @glBeginQueryIndexed := GetProcAddress('glBeginQueryIndexed');
-  @glEndQueryIndexed := GetProcAddress('glEndQueryIndexed');
-  @glGetQueryIndexediv := GetProcAddress('glGetQueryIndexediv');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -1898,7 +1085,6 @@ end;
 
 procedure LoadVersion4_1;
 begin
-{$IFDEF FPC}
   Pointer(glReleaseShaderCompiler) := GetProcAddress('glReleaseShaderCompiler');
   Pointer(glShaderBinary) := GetProcAddress('glShaderBinary');
   Pointer(glGetShaderPrecisionFormat) := GetProcAddress('glGetShaderPrecisionFormat');
@@ -1987,96 +1173,6 @@ begin
   Pointer(glDepthRangeIndexed) := GetProcAddress('glDepthRangeIndexed');
   Pointer(glGetFloati_v) := GetProcAddress('glGetFloati_v');
   Pointer(glGetDoublei_v) := GetProcAddress('glGetDoublei_v');
-{$ELSE}
-  @glReleaseShaderCompiler := GetProcAddress('glReleaseShaderCompiler');
-  @glShaderBinary := GetProcAddress('glShaderBinary');
-  @glGetShaderPrecisionFormat := GetProcAddress('glGetShaderPrecisionFormat');
-  @glDepthRangef := GetProcAddress('glDepthRangef');
-  @glClearDepthf := GetProcAddress('glClearDepthf');
-  @glGetProgramBinary := GetProcAddress('glGetProgramBinary');
-  @glProgramBinary := GetProcAddress('glProgramBinary');
-  @glProgramParameteri := GetProcAddress('glProgramParameteri');
-  @glUseProgramStages := GetProcAddress('glUseProgramStages');
-  @glActiveShaderProgram := GetProcAddress('glActiveShaderProgram');
-  @glCreateShaderProgramv := GetProcAddress('glCreateShaderProgramv');
-  @glBindProgramPipeline := GetProcAddress('glBindProgramPipeline');
-  @glDeleteProgramPipelines := GetProcAddress('glDeleteProgramPipelines');
-  @glGenProgramPipelines := GetProcAddress('glGenProgramPipelines');
-  @glIsProgramPipeline := GetProcAddress('glIsProgramPipeline');
-  @glGetProgramPipelineiv := GetProcAddress('glGetProgramPipelineiv');
-  @glProgramUniform1i := GetProcAddress('glProgramUniform1i');
-  @glProgramUniform1iv := GetProcAddress('glProgramUniform1iv');
-  @glProgramUniform1f := GetProcAddress('glProgramUniform1f');
-  @glProgramUniform1fv := GetProcAddress('glProgramUniform1fv');
-  @glProgramUniform1d := GetProcAddress('glProgramUniform1d');
-  @glProgramUniform1dv := GetProcAddress('glProgramUniform1dv');
-  @glProgramUniform1ui := GetProcAddress('glProgramUniform1ui');
-  @glProgramUniform1uiv := GetProcAddress('glProgramUniform1uiv');
-  @glProgramUniform2i := GetProcAddress('glProgramUniform2i');
-  @glProgramUniform2iv := GetProcAddress('glProgramUniform2iv');
-  @glProgramUniform2f := GetProcAddress('glProgramUniform2f');
-  @glProgramUniform2fv := GetProcAddress('glProgramUniform2fv');
-  @glProgramUniform2d := GetProcAddress('glProgramUniform2d');
-  @glProgramUniform2dv := GetProcAddress('glProgramUniform2dv');
-  @glProgramUniform2ui := GetProcAddress('glProgramUniform2ui');
-  @glProgramUniform2uiv := GetProcAddress('glProgramUniform2uiv');
-  @glProgramUniform3i := GetProcAddress('glProgramUniform3i');
-  @glProgramUniform3iv := GetProcAddress('glProgramUniform3iv');
-  @glProgramUniform3f := GetProcAddress('glProgramUniform3f');
-  @glProgramUniform3fv := GetProcAddress('glProgramUniform3fv');
-  @glProgramUniform3d := GetProcAddress('glProgramUniform3d');
-  @glProgramUniform3dv := GetProcAddress('glProgramUniform3dv');
-  @glProgramUniform3ui := GetProcAddress('glProgramUniform3ui');
-  @glProgramUniform3uiv := GetProcAddress('glProgramUniform3uiv');
-  @glProgramUniform4i := GetProcAddress('glProgramUniform4i');
-  @glProgramUniform4iv := GetProcAddress('glProgramUniform4iv');
-  @glProgramUniform4f := GetProcAddress('glProgramUniform4f');
-  @glProgramUniform4fv := GetProcAddress('glProgramUniform4fv');
-  @glProgramUniform4d := GetProcAddress('glProgramUniform4d');
-  @glProgramUniform4dv := GetProcAddress('glProgramUniform4dv');
-  @glProgramUniform4ui := GetProcAddress('glProgramUniform4ui');
-  @glProgramUniform4uiv := GetProcAddress('glProgramUniform4uiv');
-  @glProgramUniformMatrix2fv := GetProcAddress('glProgramUniformMatrix2fv');
-  @glProgramUniformMatrix3fv := GetProcAddress('glProgramUniformMatrix3fv');
-  @glProgramUniformMatrix4fv := GetProcAddress('glProgramUniformMatrix4fv');
-  @glProgramUniformMatrix2dv := GetProcAddress('glProgramUniformMatrix2dv');
-  @glProgramUniformMatrix3dv := GetProcAddress('glProgramUniformMatrix3dv');
-  @glProgramUniformMatrix4dv := GetProcAddress('glProgramUniformMatrix4dv');
-  @glProgramUniformMatrix2x3fv := GetProcAddress('glProgramUniformMatrix2x3fv');
-  @glProgramUniformMatrix3x2fv := GetProcAddress('glProgramUniformMatrix3x2fv');
-  @glProgramUniformMatrix2x4fv := GetProcAddress('glProgramUniformMatrix2x4fv');
-  @glProgramUniformMatrix4x2fv := GetProcAddress('glProgramUniformMatrix4x2fv');
-  @glProgramUniformMatrix3x4fv := GetProcAddress('glProgramUniformMatrix3x4fv');
-  @glProgramUniformMatrix4x3fv := GetProcAddress('glProgramUniformMatrix4x3fv');
-  @glProgramUniformMatrix2x3dv := GetProcAddress('glProgramUniformMatrix2x3dv');
-  @glProgramUniformMatrix3x2dv := GetProcAddress('glProgramUniformMatrix3x2dv');
-  @glProgramUniformMatrix2x4dv := GetProcAddress('glProgramUniformMatrix2x4dv');
-  @glProgramUniformMatrix4x2dv := GetProcAddress('glProgramUniformMatrix4x2dv');
-  @glProgramUniformMatrix3x4dv := GetProcAddress('glProgramUniformMatrix3x4dv');
-  @glProgramUniformMatrix4x3dv := GetProcAddress('glProgramUniformMatrix4x3dv');
-  @glValidateProgramPipeline := GetProcAddress('glValidateProgramPipeline');
-  @glGetProgramPipelineInfoLog := GetProcAddress('glGetProgramPipelineInfoLog');
-  @glVertexAttribL1d := GetProcAddress('glVertexAttribL1d');
-  @glVertexAttribL2d := GetProcAddress('glVertexAttribL2d');
-  @glVertexAttribL3d := GetProcAddress('glVertexAttribL3d');
-  @glVertexAttribL4d := GetProcAddress('glVertexAttribL4d');
-  @glVertexAttribL1dv := GetProcAddress('glVertexAttribL1dv');
-  @glVertexAttribL2dv := GetProcAddress('glVertexAttribL2dv');
-  @glVertexAttribL3dv := GetProcAddress('glVertexAttribL3dv');
-  @glVertexAttribL4dv := GetProcAddress('glVertexAttribL4dv');
-  @glVertexAttribLPointer := GetProcAddress('glVertexAttribLPointer');
-  @glGetVertexAttribLdv := GetProcAddress('glGetVertexAttribLdv');
-  @glViewportArrayv := GetProcAddress('glViewportArrayv');
-  @glViewportIndexedf := GetProcAddress('glViewportIndexedf');
-  @glViewportIndexedfv := GetProcAddress('glViewportIndexedfv');
-  @glScissorArrayv := GetProcAddress('glScissorArrayv');
-  @glScissorIndexed := GetProcAddress('glScissorIndexed');
-  @glScissorIndexedv := GetProcAddress('glScissorIndexedv');
-  @glDepthRangeArrayv := GetProcAddress('glDepthRangeArrayv');
-  @glDepthRangeIndexed := GetProcAddress('glDepthRangeIndexed');
-  @glGetFloati_v := GetProcAddress('glGetFloati_v');
-  @glGetDoublei_v := GetProcAddress('glGetDoublei_v');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -2085,7 +1181,6 @@ end;
 
 procedure LoadVersion4_2;
 begin
-{$IFDEF FPC}
   Pointer(glDrawArraysInstancedBaseInstance) := GetProcAddress('glDrawArraysInstancedBaseInstance');
   Pointer(glDrawElementsInstancedBaseInstance) := GetProcAddress('glDrawElementsInstancedBaseInstance');
   Pointer(glDrawElementsInstancedBaseVertexBaseInstance) := GetProcAddress('glDrawElementsInstancedBaseVertexBaseInstance');
@@ -2098,20 +1193,6 @@ begin
   Pointer(glTexStorage3D) := GetProcAddress('glTexStorage3D');
   Pointer(glDrawTransformFeedbackInstanced) := GetProcAddress('glDrawTransformFeedbackInstanced');
   Pointer(glDrawTransformFeedbackStreamInstanced) := GetProcAddress('glDrawTransformFeedbackStreamInstanced');
-{$ELSE}
-  @glDrawArraysInstancedBaseInstance := GetProcAddress('glDrawArraysInstancedBaseInstance');
-  @glDrawElementsInstancedBaseInstance := GetProcAddress('glDrawElementsInstancedBaseInstance');
-  @glDrawElementsInstancedBaseVertexBaseInstance := GetProcAddress('glDrawElementsInstancedBaseVertexBaseInstance');
-  @glGetInternalformativ := GetProcAddress('glGetInternalformativ');
-  @glGetActiveAtomicCounterBufferiv := GetProcAddress('glGetActiveAtomicCounterBufferiv');
-  @glBindImageTexture := GetProcAddress('glBindImageTexture');
-  @glMemoryBarrier := GetProcAddress('glMemoryBarrier');
-  @glTexStorage1D := GetProcAddress('glTexStorage1D');
-  @glTexStorage2D := GetProcAddress('glTexStorage2D');
-  @glTexStorage3D := GetProcAddress('glTexStorage3D');
-  @glDrawTransformFeedbackInstanced := GetProcAddress('glDrawTransformFeedbackInstanced');
-  @glDrawTransformFeedbackStreamInstanced := GetProcAddress('glDrawTransformFeedbackStreamInstanced');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -2120,7 +1201,6 @@ end;
 
 procedure LoadVersion4_3;
 begin
-{$IFDEF FPC}
   Pointer(glClearBufferData) := GetProcAddress('glClearBufferData');
   Pointer(glClearBufferSubData) := GetProcAddress('glClearBufferSubData');
   Pointer(glDispatchCompute) := GetProcAddress('glDispatchCompute');
@@ -2164,51 +1244,6 @@ begin
   Pointer(glGetObjectLabel) := GetProcAddress('glGetObjectLabel');
   Pointer(glObjectPtrLabel) := GetProcAddress('glObjectPtrLabel');
   Pointer(glGetObjectPtrLabel) := GetProcAddress('glGetObjectPtrLabel');
-{$ELSE}
-  @glClearBufferData := GetProcAddress('glClearBufferData');
-  @glClearBufferSubData := GetProcAddress('glClearBufferSubData');
-  @glDispatchCompute := GetProcAddress('glDispatchCompute');
-  @glDispatchComputeIndirect := GetProcAddress('glDispatchComputeIndirect');
-  @glCopyImageSubData := GetProcAddress('glCopyImageSubData');
-  @glFramebufferParameteri := GetProcAddress('glFramebufferParameteri');
-  @glGetFramebufferParameteriv := GetProcAddress('glGetFramebufferParameteriv');
-  @glGetInternalformati64v := GetProcAddress('glGetInternalformati64v');
-  @glInvalidateTexSubImage := GetProcAddress('glInvalidateTexSubImage');
-  @glInvalidateTexImage := GetProcAddress('glInvalidateTexImage');
-  @glInvalidateBufferSubData := GetProcAddress('glInvalidateBufferSubData');
-  @glInvalidateBufferData := GetProcAddress('glInvalidateBufferData');
-  @glInvalidateFramebuffer := GetProcAddress('glInvalidateFramebuffer');
-  @glInvalidateSubFramebuffer := GetProcAddress('glInvalidateSubFramebuffer');
-  @glMultiDrawArraysIndirect := GetProcAddress('glMultiDrawArraysIndirect');
-  @glMultiDrawElementsIndirect := GetProcAddress('glMultiDrawElementsIndirect');
-  @glGetProgramInterfaceiv := GetProcAddress('glGetProgramInterfaceiv');
-  @glGetProgramResourceIndex := GetProcAddress('glGetProgramResourceIndex');
-  @glGetProgramResourceName := GetProcAddress('glGetProgramResourceName');
-  @glGetProgramResourceiv := GetProcAddress('glGetProgramResourceiv');
-  @glGetProgramResourceLocation := GetProcAddress('glGetProgramResourceLocation');
-  @glGetProgramResourceLocationIndex := GetProcAddress('glGetProgramResourceLocationIndex');
-  @glShaderStorageBlockBinding := GetProcAddress('glShaderStorageBlockBinding');
-  @glTexBufferRange := GetProcAddress('glTexBufferRange');
-  @glTexStorage2DMultisample := GetProcAddress('glTexStorage2DMultisample');
-  @glTexStorage3DMultisample := GetProcAddress('glTexStorage3DMultisample');
-  @glTextureView := GetProcAddress('glTextureView');
-  @glBindVertexBuffer := GetProcAddress('glBindVertexBuffer');
-  @glVertexAttribFormat := GetProcAddress('glVertexAttribFormat');
-  @glVertexAttribIFormat := GetProcAddress('glVertexAttribIFormat');
-  @glVertexAttribLFormat := GetProcAddress('glVertexAttribLFormat');
-  @glVertexAttribBinding := GetProcAddress('glVertexAttribBinding');
-  @glVertexBindingDivisor := GetProcAddress('glVertexBindingDivisor');
-  @glDebugMessageControl := GetProcAddress('glDebugMessageControl');
-  @glDebugMessageInsert := GetProcAddress('glDebugMessageInsert');
-  @glDebugMessageCallback := GetProcAddress('glDebugMessageCallback');
-  @glGetDebugMessageLog := GetProcAddress('glGetDebugMessageLog');
-  @glPushDebugGroup := GetProcAddress('glPushDebugGroup');
-  @glPopDebugGroup := GetProcAddress('glPopDebugGroup');
-  @glObjectLabel := GetProcAddress('glObjectLabel');
-  @glGetObjectLabel := GetProcAddress('glGetObjectLabel');
-  @glObjectPtrLabel := GetProcAddress('glObjectPtrLabel');
-  @glGetObjectPtrLabel := GetProcAddress('glGetObjectPtrLabel');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -2217,7 +1252,6 @@ end;
 
 procedure LoadVersion4_4;
 begin
-{$IFDEF FPC}
   Pointer(glBufferStorage) := GetProcAddress('glBufferStorage');
   Pointer(glClearTexImage) := GetProcAddress('glClearTexImage');
   Pointer(glClearTexSubImage) := GetProcAddress('glClearTexSubImage');
@@ -2227,17 +1261,6 @@ begin
   Pointer(glBindSamplers) := GetProcAddress('glBindSamplers');
   Pointer(glBindImageTextures) := GetProcAddress('glBindImageTextures');
   Pointer(glBindVertexBuffers) := GetProcAddress('glBindVertexBuffers');
-{$ELSE}
-  @glBufferStorage := GetProcAddress('glBufferStorage');
-  @glClearTexImage := GetProcAddress('glClearTexImage');
-  @glClearTexSubImage := GetProcAddress('glClearTexSubImage');
-  @glBindBuffersBase := GetProcAddress('glBindBuffersBase');
-  @glBindBuffersRange := GetProcAddress('glBindBuffersRange');
-  @glBindTextures := GetProcAddress('glBindTextures');
-  @glBindSamplers := GetProcAddress('glBindSamplers');
-  @glBindImageTextures := GetProcAddress('glBindImageTextures');
-  @glBindVertexBuffers := GetProcAddress('glBindVertexBuffers');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -2246,7 +1269,6 @@ end;
 
 procedure LoadVersion4_5;
 begin
-{$IFDEF FPC}
   Pointer(glClipControl) := GetProcAddress('glClipControl');
   Pointer(glCreateTransformFeedbacks) := GetProcAddress('glCreateTransformFeedbacks');
   Pointer(glTransformFeedbackBufferBase) := GetProcAddress('glTransformFeedbackBufferBase');
@@ -2369,130 +1391,6 @@ begin
   Pointer(glGetnHistogram) := GetProcAddress('glGetnHistogram');
   Pointer(glGetnMinmax) := GetProcAddress('glGetnMinmax');
   Pointer(glTextureBarrier) := GetProcAddress('glTextureBarrier');
-{$ELSE}
-  @glClipControl := GetProcAddress('glClipControl');
-  @glCreateTransformFeedbacks := GetProcAddress('glCreateTransformFeedbacks');
-  @glTransformFeedbackBufferBase := GetProcAddress('glTransformFeedbackBufferBase');
-  @glTransformFeedbackBufferRange := GetProcAddress('glTransformFeedbackBufferRange');
-  @glGetTransformFeedbackiv := GetProcAddress('glGetTransformFeedbackiv');
-  @glGetTransformFeedbacki_v := GetProcAddress('glGetTransformFeedbacki_v');
-  @glGetTransformFeedbacki64_v := GetProcAddress('glGetTransformFeedbacki64_v');
-  @glCreateBuffers := GetProcAddress('glCreateBuffers');
-  @glNamedBufferStorage := GetProcAddress('glNamedBufferStorage');
-  @glNamedBufferData := GetProcAddress('glNamedBufferData');
-  @glNamedBufferSubData := GetProcAddress('glNamedBufferSubData');
-  @glCopyNamedBufferSubData := GetProcAddress('glCopyNamedBufferSubData');
-  @glClearNamedBufferData := GetProcAddress('glClearNamedBufferData');
-  @glClearNamedBufferSubData := GetProcAddress('glClearNamedBufferSubData');
-  @glMapNamedBuffer := GetProcAddress('glMapNamedBuffer');
-  @glMapNamedBufferRange := GetProcAddress('glMapNamedBufferRange');
-  @glUnmapNamedBuffer := GetProcAddress('glUnmapNamedBuffer');
-  @glFlushMappedNamedBufferRange := GetProcAddress('glFlushMappedNamedBufferRange');
-  @glGetNamedBufferParameteriv := GetProcAddress('glGetNamedBufferParameteriv');
-  @glGetNamedBufferParameteri64v := GetProcAddress('glGetNamedBufferParameteri64v');
-  @glGetNamedBufferPointerv := GetProcAddress('glGetNamedBufferPointerv');
-  @glGetNamedBufferSubData := GetProcAddress('glGetNamedBufferSubData');
-  @glCreateFramebuffers := GetProcAddress('glCreateFramebuffers');
-  @glNamedFramebufferRenderbuffer := GetProcAddress('glNamedFramebufferRenderbuffer');
-  @glNamedFramebufferParameteri := GetProcAddress('glNamedFramebufferParameteri');
-  @glNamedFramebufferTexture := GetProcAddress('glNamedFramebufferTexture');
-  @glNamedFramebufferTextureLayer := GetProcAddress('glNamedFramebufferTextureLayer');
-  @glNamedFramebufferDrawBuffer := GetProcAddress('glNamedFramebufferDrawBuffer');
-  @glNamedFramebufferDrawBuffers := GetProcAddress('glNamedFramebufferDrawBuffers');
-  @glNamedFramebufferReadBuffer := GetProcAddress('glNamedFramebufferReadBuffer');
-  @glInvalidateNamedFramebufferData := GetProcAddress('glInvalidateNamedFramebufferData');
-  @glInvalidateNamedFramebufferSubData := GetProcAddress('glInvalidateNamedFramebufferSubData');
-  @glClearNamedFramebufferiv := GetProcAddress('glClearNamedFramebufferiv');
-  @glClearNamedFramebufferuiv := GetProcAddress('glClearNamedFramebufferuiv');
-  @glClearNamedFramebufferfv := GetProcAddress('glClearNamedFramebufferfv');
-  @glClearNamedFramebufferfi := GetProcAddress('glClearNamedFramebufferfi');
-  @glBlitNamedFramebuffer := GetProcAddress('glBlitNamedFramebuffer');
-  @glCheckNamedFramebufferStatus := GetProcAddress('glCheckNamedFramebufferStatus');
-  @glGetNamedFramebufferParameteriv := GetProcAddress('glGetNamedFramebufferParameteriv');
-  @glGetNamedFramebufferAttachmentParameteriv := GetProcAddress('glGetNamedFramebufferAttachmentParameteriv');
-  @glCreateRenderbuffers := GetProcAddress('glCreateRenderbuffers');
-  @glNamedRenderbufferStorage := GetProcAddress('glNamedRenderbufferStorage');
-  @glNamedRenderbufferStorageMultisample := GetProcAddress('glNamedRenderbufferStorageMultisample');
-  @glGetNamedRenderbufferParameteriv := GetProcAddress('glGetNamedRenderbufferParameteriv');
-  @glCreateTextures := GetProcAddress('glCreateTextures');
-  @glTextureBuffer := GetProcAddress('glTextureBuffer');
-  @glTextureBufferRange := GetProcAddress('glTextureBufferRange');
-  @glTextureStorage1D := GetProcAddress('glTextureStorage1D');
-  @glTextureStorage2D := GetProcAddress('glTextureStorage2D');
-  @glTextureStorage3D := GetProcAddress('glTextureStorage3D');
-  @glTextureStorage2DMultisample := GetProcAddress('glTextureStorage2DMultisample');
-  @glTextureStorage3DMultisample := GetProcAddress('glTextureStorage3DMultisample');
-  @glTextureSubImage1D := GetProcAddress('glTextureSubImage1D');
-  @glTextureSubImage2D := GetProcAddress('glTextureSubImage2D');
-  @glTextureSubImage3D := GetProcAddress('glTextureSubImage3D');
-  @glCompressedTextureSubImage1D := GetProcAddress('glCompressedTextureSubImage1D');
-  @glCompressedTextureSubImage2D := GetProcAddress('glCompressedTextureSubImage2D');
-  @glCompressedTextureSubImage3D := GetProcAddress('glCompressedTextureSubImage3D');
-  @glCopyTextureSubImage1D := GetProcAddress('glCopyTextureSubImage1D');
-  @glCopyTextureSubImage2D := GetProcAddress('glCopyTextureSubImage2D');
-  @glCopyTextureSubImage3D := GetProcAddress('glCopyTextureSubImage3D');
-  @glTextureParameterf := GetProcAddress('glTextureParameterf');
-  @glTextureParameterfv := GetProcAddress('glTextureParameterfv');
-  @glTextureParameteri := GetProcAddress('glTextureParameteri');
-  @glTextureParameterIiv := GetProcAddress('glTextureParameterIiv');
-  @glTextureParameterIuiv := GetProcAddress('glTextureParameterIuiv');
-  @glTextureParameteriv := GetProcAddress('glTextureParameteriv');
-  @glGenerateTextureMipmap := GetProcAddress('glGenerateTextureMipmap');
-  @glBindTextureUnit := GetProcAddress('glBindTextureUnit');
-  @glGetTextureImage := GetProcAddress('glGetTextureImage');
-  @glGetCompressedTextureImage := GetProcAddress('glGetCompressedTextureImage');
-  @glGetTextureLevelParameterfv := GetProcAddress('glGetTextureLevelParameterfv');
-  @glGetTextureLevelParameteriv := GetProcAddress('glGetTextureLevelParameteriv');
-  @glGetTextureParameterfv := GetProcAddress('glGetTextureParameterfv');
-  @glGetTextureParameterIiv := GetProcAddress('glGetTextureParameterIiv');
-  @glGetTextureParameterIuiv := GetProcAddress('glGetTextureParameterIuiv');
-  @glGetTextureParameteriv := GetProcAddress('glGetTextureParameteriv');
-  @glCreateVertexArrays := GetProcAddress('glCreateVertexArrays');
-  @glDisableVertexArrayAttrib := GetProcAddress('glDisableVertexArrayAttrib');
-  @glEnableVertexArrayAttrib := GetProcAddress('glEnableVertexArrayAttrib');
-  @glVertexArrayElementBuffer := GetProcAddress('glVertexArrayElementBuffer');
-  @glVertexArrayVertexBuffer := GetProcAddress('glVertexArrayVertexBuffer');
-  @glVertexArrayVertexBuffers := GetProcAddress('glVertexArrayVertexBuffers');
-  @glVertexArrayAttribBinding := GetProcAddress('glVertexArrayAttribBinding');
-  @glVertexArrayAttribFormat := GetProcAddress('glVertexArrayAttribFormat');
-  @glVertexArrayAttribIFormat := GetProcAddress('glVertexArrayAttribIFormat');
-  @glVertexArrayAttribLFormat := GetProcAddress('glVertexArrayAttribLFormat');
-  @glVertexArrayBindingDivisor := GetProcAddress('glVertexArrayBindingDivisor');
-  @glGetVertexArrayiv := GetProcAddress('glGetVertexArrayiv');
-  @glGetVertexArrayIndexediv := GetProcAddress('glGetVertexArrayIndexediv');
-  @glGetVertexArrayIndexed64iv := GetProcAddress('glGetVertexArrayIndexed64iv');
-  @glCreateSamplers := GetProcAddress('glCreateSamplers');
-  @glCreateProgramPipelines := GetProcAddress('glCreateProgramPipelines');
-  @glCreateQueries := GetProcAddress('glCreateQueries');
-  @glGetQueryBufferObjecti64v := GetProcAddress('glGetQueryBufferObjecti64v');
-  @glGetQueryBufferObjectiv := GetProcAddress('glGetQueryBufferObjectiv');
-  @glGetQueryBufferObjectui64v := GetProcAddress('glGetQueryBufferObjectui64v');
-  @glGetQueryBufferObjectuiv := GetProcAddress('glGetQueryBufferObjectuiv');
-  @glMemoryBarrierByRegion := GetProcAddress('glMemoryBarrierByRegion');
-  @glGetTextureSubImage := GetProcAddress('glGetTextureSubImage');
-  @glGetCompressedTextureSubImage := GetProcAddress('glGetCompressedTextureSubImage');
-  @glGetGraphicsResetStatus := GetProcAddress('glGetGraphicsResetStatus');
-  @glGetnCompressedTexImage := GetProcAddress('glGetnCompressedTexImage');
-  @glGetnTexImage := GetProcAddress('glGetnTexImage');
-  @glGetnUniformdv := GetProcAddress('glGetnUniformdv');
-  @glGetnUniformfv := GetProcAddress('glGetnUniformfv');
-  @glGetnUniformiv := GetProcAddress('glGetnUniformiv');
-  @glGetnUniformuiv := GetProcAddress('glGetnUniformuiv');
-  @glReadnPixels := GetProcAddress('glReadnPixels');
-  @glGetnMapdv := GetProcAddress('glGetnMapdv');
-  @glGetnMapfv := GetProcAddress('glGetnMapfv');
-  @glGetnMapiv := GetProcAddress('glGetnMapiv');
-  @glGetnPixelMapfv := GetProcAddress('glGetnPixelMapfv');
-  @glGetnPixelMapuiv := GetProcAddress('glGetnPixelMapuiv');
-  @glGetnPixelMapusv := GetProcAddress('glGetnPixelMapusv');
-  @glGetnPolygonStipple := GetProcAddress('glGetnPolygonStipple');
-  @glGetnColorTable := GetProcAddress('glGetnColorTable');
-  @glGetnConvolutionFilter := GetProcAddress('glGetnConvolutionFilter');
-  @glGetnSeparableFilter := GetProcAddress('glGetnSeparableFilter');
-  @glGetnHistogram := GetProcAddress('glGetnHistogram');
-  @glGetnMinmax := GetProcAddress('glGetnMinmax');
-  @glTextureBarrier := GetProcAddress('glTextureBarrier');
-{$ENDIF}
 end;
 
 {=============================================================================
@@ -2501,17 +1399,10 @@ end;
 
 procedure LoadVersion4_6;
 begin
-{$IFDEF FPC}
   Pointer(glSpecializeShader) := GetProcAddress('glSpecializeShader');
   Pointer(glMultiDrawArraysIndirectCount) := GetProcAddress('glMultiDrawArraysIndirectCount');
   Pointer(glMultiDrawElementsIndirectCount) := GetProcAddress('glMultiDrawElementsIndirectCount');
   Pointer(glPolygonOffsetClamp) := GetProcAddress('glPolygonOffsetClamp');
-{$ELSE}
-  @glSpecializeShader := GetProcAddress('glSpecializeShader');
-  @glMultiDrawArraysIndirectCount := GetProcAddress('glMultiDrawArraysIndirectCount');
-  @glMultiDrawElementsIndirectCount := GetProcAddress('glMultiDrawElementsIndirectCount');
-  @glPolygonOffsetClamp := GetProcAddress('glPolygonOffsetClamp');
-{$ENDIF}
 end;
 
 end.

@@ -7,11 +7,7 @@ https://boost.org)
 
 unit BmpSaver;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 

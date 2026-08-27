@@ -7,11 +7,7 @@
 
 unit WinLiteOpenGL1WindowWin9x;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 

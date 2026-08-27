@@ -6,12 +6,9 @@
 ==============================================================================}
 
 program PixelPainterPerfTest;
+
 {$APPTYPE CONSOLE}
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 uses
   SysUtils,

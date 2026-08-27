@@ -7,36 +7,28 @@
 
 unit WinLiteWindow;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 
-{$IFDEF WIN32}
-  {$DEFINE IS_WINDOWS}
-{$ELSE}
-  {$IFDEF MSWINDOWS}
-    {$DEFINE IS_WINDOWS}
-  {$ENDIF}
-{$ENDIF}
-
 uses
   WinLiteEvents
-  {$IFDEF IS_WINDOWS}
-  , WinLiteSoftwareWindowWin9x
-  , WinLiteOpenGL1WindowWin9x
+  {$IFDEF MSWINDOWS}
+  ,WinLiteSoftwareWindowWin9x
+  ,WinLiteOpenGL1WindowWin9x
   {$ENDIF}
+
   {$IFDEF LINUX}
-  , WinLiteSoftwareWindowLinux
+  ,WinLiteSoftwareWindowLinux
   {$ENDIF}
   ;
 
 type
-  {$IFDEF IS_WINDOWS}
+  {$IFDEF MSWINDOWS}
   TSoftwareWindow = TSoftwareWindowWin9x;
   TOpenGL1Window  = TOpenGL1Window9x;
   {$ENDIF}
+
   {$IFDEF LINUX}
   TSoftwareWindow = TSoftwareWindowLinux;
   {$ENDIF}

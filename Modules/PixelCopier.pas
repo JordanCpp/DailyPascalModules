@@ -7,11 +7,7 @@
 
 unit PixelCopier;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 
@@ -27,15 +23,9 @@ const
   idxG = 1;
   idxB = 0;
 {$ELSE}
-  {$IFDEF MSWINDOWS}
-    idxR = 2;
-    idxG = 1;
-    idxB = 0;
-  {$ELSE}
-    idxR = 0;
-    idxG = 1;
-    idxB = 2;
-  {$ENDIF}
+  idxR = 0;
+  idxG = 1;
+  idxB = 2;
 {$ENDIF}
   idxA = 3;
 
@@ -45,7 +35,7 @@ type
     FWidth: Integer;
     FHeight: Integer;
     FBytesPerPixel: Byte;
-    FScreenPixels: TBytes; // Safe managed reference instead of unsafe raw pointer
+    FScreenPixels: TBytes;
     
     function GetPixelsSize: Integer;
     function IsBufferValid: Boolean;

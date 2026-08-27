@@ -10,33 +10,25 @@ Instead of pulling in heavy, monolithic libraries or complex visual frameworks (
 
 * **Zero Boilerplate:** No heavy configurations, no complex setups, no external third-party DLLs. Just pure Pascal code.
 * **Plug & Play:** Units are completely isolated and self-contained. Copy-paste the source file and add it to your project's `uses` clause.
-* **Maximum Compatibility:** Designed to be highly portable. Fully compatible with legacy and modern compilers alike, including **Delphi 4 and higher** as well as **Free Pascal Compiler (FPC) 2.0.0 and higher**.
+* **Compiler Constraint:** Designed exclusively for the Free Pascal ecosystem. Fully compatible with Free Pascal Compiler (FPC) 2.0.0 and higher. Legacy or modern versions of Delphi are strictly not supported.
 * **Bite-Sized:** Each unit solves exactly *one* specific domain problem beautifully, minimally, and efficiently.
 
 ---
 
-## 📁 Repository Structure
+## ⚠️ Important: Compiler Support & Delphi Incompatibility
 
-The modules are isolated inside the `Modules` directory, accompanied by minimal test drivers:
+> **Effective August 2026:** This project has officially transitioned to an **FPC 2.0+ exclusive codebase**. Incompatibility with all versions of Delphi is now intentional.
 
-```text
-.
-├── Modules/                  # All production-ready micro-modules
-│   ├── BmpLoader.pas
-│   ├── PixelCopier.pas
-│   ├── PixelPainter.pas
-│   ├── Support.pas
-│   ├── TgaLoader.pas
-│   ├── WinLiteEnums.pas
-│   ├── WinLiteEvents.pas
-│   ├── WinLiteKeyMapper.pas
-│   ├── WinLiteMainWindowWin9x.pas
-│   ├── WinLiteQueue.pas
-│   ├── WinLiteSoftwareWindow.pas
-│   └── WinLiteSoftwareWindowWin9x.pas
-└── Samples/                  # Verification samples (Plasma, Starfield, etc.)
-    └── WinLitePlasmaDemo.pas
-```
+### Why Delphi Support Was Dropped
+
+*   **Supporting Open Source, Not Corporations**  
+    My primary goal is to help and build for the community. I want my time and code to empower true open-source ecosystems like **Free Pascal** and **Lazarus**, not commercial products owned by large corporations.
+*   **Commercial Freedom is Still Maintained**  
+    To clear up any confusion: this is not an anti-commercial license restriction. You are still completely free to use these modules in your commercial closed-source projects, provided you compile them using the **Free Pascal Compiler**. 
+*   **Clean Codebase Without Legacy Hacks**  
+    Dropping Delphi allowed the removal of endless `{$IFDEF DELPHI}` clutter, custom type workarounds, and cross-compiler compromises. The codebase is now significantly lighter, cleaner, and strictly optimized for the FPC infrastructure.
+
+The project is moving forward, and its future belongs entirely to **Free Pascal**.
 
 ---
 
@@ -95,17 +87,13 @@ To use these modules (e.g., creating a simple application loop with `PixelPainte
 ```pascal
 program YourApplication;
 
-{\$IFDEF FPC}
-  {\$mode objfpc}{\$H+}
-{\$ELSE}
-  {\$LONGSTRINGS ON}
-{\$ENDIF}
+{$mode objfpc}{$H+}
 
 uses
   SysUtils,
   WinLiteEnums,
   WinLiteEvents,
-  WinLiteSoftwareWindow,
+  WinLiteWindow,
   PixelPainter;
 
 const
@@ -146,23 +134,25 @@ end.
 
 ## 🛠️ Building & Compiling
 
-Since these modules rely on standard Pascal syntax features, they can be compiled instantly using your favorite IDE (Lazarus, Delphi) or command-line compilers without any third-party build tools.
+These modules utilize standard FPC-specific syntax. They can be compiled instantly using the Lazarus IDE or command-line compilers (FPC 2.0+ only). This codebase is incompatible with any version of Delphi.
 
 **Using Free Pascal Compiler (FPC):**
 ```bash
 fpc -B -O2 YourProgram.pas
 ```
 
-**Using Delphi Command Line Compiler (DCC32):**
-```bash
-dcc32 YourProgram.pas
-```
-
 ---
 
 ## 🤝 Contributing
 
-Do you have a tiny, reliable Object Pascal utility unit that you copy into every new project you start? Feel free to open a Pull Request! Please ensure your unit is self-contained, keeps strict backwards compatibility (Delphi 4+ / FPC 2+), and includes a short sample program for testing.
+Do you have a tiny, reliable Object Pascal utility unit that you copy into every new project you start? Feel free to open a Pull Request! 
+
+Please ensure your unit meets the following criteria:
+*   **Self-contained:** No external dependencies outside of standard FPC RTL.
+*   **Strict FPC Compatibility:** Fully supports **Free Pascal Compiler (FPC) 2.0.0 and higher**.
+*   **No Delphi Support:** Do not include any Delphi-specific workarounds or `{$IFDEF DELPHI}` blocks. This codebase is strictly FPC-exclusive.
+*   **Testable:** Includes a short sample program (console application) for validation.
+
 
 ## 📄 License
 This project is open-source software licensed under the **Boost Software License - Version 1.0**. Feel free to use these modules in personal, educational, commercial projects, or legacy software retro-maintenance.

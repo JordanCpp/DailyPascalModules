@@ -7,11 +7,7 @@
 
 program OpenGL12Tunnel;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 uses
   Support, SysUtils, Math, WinLiteEnums, WinLiteEvents, WinLiteWindow, 

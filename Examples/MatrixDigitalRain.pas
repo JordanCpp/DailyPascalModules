@@ -7,11 +7,7 @@
 
 program WinLiteMatrixRainDemo;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ELSE}
-  {$LONGSTRINGS ON}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 uses
   Support,

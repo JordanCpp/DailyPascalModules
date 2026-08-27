@@ -7,9 +7,7 @@
 
 unit WinLiteMainWindowWin9x;
 
-{$IFDEF FPC}
-  {$mode objfpc}{$H+}
-{$ENDIF}
+{$mode objfpc}{$H+}
 
 interface
 
@@ -17,8 +15,6 @@ uses
   Windows, Messages, WinLiteEnums, WinLiteEvents, WinLiteQueue, WinLiteKeyMapper;
 
 const
-
-{$IFNDEF FPC}
   VK_LWIN        = $5B;
   VK_RWIN        = $5C;
   VK_APPS        = $5D;
@@ -36,7 +32,7 @@ const
   VK_OEM_3       = $C0; // '`~' (keyTilde)
 
   VK_ESCAPE      = $1B; // Escape (keyEscape)
-  VK_SPACE       = $20; // Пробел (keySpace)
+  VK_SPACE       = $20; // Space (keySpace)
   VK_RETURN      = $0D; // Enter (keyEnter)
   VK_BACK        = $08; // Backspace (keyBackspace)
   VK_TAB         = $09; // Tab (keyTab)
@@ -86,27 +82,18 @@ const
   VK_NUMPAD8     = $68;
   VK_NUMPAD9     = $69;
 
-  VK_LSHIFT      = $A0; // Левый Shift (keyLeftShift)
-  VK_RSHIFT      = $A1; // Правый Shift (keyRightShift)
-  VK_LCONTROL    = $A2; // Левый Ctrl (keyLeftControl)
-  VK_RCONTROL    = $A3; // Правый Ctrl (keyRightControl)
-{$ENDIF}
+  VK_LSHIFT      = $A0; // Shift (keyLeftShift)
+  VK_RSHIFT      = $A1; // Shift (keyRightShift)
+  VK_LCONTROL    = $A2; // Ctrl (keyLeftControl)
+  VK_RCONTROL    = $A3; // Ctrl (keyRightControl)
 
-  {$IFNDEF FPC}
-  GWLP_USERDATA = -21;
+  GWLP_USERDATA  = -21;
   WM_MOUSEHWHEEL = $020E;
-  {$ENDIF}
 
   WindowClassName: PChar = 'MainWindow';
 
 type
-  {$IFNDEF FPC}
-  LONG_PTR = Longint;
-  LONG = Longint;
-  {$ENDIF}
-
   PMainWindow = ^TMainWindow;
-
   TMainWindow = object
   private
     FHwnd     : HWND;
@@ -131,18 +118,6 @@ type
   end;
 
 implementation
-
-{$IFNDEF FPC}
-function SetWindowLongPtr(hWnd: HWND; nIndex: Integer; dwNewLong: LONG_PTR): LONG_PTR;
-begin
-  Result := SetWindowLong(hWnd, nIndex, dwNewLong);
-end;
-
-function GetWindowLongPtr(hWnd: HWND; nIndex: Integer): LONG_PTR;
-begin
-  Result := GetWindowLong(hWnd, nIndex);
-end;
-{$ENDIF}
 
 function WndProc(HHwnd: HWND; UMessage: UINT; AWParam: WPARAM; ALParam: LPARAM): LRESULT; stdcall;
 var
@@ -290,7 +265,6 @@ var
   AnEvent: TEvent;
   Pt: TPoint;
 begin
-  // Исправление: Инициализируем Result нулем по умолчанию для всех веток case
   Result := 0; 
   FillChar(AnEvent, SizeOf(AnEvent), 0);
 
@@ -450,7 +424,6 @@ begin
   WC.hIcon := LoadIconA(0, PChar(IDI_APPLICATION));
   WC.hCursor := LoadCursorA(0, PChar(IDC_ARROW));
 
-  {$IFDEF FPC}
     if not GetClassInfoExA(Instance, WindowClassName, @WC) then
     begin
       if RegisterClassExA(@WC) = 0 then
@@ -459,16 +432,6 @@ begin
         Exit;
       end;
     end;
-  {$ELSE}
-    if not GetClassInfoExA(Instance, WindowClassName, WC) then
-    begin
-      if RegisterClassExA(WC) = 0 then
-      begin
-        AError := 'RegisterClassExA failed';
-        Exit;
-      end;
-    end;
-  {$ENDIF}
 
   Style := WS_OVERLAPPED or WS_SYSMENU or WS_CAPTION or WS_MINIMIZEBOX;
   Rect.Left := 0;
