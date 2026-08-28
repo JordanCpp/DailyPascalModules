@@ -16,6 +16,7 @@ uses
   {$IFDEF MSWINDOWS}
   ,WinLiteSoftwareWindowWin9x
   ,WinLiteOpenGL1WindowWin9x
+  ,WinLiteOpenGL3WindowWin9x
   {$ENDIF}
 
   {$IFDEF LINUX}
@@ -29,6 +30,7 @@ type
   {$IFDEF MSWINDOWS}
   TSoftwareWindow = TSoftwareWindowWin9x;
   TOpenGL1Window  = TOpenGL1Window9x;
+  TOpenGL3Window  = TOpenGL3Window9x;
   {$ENDIF}
 
   {$IFDEF LINUX}
