@@ -6,6 +6,20 @@ Instead of pulling in heavy, monolithic libraries or complex visual frameworks (
 
 ---
 
+## 💻 Supported Platforms & OS Compatibility
+
+The micro-modules are engineered to bypass heavy modern desktop dependencies. By interacting directly with low-level kernel APIs or basic display buffers, the codebase achieves near-universal compatibility across historical and cutting-edge operating systems.
+
+### 🪟 Windows Ecosystem
+*   **Legacy Desktop (FPC 2.x):** Full native support for **Windows 95, 98, Me, NT 4.0, and 2000**. Uses lightweight Win32 API fallbacks and GDI device contexts without modern OS footprint bloat.
+*   **Modern Desktop (FPC 3.x):** Flawless execution on **Windows XP, 7, 8, 10, and 11** (both 32-bit and 64-bit architectures).
+
+### 🐧 Linux Ecosystem
+*   **Vintage Linux Distributions (FPC 2.x):** Out-of-the-box compatibility with legacy Linux kernels, old glibc environments, and older X11 server architectures.
+*   **Modern Linux Distributions (FPC 3.x):** Fully compatible with all up-to-date mainstream distributions (Ubuntu, Fedora, Arch, Debian) utilizing modern display servers via standard XLib/OpenGL interfaces.
+
+---
+
 ## 🎯 The Philosophy
 
 * **Zero Boilerplate:** No heavy configurations, no complex setups, no external third-party DLLs. Just pure Pascal code.
