@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLitePixelArtConverterDemo;
+program DynamicCPUMosaic;
 
 {$mode objfpc}{$H+}
 
@@ -165,11 +165,10 @@ begin
           AvgB := SumB div PixelCount;
           AvgG := SumG div PixelCount;
           AvgR := SumR div PixelCount;
-
-          // Retro-color quantization (snapping to nearest 32-value interval)
-          AvgB := (AvgB div 32) * 32;
-          AvgG := (AvgG div 32) * 32;
-          AvgR := (AvgR div 32) * 32;
+          
+          AvgB := AvgB and $E0;
+          AvgG := AvgG and $E0;
+          AvgR := AvgR and $E0;
         end
         else
         begin
