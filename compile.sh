@@ -2,7 +2,7 @@
 
 mkdir -p Build
 
-for d in "Examples/OpenGL" "Examples/Painter" "Tests"; do
+for d in "Examples/OpenGL1" "Examples/OpenGL3" "Examples/Painter" "Tests"; do
     for i in "$d"/*.pas; do
         if [ -f "$i" ]; then
             fpc -O3 -FUBuild -FuModules "$i"
