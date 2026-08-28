@@ -4860,7 +4860,11 @@ uses
   Windows;
 {$ELSE}
 uses
-  SysUtils;
+  SysUtils
+  {$IFDEF LINUX}
+  ,glx
+  {$ENDIF}
+  ;
 {$ENDIF}
 
 {=============================================================================
@@ -4909,8 +4913,10 @@ end;
 begin
   Result := nil;
   {$IFDEF LINUX}
+  Result := glXGetProcAddress(Pchar(aName));
   {$ENDIF}
   {$IFDEF DARWIN}
+
   {$ENDIF}
 end;
 {$ENDIF}

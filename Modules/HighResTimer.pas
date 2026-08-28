@@ -36,9 +36,17 @@ implementation
 {$ENDIF}
 
 {$IFDEF UNIX}
-  {$IFDEF FPC}
-    uses UnixCli;
-  {$ENDIF}
+type
+  PTimeSpec = ^TTimeSpec;
+  TTimeSpec = record
+    tv_sec  : Int64;
+    tv_nsec : Int64;
+  end;
+
+const
+  CLOCK_MONOTONIC = 1;
+
+function clock_gettime(clk_id: Integer; tp: PTimeSpec): Integer; cdecl; external 'c' name 'clock_gettime';
 {$ENDIF}
 
 { THighResTimer }
@@ -72,11 +80,14 @@ end;
 {$ELSE}
   {$IFDEF UNIX}
   var
-    TimeVal: TTimeVal;
+    TP: TTimeSpec;
   begin
     if not FInitialized then Init;
-    fpGetTimeOfDay(@TimeVal, nil);
-    Result := TimeVal.Tv_Sec + (TimeVal.Tv_Usec / 1000000.0);
+    
+    if clock_gettime(CLOCK_MONOTONIC, @TP) = 0 then
+      Result := TP.tv_sec + (TP.tv_nsec / 1000000000.0)
+    else
+      Result := SysUtils.Now * 86400.0;
   end;
   {$ELSE}
   begin
@@ -98,4 +109,3 @@ begin
 end;
 
 end.
-

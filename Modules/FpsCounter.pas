@@ -12,21 +12,12 @@ unit FpsCounter;
 interface
 
 uses
-  SysUtils,
-  {$IFDEF WIN32}
-    Windows;
-  {$ELSE}
-    {$IFDEF MSWINDOWS}
-      Windows;
-    {$ELSE}
-      Windows;
-    {$ENDIF}
-  {$ENDIF}
+  SysUtils;
 
 type
   TFpsCounter = object
   private
-    FLastTime   : Cardinal;
+    FLastTime   : QWord;
     FFrameCount : Cardinal;
     FFps        : Cardinal;
   public
@@ -41,25 +32,25 @@ implementation
 
 procedure TFpsCounter.Init;
 begin
-  FLastTime   := GetTickCount;
+  FLastTime   := GetTickCount64;
   FFrameCount := 0;
   FFps        := 0;
 end;
 
 function TFpsCounter.Update: Boolean;
 var
-  NowTime : Cardinal;
-  Elapsed : Cardinal;
+  NowTime : QWord;
+  Elapsed : QWord;
 begin
   Result := False;
   Inc(FFrameCount);
 
-  NowTime := GetTickCount;
-  
+  NowTime := GetTickCount64;
+
   if NowTime >= FLastTime then
     Elapsed := NowTime - FLastTime
   else
-    Elapsed := (High(Cardinal) - FLastTime) + NowTime + 1;
+    Elapsed := 0;
 
   if Elapsed >= 1000 then
   begin

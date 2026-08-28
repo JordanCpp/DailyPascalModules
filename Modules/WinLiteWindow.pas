@@ -19,7 +19,9 @@ uses
   {$ENDIF}
 
   {$IFDEF LINUX}
-  ,WinLiteSoftwareWindowLinux
+  ,WinLiteSoftwareWindowXLib
+  ,WinLiteOpenGL1WindowXLib
+  ,WinLiteOpenGL3WindowXLib
   {$ENDIF}
   ;
 
@@ -30,7 +32,9 @@ type
   {$ENDIF}
 
   {$IFDEF LINUX}
-  TSoftwareWindow = TSoftwareWindowLinux;
+  TSoftwareWindow = TSoftwareWindowXLib;
+  TOpenGL1Window  = TOpenGL1WindowXLib;
+  TOpenGL3Window  = TOpenGL3WindowXLib;
   {$ENDIF}
 
 implementation

@@ -7,7 +7,6 @@
 
 program PixelPainterPerfTest;
 
-{$APPTYPE CONSOLE}
 {$mode objfpc}{$H+}
 
 uses
