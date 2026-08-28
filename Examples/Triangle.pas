@@ -10,7 +10,7 @@ program Triangle;
 {$mode objfpc}{$H+}
 
 uses
-  Support, SysUtils, WinLiteEnums, WinLiteEvents, WinLiteWindow, OpenGLTypes, OpenGLConsts, OpenGLFuncs, OpenGLLoader;
+  Support, SysUtils, WinLiteEnums, WinLiteEvents, WinLiteWindow, OpenGL;
 
 const
   WinWidth = 800; 

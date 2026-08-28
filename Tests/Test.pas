@@ -16,10 +16,7 @@ uses
   WinLiteEnums,
   WinLiteEvents,
   WinLiteWindow,
-  OpenGLTypes,
-  OpenGLConsts,
-  OpenGLFuncs,
-  OpenGLLoader,
+  OpenGL,
   BmpSaver;
 
 var

@@ -12,7 +12,7 @@ program WinLiteTunnelDemo;
 uses
   Support,
   SysUtils,
-  Math, // Required for EnsureRange / Min functions
+  Math,
   PixelPainter,
   PixelCopier,
   WinLiteEnums,

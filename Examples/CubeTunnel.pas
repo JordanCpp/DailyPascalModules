@@ -5,13 +5,12 @@
   https://boost.org)
 ==============================================================================}
 
-program OpenGL12Tunnel;
+program CubeTunnel;
 
 {$mode objfpc}{$H+}
 
 uses
-  Support, SysUtils, Math, WinLiteEnums, WinLiteEvents, WinLiteWindow, 
-  OpenGLTypes, OpenGLConsts, OpenGLFuncs, OpenGLLoader;
+  Support, SysUtils, Math, WinLiteEnums, WinLiteEvents, WinLiteWindow, OpenGL;
 
 const
   WinWidth = 800; 
