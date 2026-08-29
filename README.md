@@ -171,16 +171,11 @@ This project is open-source software licensed under the **Boost Software License
 
 Here is the full breakdown of the software rendering examples running live on the CPU. Micro-modules calculate every single pixel inside a native frame buffer memory block with zero external GPU hardware acceleration.
 
-| | |
-| :---: | :---: |
-| <img src="./screenshots/01.png" alt="Demo 01" width="100%" /> | <img src="./screenshots/02.png" alt="Demo 02" width="100%" /> |
-| <img src="./screenshots/03.png" alt="Demo 03" width="100%" /> | <img src="./screenshots/04.png" alt="Demo 04" width="100%" /> |
-| <img src="./screenshots/05.png" alt="Demo 05" width="100%" /> | <img src="./screenshots/06.png" alt="Demo 06" width="100%" /> |
-| <img src="./screenshots/07.png" alt="Demo 07" width="100%" /> | <img src="./screenshots/08.png" alt="Demo 08" width="100%" /> |
-| <img src="./screenshots/09.png" alt="Demo 09" width="100%" /> | <img src="./screenshots/10.png" alt="Demo 10" width="100%" /> |
-| <img src="./screenshots/11.png" alt="Demo 11" width="100%" /> | <img src="./screenshots/12.png" alt="Demo 12" width="100%" /> |
-| <img src="./screenshots/13.png" alt="Demo 13" width="100%" /> | <img src="./screenshots/14.png" alt="Demo 14" width="100%" /> |
-| <img src="./screenshots/15.png" alt="Demo 15" width="100%" /> | <img src="./screenshots/16.png" alt="Demo 16" width="100%" /> |
-
+| | | | |
+| :---: | :---: | :---: | :---: |
+| <img src="./screenshots/01.png" alt="Demo 01" width="100%" /> | <img src="./screenshots/02.png" alt="Demo 02" width="100%" /> | <img src="./screenshots/03.png" alt="Demo 03" width="100%" /> | <img src="./screenshots/04.png" alt="Demo 04" width="100%" /> |
+| <img src="./screenshots/05.png" alt="Demo 05" width="100%" /> | <img src="./screenshots/06.png" alt="Demo 06" width="100%" /> | <img src="./screenshots/07.png" alt="Demo 07" width="100%" /> | <img src="./screenshots/08.png" alt="Demo 08" width="100%" /> |
+| <img src="./screenshots/09.png" alt="Demo 09" width="100%" /> | <img src="./screenshots/10.png" alt="Demo 10" width="100%" /> | <img src="./screenshots/11.png" alt="Demo 11" width="100%" /> | <img src="./screenshots/12.png" alt="Demo 12" width="100%" /> |
+| <img src="./screenshots/13.png" alt="Demo 13" width="100%" /> | <img src="./screenshots/14.png" alt="Demo 14" width="100%" /> | <img src="./screenshots/15.png" alt="Demo 15" width="100%" /> | <img src="./screenshots/16.png" alt="Demo 16" width="100%" /> |
 
 ---
