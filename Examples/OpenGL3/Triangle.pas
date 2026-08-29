@@ -57,7 +57,7 @@ begin
 end;
 
 var
-  Window: TOpenGL1Window; 
+  Window: TOpenGL3Window; 
   Event : TEvent; 
   Error : string;
   Loader: TOpenGLLoader;
