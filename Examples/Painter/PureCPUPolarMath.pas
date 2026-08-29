@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteKaleidoscopeDemo;
+program PureCPUPolarMath;
 
 {$mode objfpc}{$H+}
 

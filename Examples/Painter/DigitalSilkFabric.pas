@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteDigitalSilkDemo;
+program DigitalSilkFabric;
 
 {$mode objfpc}{$H+}
 

@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteMoireDemo;
+program MoirePattern;
 
 {$mode objfpc}{$H+}
 

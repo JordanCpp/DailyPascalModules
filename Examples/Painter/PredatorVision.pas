@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLitePredatorVisionDemo;
+program PredatorVision;
 
 {$mode objfpc}{$H+}
 

@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteTextureFireDemo;
+program CPUFireEffect;
 
 {$mode objfpc}{$H+}
 

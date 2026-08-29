@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteDynamicLightDemo;
+program DynamicLight;
 
 {$mode objfpc}{$H+}
 

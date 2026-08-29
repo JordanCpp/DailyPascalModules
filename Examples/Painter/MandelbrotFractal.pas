@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteMandelbrotDemo;
+program MandelbrotFractal;
 
 {$mode objfpc}{$H+}
 

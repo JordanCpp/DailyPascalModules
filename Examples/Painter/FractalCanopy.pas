@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteFractalTreeDemo;
+program FractalCanopy;
 
 {$mode objfpc}{$H+}
 

@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteSynthwaveGridDemo;
+program Synthwave3DGridDepth;
 
 {$mode objfpc}{$H+}
 

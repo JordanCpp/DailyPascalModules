@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteTunnelDemo;
+program CyberTunnel;
 
 {$mode objfpc}{$H+}
 

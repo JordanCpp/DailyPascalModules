@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteSpirographDemo;
+program KineticSpirograph;
 
 {$mode objfpc}{$H+}
 

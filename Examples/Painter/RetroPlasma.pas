@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLitePlasmaDemo;
+program RetroPlasma;
 
 {$mode objfpc}{$H+}
 

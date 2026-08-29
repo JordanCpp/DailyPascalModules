@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteWaterRippleDemo;
+program WaterRipple;
 
 {$mode objfpc}{$H+}
 

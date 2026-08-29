@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteStarfieldDemo;
+program StarfieldWarp;
 
 {$mode objfpc}{$H+}
 

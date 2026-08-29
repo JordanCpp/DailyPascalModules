@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteRetroGlitchDemo;
+program CRTMonitorGlitch;
 
 {$mode objfpc}{$H+}
 

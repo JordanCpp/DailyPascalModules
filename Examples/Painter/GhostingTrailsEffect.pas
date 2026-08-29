@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteMotionBlurDemo;
+program GhostingTrailsEffect;
 
 {$mode objfpc}{$H+}
 

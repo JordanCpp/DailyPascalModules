@@ -5,7 +5,7 @@
   https://boost.org)
 ==============================================================================}
 
-program WinLiteMatrixRainDemo;
+program MatrixDigitalRain;
 
 {$mode objfpc}{$H+}
 
