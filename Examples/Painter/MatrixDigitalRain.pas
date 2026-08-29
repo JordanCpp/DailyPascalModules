@@ -26,6 +26,14 @@ const
   BytesPerPixel = 4;
   MaxDrops      = 45; // Maximum number of simultaneously falling rain drops
 
+type
+  TMatrixDrop = record
+    X: Integer;
+    Y: Single;
+    Speed: Single;
+    Len: Integer;
+  end;
+
 var
   Window      : TSoftwareWindow;
   Event       : TEvent;
@@ -33,50 +41,49 @@ var
   PixelBuffer : TBytes;
   BufferSize  : Integer;
   Render      : TPixelPainter;
-  FrameCounter: Integer;
+  
+  Drops       : array[0..MaxDrops - 1] of TMatrixDrop;
+  I           : Integer;
 
 {==============================================================================
   Renders the Matrix digital rain falling stream effect via TPixelPainter
 ==============================================================================}
-procedure RenderMatrixRain(var Painter: TPixelPainter; Frame: Integer);
+procedure RenderMatrixRain(var Painter: TPixelPainter);
 var
-  I, DropX, DropY, Len, Bright, Step: Integer;
+  I, Bright, SegmentY: Integer;
   FinalGreen: Integer;
+  TailSegments: Integer;
 begin
   // Clear the canvas with a very deep dark green tone to simulate monitor glow
   Painter.SetColor(MakeColor(0, 4, 1));
   Painter.Clear;
 
-  // Fix the random number generator seed at the beginning of each frame.
-  // This is critical to ensure the same drops consistently move down the columns
-  // instead of randomly flashing and teleporting all over the screen.
-  RandSeed := 1999;
-
   for I := 0 to MaxDrops - 1 do
   begin
-    // Align drops horizontally to a discrete grid with 16-pixel increments plus offset
-    DropX := Random(Painter.GetWidth div 16) * 16 + 8;
-
-    // Randomize the length of the trailing fade tail for each drop
-    Len := 60 + Random(140);
-
-    // Calculate the Y coordinate based on time.
-    // Multiplying by (3 + Random(4)) injects a unique falling velocity per drop.
-    Step := Frame * (3 + Random(4));
-    DropY := (Random(Painter.GetHeight) + Step) mod (Painter.GetHeight + Len) - Len;
-
-    // Draw the decaying trail segments with a green color gradient
-    for Bright := 0 to Len div 5 do
+    Drops[I].Y := Drops[I].Y + Drops[I].Speed;
+    
+    if Drops[I].Y > Painter.GetHeight + Drops[I].Len then
     begin
-      // Safely clamp color intensity to prevent Byte overflow range errors
-      FinalGreen := Min(255, Bright * 6);
+      Drops[I].X := Random(Painter.GetWidth div 16) * 16 + 8;
+      Drops[I].Y := -Drops[I].Len - Random(100);
+      Drops[I].Speed := 3.0 + Random(4);
+      Drops[I].Len := 60 + Random(140);
+    end;
+
+    TailSegments := Drops[I].Len div 5;
+
+    for Bright := 0 to TailSegments do
+    begin
+      FinalGreen := Min(255, Bright * (255 div TailSegments));
       Painter.SetColor(MakeColor(0, FinalGreen, 0));
-      Painter.Line(DropX, DropY + Bright * 5, DropX, DropY + Bright * 5 + 4);
+      
+      SegmentY := Round(Drops[I].Y) - Drops[I].Len + (Bright * 5);
+      Painter.Line(Drops[I].X, SegmentY, Drops[I].X, SegmentY + 4);
     end;
 
     // Draw a bright, almost pure white leading "head" at the very tip of the stream
     Painter.SetColor(MakeColor(190, 255, 200));
-    Painter.Line(DropX, DropY + Len, DropX, DropY + Len + 3);
+    Painter.Line(Drops[I].X, Round(Drops[I].Y), Drops[I].X, Round(Drops[I].Y) + 3);
   end;
 end;
 
@@ -84,7 +91,6 @@ end;
   Main Program Block
 ==============================================================================}
 begin
-  // 1. Initialize the graphical window sub-system
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Hello World (Object Pascal)', Error) then
   begin
     WriteLn('Error: ', Error);
@@ -93,19 +99,22 @@ begin
 
   Window.SetTitle('WinLite Software Render - Matrix Digital Rain');
 
-  // 2. Allocate memory array for the screen pixel architecture
   BufferSize := WinWidth * WinHeight * BytesPerPixel;
   SetLength(PixelBuffer, BufferSize);
 
-  // 3. Initialize the painter engine linked to the allocated frame buffer
   Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
+  Randomize;
 
-  FrameCounter := 0;
+  for I := 0 to MaxDrops - 1 do
+  begin
+    Drops[I].X := Random(WinWidth div 16) * 16 + 8;
+    Drops[I].Len := 60 + Random(140);
+    Drops[I].Y := Random(WinHeight + Drops[I].Len) - Drops[I].Len;
+    Drops[I].Speed := 3.0 + Random(4);
+  end;
 
-  // 4. Main loop rendering graphic nodes and intercepting system events
   while Window.IsRunning do
   begin
-    // Poll active input messages from the operating system queue
     while Window.GetEvent(Event) do
     begin
       case Event.FType of
@@ -116,23 +125,16 @@ begin
 
         Keyboard:
           begin
-            // Close the application immediately if Escape is pressed down
             if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = Pressed) then
               Window.StopEvent;
           end;
       end;
     end;
 
-    // Step the simulation frame counter
-    Inc(FrameCounter);
+    RenderMatrixRain(Render);
 
-    // Invoke procedural matrix code rain generator
-    RenderMatrixRain(Render, FrameCounter);
-
-    // Present the completed buffer modifications to the physical screen structure
     Window.Present(PixelBuffer, WinWidth, WinHeight);
   end;
 
-  // Clean up display objects and terminate runtime window handles
   Window.Done;
 end.

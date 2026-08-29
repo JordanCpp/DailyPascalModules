@@ -40,9 +40,10 @@ var
 ==============================================================================}
 procedure RenderDigitalSilk(var Painter: TPixelPainter; Frame: Integer);
 var
-  Wave, X, Y: Integer;
+  Wave, X: Integer;
   W, H: Integer;
   RadX, WaveOffset: Double;
+  CurrY, PrevY: Integer;
 begin
   // Clear the screen with deep cosmic black to let neon lines glow
   Painter.SetColor(MakeColor(5, 5, 8));
@@ -54,25 +55,34 @@ begin
   // Render multiple overlapping wave layers to form the fabric texture
   for Wave := 0 to MaxWaves - 1 do
   begin
-    // Generate a smooth gradient transitioning from deep indigo to cyan for each layer
-    Painter.SetColor(MakeColor(Wave * 2, Wave * 5, 140 + Wave * 2));
+
+    Painter.SetColor(MakeColor(
+      Min(255, Wave * 2),
+      Min(255, Wave * 5),
+      Min(255, 140 + Wave * 2)
+    ));
 
     // Calculate a unique phase offset for the current wave layer based on time
     WaveOffset := (Wave * 7.5) + (Frame * 1.8);
+    
+    RadX := 0.0;
+    PrevY := (H div 2)
+             + Round(Sin(DegToRad(WaveOffset)) * 90.0)
+             + Round(Cos(-Frame * 0.025) * (Wave * 3.2));
 
-    for X := 0 to W - 1 do
+    for X := 1 to W - 1 do
     begin
       // Map X screen coordinate to radians (creates exactly 3 full sine wave periods)
       RadX := (X / W) * Pi * 3.0;
 
       // Calculate Y coordinate using combined sine (base wave) and cosine (torsion distortion)
-      Y := (H div 2)
-           + Round(Sin(RadX + DegToRad(WaveOffset)) * 90.0)
-           + Round(Cos(X * 0.012 - Frame * 0.025) * (Wave * 3.2));
+      CurrY := (H div 2)
+               + Round(Sin(RadX + DegToRad(WaveOffset)) * 90.0)
+               + Round(Cos(X * 0.012 - Frame * 0.025) * (Wave * 3.2));
 
-      // Only paint the pixel if it lies within the visible vertical screen bounds
-      if (Y >= 0) and (Y < H) then
-        Painter.Pixel(X, Y);
+      Painter.Line(X - 1, PrevY, X, CurrY);
+      
+      PrevY := CurrY;
     end;
   end;
 end;

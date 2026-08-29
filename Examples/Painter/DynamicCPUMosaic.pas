@@ -52,7 +52,6 @@ var
   TargetX, TargetY : Integer;
   SrcX, SrcY  : Integer;
   SrcIdx      : Integer;
-  DestIdx     : Integer;
 
 begin
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Software Render - Pixel Art Converter', Error) then
@@ -70,8 +69,6 @@ begin
   FrameCounter := 0;
 
   // Load the source asset for downsampling.
-  // Recommended search query: "Mona Lisa high contrast bmp" or "pop art portrait bmp"
-  // Save it in the executable directory as 'mosaic_source.bmp'
   BmpLoad.Load('mosaic_source.bmp', BmpImage, BmpError);
 
   // Pre-calculate scale factors to stretch map any small texture onto window bounds
@@ -150,9 +147,9 @@ begin
               begin
                 SrcIdx := (SrcY * BmpImage.Width + SrcX) * BmpImage.Bpp;
 
-                SumB := SumB + BmpImage.Pixels[SrcIdx];
+                SumR := SumR + BmpImage.Pixels[SrcIdx];
                 SumG := SumG + BmpImage.Pixels[SrcIdx + 1];
-                SumR := SumR + BmpImage.Pixels[SrcIdx + 2];
+                SumB := SumB + BmpImage.Pixels[SrcIdx + 2];
                 Inc(PixelCount);
               end;
             end;
@@ -177,26 +174,9 @@ begin
           AvgR := 0;
         end;
 
-        // Sub-loop: Write the calculated unified color block into the screen buffer
-        for BY := 0 to BlockSize - 1 do
-        begin
-          for BX := 0 to BlockSize - 1 do
-          begin
-            TargetX := X + BX;
-            TargetY := Y + BY;
+        Render.SetColor(MakeColor(AvgR, AvgG, AvgB, 255));
 
-            if (TargetX < WinWidth) and (TargetY < WinHeight) then
-            begin
-              DestIdx := (TargetY * WinWidth + TargetX) * BytesPerPixel;
-
-              PixelBuffer[DestIdx]     := AvgB; // Blue
-              PixelBuffer[DestIdx + 1] := AvgG; // Green
-              PixelBuffer[DestIdx + 2] := AvgR; // Red
-              if BytesPerPixel = 4 then
-                PixelBuffer[DestIdx + 3] := 255; // Alpha
-            end;
-          end;
-        end;
+        Render.Fill(X, Y, BlockSize, BlockSize);
 
         X := X + BlockSize;
       end;

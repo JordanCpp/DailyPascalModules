@@ -38,15 +38,16 @@ var
 
   // Processing loop variables
   X, Y        : Integer;
+  SrcX, SrcY  : Integer;
   SrcIdx      : Integer;
   DestIdx     : Integer;
-  R, G, B     : Byte;
+  SrcR, SrcG, SrcB : Byte;
   Luminance   : Integer;
   HeatR       : Byte;
   HeatG       : Byte;
   HeatB       : Byte;
-  MaxRows     : Integer;
-  MaxCols     : Integer;
+
+  XRatio, YRatio : Single;
 
 begin
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Software Render - Predator Thermal Vision', Error) then
@@ -63,13 +64,18 @@ begin
   Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
 
   // Load the source image.
-  // Recommended search query: "city street daylight bmp" or "landscape photography bmp"
-  // Save it in the executable directory as 'city_daylight.bmp'
   BmpLoad.Load('city_daylight.bmp', BmpImage, BmpError);
 
-  // Safety boundaries to prevent out-of-bounds cross-reading
-  MaxRows := Min(WinHeight, BmpImage.Height);
-  MaxCols := Min(WinWidth, BmpImage.Width);
+  if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
+  begin
+    XRatio := BmpImage.Width / WinWidth;
+    YRatio := BmpImage.Height / WinHeight;
+  end
+  else
+  begin
+    XRatio := 1.0;
+    YRatio := 1.0;
+  end;
 
   while Window.IsRunning do
   begin
@@ -89,55 +95,73 @@ begin
       end;
     end;
 
-    // Process every pixel and map grayscale intensity to infrared spectrum values
-    for Y := 0 to MaxRows - 1 do
+    Render.SetColor(MakeColor(0, 0, 30));
+    Render.Clear;
+
+    for Y := 0 to WinHeight - 1 do
     begin
-      for X := 0 to MaxCols - 1 do
+      DestIdx := Y * WinWidth * BytesPerPixel;
+
+      if (BmpImage.Height > 0) then
       begin
-        // Calculate raw flat byte indices for source and destination buffers
-        SrcIdx  := (Y * BmpImage.Width + X) * BmpImage.Bpp;
-        DestIdx := (Y * WinWidth + X) * BytesPerPixel;
+        SrcY := Floor(Y * YRatio);
+        if SrcY >= Integer(BmpImage.Height) then SrcY := BmpImage.Height - 1;
+      end;
 
-        // Extract individual color channels from the asset
-        B := BmpImage.Pixels[SrcIdx];
-        G := BmpImage.Pixels[SrcIdx + 1];
-        R := BmpImage.Pixels[SrcIdx + 2];
+      for X := 0 to WinWidth - 1 do
+      begin
+        if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
+        begin
+          SrcX := Floor(X * XRatio);
+          if SrcX >= Integer(BmpImage.Width) then SrcX := BmpImage.Width - 1;
 
-        // Standard perceived luminance conversion formula (Grayscale weights)
-        Luminance := Round(0.299 * R + 0.587 * G + 0.114 * B);
+          SrcIdx := (SrcY * Integer(BmpImage.Width) + SrcX) * BmpImage.Bpp;
+
+          SrcR := BmpImage.Pixels[SrcIdx];
+          SrcG := BmpImage.Pixels[SrcIdx + 1];
+          SrcB := BmpImage.Pixels[SrcIdx + 2];
+          
+          // Standard perceived luminance conversion formula
+          Luminance := Round(0.299 * SrcR + 0.587 * SrcG + 0.114 * SrcB);
+        end
+        else
+        begin
+          Luminance := Round((1.0 + Sin(X * 0.01) * Cos(Y * 0.01)) * 127.5);
+        end;
 
         // Procedural thermal lookup ramp color mapping (Blue -> Green -> Red -> Yellow)
         if Luminance < 64 then
         begin
-          HeatB := Luminance * 4;
+          HeatB := Min(255, Luminance * 4);
           HeatG := 0;
           HeatR := 0;
         end
         else if Luminance < 128 then
         begin
-          HeatB := 255 - (Luminance - 64) * 4;
-          HeatG := (Luminance - 64) * 4;
+          HeatB := Max(0, 255 - (Luminance - 64) * 4);
+          HeatG := Min(255, (Luminance - 64) * 4);
           HeatR := 0;
         end
         else if Luminance < 192 then
         begin
           HeatB := 0;
           HeatG := 255;
-          HeatR := (Luminance - 128) * 4;
+          HeatR := Min(255, (Luminance - 128) * 4);
         end
         else
         begin
           HeatB := 0;
-          HeatG := 255 - (Luminance - 192) * 4;
+          HeatG := Max(0, 255 - (Luminance - 192) * 4);
           HeatR := 255;
         end;
 
-        // Commit mapped bytes directly into the rendering hardware frame container
-        PixelBuffer[DestIdx]     := HeatB; // Blue
-        PixelBuffer[DestIdx + 1] := HeatG; // Green
-        PixelBuffer[DestIdx + 2] := HeatR; // Red
+        PixelBuffer[DestIdx + idxR] := HeatR;
+        PixelBuffer[DestIdx + idxG] := HeatG;
+        PixelBuffer[DestIdx + idxB] := HeatB;
         if BytesPerPixel = 4 then
-          PixelBuffer[DestIdx + 3] := 255; // Alpha
+          PixelBuffer[DestIdx + idxA] := 255;
+
+        Inc(DestIdx, BytesPerPixel);
       end;
     end;
 

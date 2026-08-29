@@ -18,7 +18,7 @@ uses
 const
   AlphaByte: Byte = 255;
 
-{$IFDEF WIN32}
+{$IFDEF MSWINDOWS}
   idxR = 2;
   idxG = 1;
   idxB = 0;

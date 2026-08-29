@@ -16,6 +16,7 @@ const
   WinWidth      = 800;
   WinHeight     = 600;
   BytesPerPixel = 4;
+  Segments      = 8;
 
 var
   Window      : TSoftwareWindow;
@@ -38,12 +39,12 @@ var
   Dx, Dy      : Single;
   Radius      : Single;
   Angle       : Single;
-  TwistAngle  : Single;
+  Sector      : Single;
 
   // Projected texture space coordinates
   SrcX, SrcY  : Integer;
   SrcIdx      : Integer;
-  DestIdx     : Integer;
+  R, G, B     : Byte;
 
 begin
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Software Render - Screen Twister', Error) then
@@ -52,7 +53,7 @@ begin
     Halt(1);
   end;
 
-  Window.SetTitle('WinLite Twister Effect - Pure CPU Polar Math - Press ESC to exit');
+  Window.SetTitle('WinLite Kaleidoscope & Twister - Pure CPU Polar Math - Press ESC to exit');
 
   BufferSize := WinWidth * WinHeight * BytesPerPixel;
   SetLength(PixelBuffer, BufferSize);
@@ -60,9 +61,7 @@ begin
   Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
   FrameCounter := 0;
 
-  // Load the vibrant source asset.
-  // Recommended search query: "psychedelic abstract pattern colorful bmp" or "graffiti wall bmp"
-  // Save it in the executable directory as 'abstract_pattern.bmp'
+  // Load the vibrant source asset
   BmpLoad.Load('abstract_pattern.bmp', BmpImage, BmpError);
 
   CenterX := WinWidth / 2.0;
@@ -88,7 +87,7 @@ begin
 
     Inc(FrameCounter);
 
-    // Render every viewport pixel using polar texture mapping mapping logic
+    // Render every viewport pixel using polar texture mapping logic
     for Y := 0 to WinHeight - 1 do
     begin
       for X := 0 to WinWidth - 1 do
@@ -97,21 +96,24 @@ begin
         Dx := X - CenterX;
         Dy := Y - CenterY;
 
-        // Calculate raw distance (Radius) from the screen center axis
         Radius := Sqrt(Dx * Dx + Dy * Dy);
 
         if Radius > 0.001 then
         begin
-          // Determine base vector angle using standard ArcTan2 trigonometric wrapper
           Angle := ArcTan2(Dy, Dx);
+          if Angle < 0 then Angle := Angle + 2.0 * Pi;
 
-          // Apply twist: shift angle based on distance from center and time (FrameCounter)
-          // 0.005 controls the speed of the spiral twist, 0.03 controls time animation phase speed
-          TwistAngle := Angle + (Radius * 0.005) + (FrameCounter * 0.03);
+          Sector := (2.0 * Pi) / Segments;
+          Angle := fmod(Angle, Sector);
+          
+          if Angle > Sector * 0.5 then 
+            Angle := Sector - Angle;
+
+          Angle := Angle + (Radius * 0.003) + (FrameCounter * 0.015);
 
           // Re-project polar vectors back to distorted Cartesian coordinate lookup indices
-          SrcX := Round(CenterX + Cos(TwistAngle) * Radius);
-          SrcY := Round(CenterY + Sin(TwistAngle) * Radius);
+          SrcX := Round(CenterX + Cos(Angle) * Radius);
+          SrcY := Round(CenterY + Sin(Angle) * Radius);
         end
         else
         begin
@@ -122,36 +124,24 @@ begin
         // Texture boundaries clamping and safety validation wrap
         if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
         begin
-          // Handle screen wrap/tiling if source coordinates scale outside asset dimensions
-          SrcX := Abs(SrcX) mod BmpImage.Width;
-          SrcY := Abs(SrcY) mod BmpImage.Height;
+          SrcX := Abs(SrcX) mod Integer(BmpImage.Width);
+          SrcY := Abs(SrcY) mod Integer(BmpImage.Height);
 
           SrcIdx := (SrcY * BmpImage.Width + SrcX) * BmpImage.Bpp;
+
+          R := BmpImage.Pixels[SrcIdx];
+          G := BmpImage.Pixels[SrcIdx + 1];
+          B := BmpImage.Pixels[SrcIdx + 2];
         end
         else
         begin
-          SrcIdx := 0;
+          R := Round((1.0 + Sin(SrcX * 0.05 + FrameCounter * 0.02)) * 127.5);
+          G := Round((1.0 + Cos(SrcY * 0.05 - FrameCounter * 0.03)) * 127.5);
+          B := Round((1.0 + Sin((SrcX + SrcY) * 0.02)) * 127.5);
         end;
 
-        DestIdx := (Y * WinWidth + X) * BytesPerPixel;
-
-        // Blit final calculated pixel maps directly into presentation window memory blocks
-        if (SrcIdx >= 0) and (SrcIdx + 2 < Length(BmpImage.Pixels)) then
-        begin
-          PixelBuffer[DestIdx]     := BmpImage.Pixels[SrcIdx];     // Blue
-          PixelBuffer[DestIdx + 1] := BmpImage.Pixels[SrcIdx + 1]; // Green
-          PixelBuffer[DestIdx + 2] := BmpImage.Pixels[SrcIdx + 2]; // Red
-          if BytesPerPixel = 4 then
-            PixelBuffer[DestIdx + 3] := 255;                       // Alpha
-        end
-        else
-        begin
-          // Fallback to solid background color grid space if index checks fail
-          PixelBuffer[DestIdx]     := 0;
-          PixelBuffer[DestIdx + 1] := 0;
-          PixelBuffer[DestIdx + 2] := 0;
-          if BytesPerPixel = 4 then PixelBuffer[DestIdx + 3] := 255;
-        end;
+        Render.SetColor(MakeColor(R, G, B, 255));
+        Render.Pixel(X, Y);
       end;
     end;
 

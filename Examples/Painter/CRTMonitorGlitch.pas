@@ -43,7 +43,9 @@ var
   ScanlineDark: Single;
   SrcX, SrcY  : Integer;
   SrcIdx      : Integer;
-  DestIdx     : Integer;
+  
+  XRatio, YRatio : Single;
+  R, G, B     : Byte;
 
 begin
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Software Render - CRT Glitch Art', Error) then
@@ -63,10 +65,19 @@ begin
   // Initialize Random seed for organic digital noise generation
   Randomize;
 
-  // Load the source neon asset.
-  // Recommended search query: "80s synthwave wallpaper bmp" or "cyberpunk neon city bmp"
-  // Save it in the executable directory as 'synthwave_neon.bmp'
+  // Load the source neon asset
   BmpLoad.Load('synthwave_neon.bmp', BmpImage, BmpError);
+
+  if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
+  begin
+    XRatio := BmpImage.Width / WinWidth;
+    YRatio := BmpImage.Height / WinHeight;
+  end
+  else
+  begin
+    XRatio := 1.0;
+    YRatio := 1.0;
+  end;
 
   while Window.IsRunning do
   begin
@@ -106,27 +117,40 @@ begin
         GlitchOffset := Round(Sin(Y * 0.3 + FrameCounter * 0.8) * 12.0);
       end;
 
+      SrcY := Floor(Y * YRatio);
+      if SrcY >= BmpImage.Height then SrcY := BmpImage.Height - 1;
+      if SrcY < 0 then SrcY := 0;
+
       for X := 0 to WinWidth - 1 do
       begin
-        // Apply calculated horizontal displacement offset
-        SrcX := X + GlitchOffset;
-        SrcY := Y;
+        SrcX := Floor(X * XRatio) + GlitchOffset;
 
         // Secure edge boundaries using simple clamping architecture
         if SrcX < 0 then SrcX := 0;
         if SrcX >= BmpImage.Width then SrcX := BmpImage.Width - 1;
-        if SrcY >= BmpImage.Height then SrcY := BmpImage.Height - 1;
 
-        // Resolve hardware byte indices for pixel extraction
-        SrcIdx  := (SrcY * BmpImage.Width + SrcX) * BmpImage.Bpp;
-        DestIdx := (Y * WinWidth + X) * BytesPerPixel;
+        if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
+        begin
+          // Resolve hardware byte indices for pixel extraction
+          SrcIdx := (SrcY * BmpImage.Width + SrcX) * BmpImage.Bpp;
+
+          R := BmpImage.Pixels[SrcIdx];
+          G := BmpImage.Pixels[SrcIdx + 1];
+          B := BmpImage.Pixels[SrcIdx + 2];
+        end
+        else
+        begin
+          R := 0; G := 0; B := 0;
+        end;
 
         // Commit color channels scaled by the current scanline intensity factor
-        PixelBuffer[DestIdx]     := Round(BmpImage.Pixels[SrcIdx]     * ScanlineDark); // Blue
-        PixelBuffer[DestIdx + 1] := Round(BmpImage.Pixels[SrcIdx + 1] * ScanlineDark); // Green
-        PixelBuffer[DestIdx + 2] := Round(BmpImage.Pixels[SrcIdx + 2] * ScanlineDark); // Red
-        if BytesPerPixel = 4 then
-          PixelBuffer[DestIdx + 3] := 255; // Alpha
+        Render.SetColor(MakeColor(
+          Round(R * ScanlineDark),
+          Round(G * ScanlineDark),
+          Round(B * ScanlineDark),
+          255
+        ));
+        Render.Pixel(X, Y);
       end;
     end;
 

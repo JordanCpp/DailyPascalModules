@@ -18,7 +18,7 @@ const
 var
   Window: TSoftwareWindow; Event: TEvent; Error: string; PixelBuffer: TBytes; Render: TPixelPainter;
   BmpLoad: TBmpLoader; BmpImage: TImage; BmpError: TBmpError; FireBuffer: array of Byte;
-  X, Y, SrcIdx, DestIdx, FireIdx, Heat: Integer;
+  X, Y, SrcIdx, Heat: Integer;
   TextR, TextG, TextB, FireR, FireG, FireB, FinalR, FinalG, FinalB: Byte;
 
   // Scale ratio coefficients for fullscreen texture projection
@@ -64,8 +64,7 @@ begin
       end;
     end;
 
-    // Step 2: Upward heat propagation with a slower decay factor to reach half of the window
-    for Y := 1 to WinHeight - 4 do
+    for Y := WinHeight - 4 downto 1 do
     begin
       for X := 1 to WinWidth - 2 do
       begin
@@ -93,9 +92,7 @@ begin
 
       for X := 0 to WinWidth - 1 do
       begin
-        DestIdx := (Y * WinWidth + X) * BytesPerPixel;
-        FireIdx := Y * WinWidth + X;
-        Heat := FireBuffer[FireIdx];
+        Heat := FireBuffer[Y * WinWidth + X];
 
         // Back-project the current screen X coordinate to the texture space
         SrcX := Floor(X * XRatio);
@@ -106,9 +103,10 @@ begin
         if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
         begin
           SrcIdx := (SrcY * BmpImage.Width + SrcX) * BmpImage.Bpp;
-          TextB := BmpImage.Pixels[SrcIdx];
+
+          TextR := BmpImage.Pixels[SrcIdx];
           TextG := BmpImage.Pixels[SrcIdx + 1];
-          TextR := BmpImage.Pixels[SrcIdx + 2];
+          TextB := BmpImage.Pixels[SrcIdx + 2];
         end 
         else 
         begin 
@@ -134,10 +132,8 @@ begin
         FinalG := Min(255, TextG + (FireG div 2));
         FinalR := Min(255, TextR + FireR);
 
-        PixelBuffer[DestIdx]     := FinalB;
-        PixelBuffer[DestIdx + 1] := FinalG;
-        PixelBuffer[DestIdx + 2] := FinalR;
-        if BytesPerPixel = 4 then PixelBuffer[DestIdx + 3] := 255;
+        Render.SetColor(MakeColor(FinalR, FinalG, FinalB, 255));
+        Render.Pixel(X, Y);
       end;
     end;
     Window.Present(PixelBuffer, WinWidth, WinHeight);

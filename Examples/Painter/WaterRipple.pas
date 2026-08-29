@@ -49,6 +49,8 @@ var
   SrcX, SrcY  : Integer;
   DestIdx     : Integer;
   SrcIdx      : Integer;
+  XRatio, YRatio : Single;
+  R, G, B     : Byte;
 
 begin
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Software Render - Water Ripple', Error) then
@@ -66,9 +68,18 @@ begin
   FrameCounter := 0;
 
   // Load the background texture.
-  // Recommended search query: "pool mosaic texture bmp" or "pebble water texture bmp"
-  // Save it in the executable directory as 'water_texture.bmp'
   BmpLoad.Load('water_texture.bmp', BmpImage, BmpError);
+
+  if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
+  begin
+    XRatio := BmpImage.Width / WinWidth;
+    YRatio := BmpImage.Height / WinHeight;
+  end
+  else
+  begin
+    XRatio := 1.0;
+    YRatio := 1.0;
+  end;
 
   while Window.IsRunning do
   begin
@@ -85,26 +96,20 @@ begin
             if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = Pressed) then
               Window.StopEvent;
           end;
-
-        MouseMove:
-          begin
-            // Optional: If your WinLiteEvents structure contains mouse coordinates,
-            // you can lock the wave center to the mouse cursor here:
-            // WaveX := Event.Mouse.X;
-            // WaveY := Event.Mouse.Y;
-          end;
       end;
     end;
 
     Inc(FrameCounter);
 
-    // If mouse tracking is idle, move the wave center in a smooth procedural circle
+    // Smooth procedural circle trajectory for searchlight/wave center
     WaveX := (WinWidth div 2)  + Cos(FrameCounter * 0.03) * 150.0;
     WaveY := (WinHeight div 2) + Sin(FrameCounter * 0.02) * 100.0;
 
     // Per-pixel CPU software rendering for the water ripple distortion
     for Y := 0 to WinHeight - 1 do
     begin
+      DestIdx := Y * WinWidth * BytesPerPixel;
+
       for X := 0 to WinWidth - 1 do
       begin
         // Calculate the displacement vector from the wave center to the current pixel
@@ -113,7 +118,6 @@ begin
         Distance := Sqrt(Dx * Dx + Dy * Dy);
 
         // Ripple formula: decaying sine wave based on distance and elapsed time
-        // 0.08 is wave frequency, 0.2 is propagation speed, 15.0 is wave amplitude
         Offset := Sin(Distance * 0.08 - FrameCounter * 0.2) * 15.0 * Exp(-Distance * 0.004);
 
         // Distort source texture lookup coordinates based on wave intensity
@@ -128,22 +132,39 @@ begin
           SrcY := Y;
         end;
 
-        // Texture boundaries clamping to prevent array index out of bounds exceptions
-        if SrcX < 0 then SrcX := 0;
-        if SrcX >= BmpImage.Width then SrcX := BmpImage.Width - 1;
-        if SrcY < 0 then SrcY := 0;
-        if SrcY >= BmpImage.Height then SrcY := BmpImage.Height - 1;
+        if (BmpImage.Width > 0) and (BmpImage.Height > 0) then
+        begin
+          SrcX := Floor(SrcX * XRatio);
+          SrcY := Floor(SrcY * YRatio);
 
-        // Map two-dimensional space coordinates to flat byte array offsets
-        DestIdx := (Y * WinWidth + X) * BytesPerPixel;
-        SrcIdx  := (SrcY * BmpImage.Width + SrcX) * BmpImage.Bpp;
+          if SrcX < 0 then SrcX := 0;
+          if SrcX >= Integer(BmpImage.Width) then SrcX := BmpImage.Width - 1;
+          if SrcY < 0 then SrcY := 0;
+          if SrcY >= Integer(BmpImage.Height) then SrcY := BmpImage.Height - 1;
 
-        // Blit the transformed pixel data directly into the frame window buffer
-        PixelBuffer[DestIdx]     := BmpImage.Pixels[SrcIdx];     // Blue
-        PixelBuffer[DestIdx + 1] := BmpImage.Pixels[SrcIdx + 1]; // Green
-        PixelBuffer[DestIdx + 2] := BmpImage.Pixels[SrcIdx + 2]; // Red
+          SrcIdx := (SrcY * Integer(BmpImage.Width) + SrcX) * BmpImage.Bpp;
+
+          R := BmpImage.Pixels[SrcIdx];
+          G := BmpImage.Pixels[SrcIdx + 1];
+          B := BmpImage.Pixels[SrcIdx + 2];
+        end
+        else
+        begin
+          if ((SrcX div 32) mod 2 = (SrcY div 32) mod 2) then
+          begin R := 0; G := 120; B := 180; end
+          else
+          begin R := 0; G := 90;  B := 150; end;
+          R := Min(255, R + Round(Abs(Offset) * 4));
+          G := Min(255, G + Round(Abs(Offset) * 4));
+        end;
+
+        PixelBuffer[DestIdx + idxR] := R;
+        PixelBuffer[DestIdx + idxG] := G;
+        PixelBuffer[DestIdx + idxB] := B;
         if BytesPerPixel = 4 then
-          PixelBuffer[DestIdx + 3] := 255; // Alpha channel
+          PixelBuffer[DestIdx + idxA] := 255;
+
+        Inc(DestIdx, BytesPerPixel);
       end;
     end;
 

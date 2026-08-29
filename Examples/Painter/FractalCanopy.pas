@@ -41,26 +41,40 @@ procedure DrawBranch(var Painter: TPixelPainter; X, Y: Double; Angle, Length: Do
 var
   XEnd, YEnd: Double;
   R, G, B: Byte;
+  CalcR, CalcG: Integer;
 begin
   // Base case: stop recursion when maximum depth is reached
   if Depth = 0 then Exit;
 
+  if Length < 1.5 then Exit;
+
   // Calculate the end coordinates of the current branch
-  // Note: Y decreases because in computer graphics Y goes down from the top
   XEnd := X + Cos(Angle) * Length;
   YEnd := Y - Sin(Angle) * Length;
 
-  // Procedural coloring: branches fade from brown (trunk) to vibrant green (leaves)
+  // Procedural coloring with strict protection against Byte Underflow/Overflow
   if Depth > 4 then
   begin
-    R := 139 - (Depth * 5);
-    G := 69 + (Depth * 2);
+    CalcR := 139 - (Depth * 5);
+    CalcG := 69 + (Depth * 2);
+    
+    if CalcR < 0 then CalcR := 0;
+    if CalcG > 255 then CalcG := 255;
+    
+    R := Byte(CalcR);
+    G := Byte(CalcG);
     B := 19;
   end
   else
   begin
-    R := 34 + (Depth * 10);
-    G := 139 + (Depth * 20);
+    CalcR := 34 + (Depth * 10);
+    CalcG := 139 + (Depth * 20);
+    
+    if CalcR > 255 then CalcR := 255;
+    if CalcG > 255 then CalcG := 255;
+    
+    R := Byte(CalcR);
+    G := Byte(CalcG);
     B := 34;
   end;
 
@@ -97,7 +111,6 @@ end;
   Main Program Block
 ==============================================================================}
 begin
-  // 1. Initialize the graphical window
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Hello World (Object Pascal)', Error) then
   begin
     WriteLn('Error: ', Error);
@@ -106,19 +119,14 @@ begin
 
   Window.SetTitle('WinLite Software Render - Generative Fractal Canopy');
 
-  // 2. Allocate memory for the pixel buffer array
   BufferSize := WinWidth * WinHeight * BytesPerPixel;
   SetLength(PixelBuffer, BufferSize);
 
-  // 3. Initialize the painter object linked to the allocated buffer
   Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
-
   FrameCounter := 0;
 
-  // 4. Main render loop and system event handling
   while Window.IsRunning do
   begin
-    // Process the operating system message queue
     while Window.GetEvent(Event) do
     begin
       case Event.FType of
@@ -129,23 +137,16 @@ begin
 
         Keyboard:
           begin
-            // Exit application when the Escape key is pressed
             if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = Pressed) then
               Window.StopEvent;
           end;
       end;
     end;
 
-    // Increment animation frame step
     Inc(FrameCounter);
-
-    // Call the procedural fractal tree renderer
     RenderFractalTree(Render, FrameCounter);
-
-    // Swap buffers: Present the complete PixelBuffer to the physical screen
     Window.Present(PixelBuffer, WinWidth, WinHeight);
   end;
 
-  // Clean up resources and close window subsystems
   Window.Done;
 end.

@@ -40,7 +40,7 @@ var
 procedure RenderSynthwaveGrid(var Painter: TPixelPainter; Frame: Integer);
 var
   I, Horizon, Y, W, H, CX: Integer;
-  Offset: Double;
+  Offset, CurrentScale, NextScale: Double;
 begin
   // Clear the screen with a deep neon-purple background
   Painter.SetColor(MakeColor(24, 4, 36));
@@ -66,16 +66,20 @@ begin
 
   for I := 0 to 14 do
   begin
-    // Exponential formula creates a non-linear spacing to simulate true 3D depth.
-    // Lines closer to the horizon are tightly packed, while closer lines spread out.
-    Y := Horizon + Round(Power(I + Offset, 2.3) * 1.3);
+    CurrentScale := Power(I, 2.3) * 1.3;
+    NextScale := Power(I + 1, 2.3) * 1.3;
+    
+    Y := Horizon + Round(CurrentScale + (NextScale - CurrentScale) * Offset);
 
     // Only render the line if it falls within the visible screen area below the horizon
     if Y < H then
     begin
       // Fade out the lines as they approach the horizon for a realistic atmospheric depth effect
-      // Lines near the horizon (lower index I) will be dimmer than lines near the bottom
-      Painter.SetColor(MakeColor(100 + I * 11, 0, 150 + I * 7));
+      Painter.SetColor(MakeColor(
+        Min(255, 100 + I * 11), 
+        0, 
+        Min(255, 150 + I * 7)
+      ));
       Painter.Line(0, Y, W - 1, Y);
     end;
   end;

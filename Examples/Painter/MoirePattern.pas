@@ -42,8 +42,8 @@ var
   I: Integer;
   CX1, CY1, CX2, CY2: Integer;
   W, H: Integer;
-  X, Y: Integer;
-  Angle: Double;
+  X1, Y1, X2, Y2: Integer;
+  Angle1, Angle2: Double;
   R, G, B: Byte;
 begin
   // Clear the screen with solid black to make neon colors pop out
@@ -64,25 +64,26 @@ begin
   // Draw a fan of thin rays from both centers to full length.
   for I := 0 to 179 do
   begin
-    Angle := DegToRad(I * 2.0);
-
-    // Calculate line end offset (1200 pixels guarantees lines extend past screen bounds)
-    X := Round(Cos(Angle) * 1200.0);
-    Y := Round(Sin(Angle) * 1200.0);
+    Angle1 := DegToRad(I * 2.0);
+    X1 := Round(Cos(Angle1) * 1200.0);
+    Y1 := Round(Sin(Angle1) * 1200.0);
 
     // --- Dynamic Color Generation ---
-    // Calculate smooth RGB shifts based on the ray's angle and current frame
-    R := Round((Sin(Angle + Frame * 0.03) + 1.0) * 127.5);
-    G := Round((Sin(Angle + Frame * 0.02 + 2.0) + 1.0) * 127.5);
-    B := Round((Cos(Angle - Frame * 0.01 + 4.0) + 1.0) * 127.5);
+    R := Byte(Round(Min(255.0, Max(0.0, (Sin(Angle1 + Frame * 0.03) + 1.0) * 127.5))));
+    G := Byte(Round(Min(255.0, Max(0.0, (Sin(Angle1 + Frame * 0.02 + 2.0) + 1.0) * 127.5))));
+    B := Byte(Round(Min(255.0, Max(0.0, (Cos(Angle1 - Frame * 0.01 + 4.0) + 1.0) * 127.5))));
 
     // Draw ray from the first (stationary) center
     Painter.SetColor(MakeColor(R, G, B));
-    Painter.Line(CX1, CY1, CX1 + X, CY1 + Y);
+    Painter.Line(CX1, CY1, CX1 + X1, CY1 + Y1);
+
+    Angle2 := Angle1 + (Frame * 0.01);
+    X2 := Round(Cos(Angle2) * 1200.0);
+    Y2 := Round(Sin(Angle2) * 1200.0);
 
     // Draw ray from the second (moving) center with slightly inverted colors for extra depth
     Painter.SetColor(MakeColor(B, R, G));
-    Painter.Line(CX2, CY2, CX2 + X, CY2 + Y);
+    Painter.Line(CX2, CY2, CX2 + X2, CY2 + Y2);
   end;
 end;
 
@@ -90,7 +91,6 @@ end;
   Main Program Block
 ==============================================================================}
 begin
-  // 1. Initialize the graphical window
   if not Window.CreateWindow(WinWidth, WinHeight, 'WinLite Hello World (Object Pascal)', Error) then
   begin
     WriteLn('Error: ', Error);
@@ -99,19 +99,14 @@ begin
 
   Window.SetTitle('WinLite Software Render - Colorful Moire Pattern');
 
-  // 2. Allocate memory for the pixel buffer array
   BufferSize := WinWidth * WinHeight * BytesPerPixel;
   SetLength(PixelBuffer, BufferSize);
 
-  // 3. Initialize the painter object linked to the allocated buffer
   Render.Init(WinWidth, WinHeight, BytesPerPixel, PixelBuffer);
-
   FrameCounter := 0;
 
-  // 4. Main render loop and system event handling
   while Window.IsRunning do
   begin
-    // Process the operating system message queue
     while Window.GetEvent(Event) do
     begin
       case Event.FType of
@@ -122,23 +117,16 @@ begin
 
         Keyboard:
           begin
-            // Exit application when the Escape key is pressed
             if (Event.Keyboard.Key = keyEscape) and (Event.Keyboard.State = Pressed) then
               Window.StopEvent;
           end;
       end;
     end;
 
-    // Increment animation frame step
     Inc(FrameCounter);
-
-    // Call the procedural optical effect renderer
     RenderMoire(Render, FrameCounter);
-
-    // Swap buffers: Present the complete PixelBuffer to the physical screen
     Window.Present(PixelBuffer, WinWidth, WinHeight);
   end;
 
-  // Clean up resources and close window subsystems
   Window.Done;
 end.
