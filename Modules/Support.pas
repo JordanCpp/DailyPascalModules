@@ -14,12 +14,10 @@ interface
 uses 
   SysUtils;
 
+{$IF NOT DECLARED(TBytes)}
 type
-    {$IF FPC_VERSION < 3}
-      TBytes = array of Byte;
-    {$ELSE}
-      TBytes = SysUtils.TBytes;
-    {$IFEND}
+  TBytes = array of Byte;
+{$IFEND}
 
 implementation
 
