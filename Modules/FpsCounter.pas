@@ -20,6 +20,7 @@ type
     FLastTime   : QWord;
     FFrameCount : Cardinal;
     FFps        : Cardinal;
+    function GetPortableTickCount: QWord;
   public
     procedure Init;
     function Update: Boolean;
@@ -30,9 +31,16 @@ implementation
 
 { TFpsCounter }
 
+function TFpsCounter.GetPortableTickCount: QWord;
+const
+  MSPerDay = 86400000.0; 
+begin
+  Result := Trunc(Now * MSPerDay);
+end;
+
 procedure TFpsCounter.Init;
 begin
-  FLastTime   := GetTickCount64;
+  FLastTime   := GetPortableTickCount;
   FFrameCount := 0;
   FFps        := 0;
 end;
@@ -45,7 +53,7 @@ begin
   Result := False;
   Inc(FFrameCount);
 
-  NowTime := GetTickCount64;
+  NowTime := GetPortableTickCount;
 
   if NowTime >= FLastTime then
     Elapsed := NowTime - FLastTime

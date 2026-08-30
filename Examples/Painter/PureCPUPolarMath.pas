@@ -104,7 +104,9 @@ begin
           if Angle < 0 then Angle := Angle + 2.0 * Pi;
 
           Sector := (2.0 * Pi) / Segments;
-          Angle := fmod(Angle, Sector);
+          
+          if Sector <> 0 then 
+            Angle := Angle - Trunc(Angle / Sector) * Sector;
           
           if Angle > Sector * 0.5 then 
             Angle := Sector - Angle;
